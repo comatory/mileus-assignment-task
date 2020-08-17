@@ -8,7 +8,7 @@ const { useConfig } = config
 const mapContent: React.Ref<HTMLDivElement> = React.createRef()
 
 const MapContainer = () => {
-  const token = useConfig('token')
+  const token = useConfig('mapboxToken')
 
   return (
     <div className='map-container'>

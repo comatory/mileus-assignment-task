@@ -3,11 +3,11 @@ import { ReduceStore } from 'flux/utils'
 import { SetConfigPropertyAction, CONFIG_ACTIONS_TYPES } from '../actions/config-actions'
 
 interface State {
-  token: string | null,
+  mapboxToken: string | null,
 }
 
 const defaults: State = {
-  token: null
+  mapboxToken: null
 }
 
 const initialState: State = defaults
@@ -36,10 +36,6 @@ export default class ConfigStore extends ReduceStore<State, ConfigAction> {
       default:
         return state
     }
-  }
-
-  getToken(): string | null {
-    return this.getState().token
   }
 
   getValueByKey(key: string): string | null {

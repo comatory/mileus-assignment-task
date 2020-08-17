@@ -1,3 +1,7 @@
+# Mileus assignment task
+
+Make sure you add relevant keys to your env file. Required variables are defined in `.env.sample` file, copy the file and name it `.env` or `.env.local` (will not be included in Git history). Replace dummy values with actual values.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

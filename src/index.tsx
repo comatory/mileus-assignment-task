@@ -15,7 +15,8 @@ const render = () => {
 }
 
 const boot = () => {
-  ioc.configActions.setProperty('token', 'abcd')
+  const mapboxToken = process.env.REACT_APP_MAPBOX_TOKEN
+  ioc.configActions.setProperty('mapboxToken', mapboxToken)
 
   // NOTE: Attach to window object for debugging purposes
   window.services = { ...ioc }
