@@ -1,4 +1,4 @@
-import mapboxgl, { Map, Marker, MapMouseEvent } from 'mapbox-gl'
+import mapboxgl, { Map, Marker, MapMouseEvent, GeolocateControl } from 'mapbox-gl'
 
 interface Markers {
   origin: Marker | null,
@@ -23,7 +23,16 @@ export default class MapManager {
       center: [-74.5, 40], // starting position [lng, lat]
       zoom: 9 // starting zoom
     })
+
     this._attachListeners(this._map)
+
+    // NOTE: Might not work in Chromium, works fine in Chrome / FF
+    this._map.addControl(new GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      trackUserLocation: true
+    }))
     //this._attachStoreListeners(this._map)
   }
 
