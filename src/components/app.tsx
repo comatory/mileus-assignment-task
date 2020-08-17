@@ -8,7 +8,6 @@ const App = () => {
   return (
     <Context.Provider value={ioc}>
       <div className='app'>
-        App is here
         <AppContainer />
       </div>
     </Context.Provider>

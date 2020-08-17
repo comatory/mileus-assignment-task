@@ -40,6 +40,7 @@
     ]
   },
   "devDependencies": {
-    "@types/flux": "^3.1.9"
+    "@types/flux": "^3.1.9",
+    "@types/mapbox-gl": "^1.11.1"
   }
 }

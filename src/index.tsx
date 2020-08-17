@@ -15,7 +15,10 @@ const render = () => {
 }
 
 const boot = () => {
+  // NOTE: Set up mapbox
   const mapboxToken = process.env.REACT_APP_MAPBOX_TOKEN
+  ioc.mapManager.initialize(mapboxToken)
+
   ioc.configActions.setProperty('mapboxToken', mapboxToken)
 
   // NOTE: Attach to window object for debugging purposes

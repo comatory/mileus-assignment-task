@@ -1,18 +1,22 @@
-import * as React from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import MapContent from './map-content'
-import { config } from '../../hooks/storage'
-
-const { useConfig } = config
+import Context from '../context'
 
 const mapContent: React.Ref<HTMLDivElement> = React.createRef()
 
 const MapContainer = () => {
-  const token = useConfig('mapboxToken')
+  const { mapManager } = useContext(Context)
+
+  useEffect(() => {
+    mapManager.createMap(mapContent.current)
+
+    return () => mapManager.removeMap()
+  })
+    
 
   return (
     <div className='map-container'>
-      token is: {token}
       <MapContent ref={mapContent} />
     </div>
   )
