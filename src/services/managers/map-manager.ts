@@ -1,6 +1,8 @@
 import mapboxgl, { LngLat, Map, Marker, MapMouseEvent, GeolocateControl } from 'mapbox-gl'
 
 import RouteActions from '../actions/route-actions'
+import RouteRetriever from '../retrievers/route-retriever'
+import { RouteResponse } from '../../interfaces/route'
 
 interface Markers {
   origin: Marker | null,
@@ -14,11 +16,14 @@ export default class MapManager {
     destination: null,
   }
   private _routeActions: RouteActions
+  private _routeRetriever: RouteRetriever
 
   constructor(services: {
     routeActions: RouteActions,
+    routeRetriever: RouteRetriever,
   }) {
     this._routeActions = services.routeActions
+    this._routeRetriever = services.routeRetriever
   }
 
   public initialize(token: string) {
@@ -73,6 +78,19 @@ export default class MapManager {
     }
 
     this._addMarker(this._map, 'destination', lngLat)
+  }
+
+  public async findRoute(origin: LngLat, destination: LngLat) {
+    this._routeActions.startRouteRequest()
+
+    try {
+      const routes = await this._routeRetriever.fetchRoute(origin, destination)
+      this._routeActions.setRoutes(routes)
+    } catch (err) {
+      this._routeActions.setRouteRequestError(err)
+    }
+
+    this._routeActions.stopRouteRequest()
   }
 
   private _addMarker(map: Map, markerId: string, lngLat: LngLat) {

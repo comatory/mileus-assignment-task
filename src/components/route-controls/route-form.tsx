@@ -8,7 +8,7 @@ import RouteUtils from '../../utils/route-utils'
 interface Props {
   origin: LngLat | null,
   destination: LngLat | null,
-  onSubmit: (origin: string, destination: string) => void,
+  onSubmit: () => void,
   onOriginInputBlur: (value: string, validity: boolean) => void,
   onDestinationInputBlur: (value: string, validity: boolean) => void,
   onOriginClearButtonClick: () => void,
@@ -31,8 +31,8 @@ const RouteForm = (props: Props) => {
   const handleRouteFormSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    props.onSubmit(originString, destinationString)
-  }, [ originString, destinationString ])
+    props.onSubmit()
+  }, [ props.origin, props.destination ])
 
   const handleOriginInputChange = useCallback((e: React.SyntheticEvent<HTMLInputElement>, _id: string, _validity: boolean) => {
     setOriginString(e.currentTarget.value)

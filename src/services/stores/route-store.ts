@@ -6,17 +6,29 @@ import {
   SetDestinationAction,
   ClearOriginAction,
   ClearDestinationAction,
+  SetRouteRequestActions,
+  SetRouteRequestFinishedAction,
+  SetRouteRequestErrorAction,
+  SetRoutesAction,
+  ClearRoutesAction,
   ROUTE_ACTIONS_TYPES,
 } from '../actions/route-actions'
+import { Route } from '../../interfaces/route'
 
 interface State {
   origin: LngLat | null,
   destination: LngLat | null,
+  routeRequest: boolean,
+  routeRequestError: Error | null,
+  routes: Array<Route>,
 }
 
 const defaults: State = {
   origin: null,
   destination: null,
+  routeRequest: false,
+  routeRequestError: null,
+  routes: [],
 }
 
 const initialState: State = defaults
@@ -25,7 +37,12 @@ type RouteAction = (
   SetOriginAction |
   SetDestinationAction |
   ClearOriginAction |
-  ClearDestinationAction
+  ClearDestinationAction |
+  SetRouteRequestActions |
+  SetRouteRequestFinishedAction |
+  SetRouteRequestErrorAction |
+  SetRoutesAction |
+  ClearRoutesAction
 )
 
 export default class RouteStore extends ReduceStore<State, RouteAction> {
@@ -66,6 +83,38 @@ export default class RouteStore extends ReduceStore<State, RouteAction> {
         return {
            ...state,
            destination: null,
+        }
+      case ROUTE_ACTIONS_TYPES.ROUTE_ACTION_REQUEST:
+        return {
+           ...state,
+           routeRequest: true,
+           routeRequestError: null,
+        }
+      case ROUTE_ACTIONS_TYPES.ROUTE_ACTION_REQUEST_FINISHED:
+        return {
+           ...state,
+           routeRequest: false,
+        }
+      case ROUTE_ACTIONS_TYPES.ROUTE_ACTION_REQUEST_ERROR:
+        const routeRequestErrorAction = action as SetRouteRequestErrorAction
+        const { error } = routeRequestErrorAction.data
+
+        return {
+           ...state,
+           routeRequestError: error,
+        }
+      case ROUTE_ACTIONS_TYPES.ROUTE_ACTION_ROUTES_SET:
+        const routesSetRequestAction = action as SetRoutesAction
+        const { routes } = routesSetRequestAction.data
+
+        return {
+          ...state,
+          routes,
+        }
+      case ROUTE_ACTIONS_TYPES.ROUTE_ACTION_ROUTES_CLEAR:
+        return {
+          ...state,
+          routes: [],
         }
       default:
         return state

@@ -18,10 +18,11 @@ const RouteInput = (props: Props) => {
   const [ inputBlurred, setInputBlurred ] = useState(false)
 
   const handleInputBlur = useCallback((e: React.SyntheticEvent<HTMLInputElement>) => {
+    const nextInputValidity = ValidationUtils.validateLatLngString(props.value)
     setInputBlurred(true)
 
     if (props.onBlur) {
-      props.onBlur(e, props.id, inputValid)
+      props.onBlur(e, props.id, nextInputValidity)
     }
   }, [ props.value ])
   const handleInputChange = useCallback((e: React.SyntheticEvent<HTMLInputElement>) => {

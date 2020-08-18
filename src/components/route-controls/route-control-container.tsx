@@ -25,7 +25,7 @@ const RouteControlContainer = () => {
     }
     const lngLat = RouteUtils.convertStringToLngLat(value)
 
-    routeActions.setOrigin(lngLat)
+    routeActions.setDestination(lngLat)
     mapManager.addDestinationMarker(lngLat)
   }
 
@@ -40,8 +40,9 @@ const RouteControlContainer = () => {
   }
 
   const handleSubmit = () => {
-    console.info('submission')
+    mapManager.findRoute(origin, destination)
   }
+  console.info(`origin ${origin} destination ${destination}`)
 
   return (
     <div className='route-control-container'>
