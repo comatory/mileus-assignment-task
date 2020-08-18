@@ -12,6 +12,6 @@ export default class ValidationUtils {
     const lat = parseFloat(latValue)
     const lng = parseFloat(lngValue)
 
-    return ((lat < 90 && lat > -90) && (lng < 180 && lng > -180))
+    return ((lat <= 90 && lat >= -90) && (lng <= 180 && lng >= -180))
   }
 }
