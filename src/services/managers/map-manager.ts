@@ -1,8 +1,14 @@
-import mapboxgl, { LngLat, Map, Marker, MapMouseEvent, GeolocateControl } from 'mapbox-gl'
+import mapboxgl, {
+  LngLat,
+  Map,
+  Marker,
+  MapMouseEvent,
+  GeolocateControl,
+} from 'mapbox-gl'
 
 import RouteActions from '../actions/route-actions'
 import RouteRetriever from '../retrievers/route-retriever'
-import { RouteResponse } from '../../interfaces/route'
+import { Route } from '../../interfaces/route'
 
 interface Markers {
   origin: Marker | null,
@@ -86,6 +92,8 @@ export default class MapManager {
     try {
       const routes = await this._routeRetriever.fetchRoute(origin, destination)
       this._routeActions.setRoutes(routes)
+
+      this._drawRoute(routes[0], this._map)
     } catch (err) {
       this._routeActions.setRouteRequestError(err)
     }
@@ -119,6 +127,10 @@ export default class MapManager {
 
     originMarker.remove()
     this._markers['origin'] = null
+
+    if (this._map) {
+      this._clearRoute(this._map)
+    }
   }
 
   public removeDestinationMarker() {
@@ -130,6 +142,10 @@ export default class MapManager {
 
     destinationMarker.remove()
     this._markers['destination'] = null
+
+    if (this._map) {
+      this._clearRoute(this._map)
+    }
   }
 
   private _handleClick = (e: MapMouseEvent, map: Map) => {
@@ -163,44 +179,53 @@ export default class MapManager {
     }
   }
 
-  //_drawRoute(activeRoute, osrmResult, map) {
-  //  const route = osrmResult.routes[activeRoute]
+  private _drawRoute(route: Route | null, map: Map | null) {
+    if (!route) {
+      console.error('MapManager#_drawRoute -> No route available')
+      return
+    }
 
-  //  if (!route) {
-  //    console.warn('Drawing blank route ->')
-  //    return
-  //  }
+    if (!map) {
+      console.error('MapManager#_drawRoute -> No map available')
+      return
+    }
 
-  //  if (map.getLayer('route')) {
-  //    map.removeLayer('route')
-  //  }
+    this._clearRoute(map)
 
-  //  if (map.getSource('route')) {
-  //    map.removeSource('route')
-  //  }
+    // @ts-ignore: Incompatible type definitions
+    map.addSource('route', {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        properties: {},
+        geometry: route.geometry,
+      },
+    })
 
-  //  map.addSource('route', {
-  //    type: 'geojson',
-  //    data: {
-  //      type: 'Feature',
-  //      properties: {},
-  //      geometry: route.geometry,
-  //    }
-  //  })
+    map.addLayer({
+      'id': 'route',
+      'type': 'line',
+      'source': 'route',
+      'layout': {
+      'line-join': 'round',
+      'line-cap': 'round'
+      },
+      'paint': {
+      'line-color': '#888',
+      'line-width': 8
+      }
+    })
+  }
 
-  //  map.addLayer({
-  //    'id': 'route',
-  //    'type': 'line',
-  //    'source': 'route',
-  //    'layout': {
-  //    'line-join': 'round',
-  //    'line-cap': 'round'
-  //    },
-  //    'paint': {
-  //    'line-color': '#888',
-  //    'line-width': 8
-  //    }
-  //  })
-  //}
+  private _clearRoute(map: Map) {
+    if (map.getLayer('route')) {
+      map.removeLayer('route')
+    }
+
+    if (map.getSource('route')) {
+      map.removeSource('route')
+    }
+
+  }
 }
 

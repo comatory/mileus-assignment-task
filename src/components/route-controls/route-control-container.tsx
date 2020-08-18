@@ -44,7 +44,6 @@ const RouteControlContainer = () => {
   const handleSubmit = () => {
     mapManager.findRoute(origin, destination)
   }
-  console.info(`origin ${origin} destination ${destination}`)
 
   return (
     <div className='route-control-container'>
