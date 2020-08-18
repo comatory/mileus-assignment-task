@@ -76,10 +76,20 @@ export default class MapManager {
   }
 
   private _addMarker(map: Map, markerId: string, lngLat: LngLat) {
+    this._clearMarker(markerId)
+
     this._markers[markerId as 'origin' | 'destination'] = new Marker()
       .setLngLat(lngLat)
       .togglePopup()
       .addTo(map)
+  }
+
+  private _clearMarker(markerId: string) {
+    if (markerId === 'origin') {
+      this.removeOriginMarker()
+    } else if (markerId === 'destination') {
+      this.removeDestinationMarker()
+    }
   }
 
   public removeOriginMarker() {
