@@ -26,3 +26,27 @@ export const useRoutes = (): Routes => {
 
   return { origin, destination }
 }
+
+interface RouteRequestState {
+  pending: boolean,
+  requestError: Error | null,
+}
+
+export const useRouteRequest = (): RouteRequestState => {
+  const { routeStore } = useContext(Context)
+  const [ pending, setPending ] = useState(routeStore.isRouteRequestPending())
+  const [ requestError, setRequestError ] = useState(routeStore.getRouteRequestError())
+
+  const handleRouteStoreChange = () => {
+    setPending(routeStore.isRouteRequestPending())
+    setRequestError(routeStore.getRouteRequestError())
+  }
+
+  useEffect(() => {
+    const subscriber = routeStore.addListener(handleRouteStoreChange)
+
+    return () => subscriber.remove()
+  })
+
+  return { pending, requestError }
+}

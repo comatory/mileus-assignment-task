@@ -8,6 +8,7 @@ interface Props {
   value: string,
   label: string,
   valid?: boolean,
+  disabled?: boolean,
   onChange: (e: React.SyntheticEvent<HTMLInputElement>, id: string, validity: boolean) => void,
   onBlur?: (e: React.SyntheticEvent<HTMLInputElement>, id: string, validity: boolean) => void,
   onFocus?: (e: React.SyntheticEvent<HTMLInputElement>) => void,
@@ -54,6 +55,7 @@ const RouteInput = (props: Props) => {
         onBlur={handleInputBlur}
         onFocus={props.onFocus}
         value={props.value}
+        disabled={Boolean(props.disabled)}
       />
     </label>
   )

@@ -128,5 +128,13 @@ export default class RouteStore extends ReduceStore<State, RouteAction> {
   public getDestination(): LngLat | null {
     return this.getState().destination
   }
+
+  public isRouteRequestPending(): boolean {
+    return this.getState().routeRequest
+  }
+
+  public getRouteRequestError(): Error | null {
+    return this.getState().routeRequestError
+  }
 }
 

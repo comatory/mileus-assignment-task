@@ -8,6 +8,7 @@ import RouteUtils from '../../utils/route-utils'
 interface Props {
   origin: LngLat | null,
   destination: LngLat | null,
+  disabled: boolean,
   onSubmit: () => void,
   onOriginInputBlur: (value: string, validity: boolean) => void,
   onDestinationInputBlur: (value: string, validity: boolean) => void,
@@ -78,12 +79,14 @@ const RouteForm = (props: Props) => {
           id='origin'
           label='From'
           value={originString}
+          disabled={props.disabled}
           onChange={handleOriginInputChange}
           onBlur={handleInputOriginBlur}
         />
         <Button
           onClick={handleClearOriginInputButton}
           label='∅'
+          disabled={props.disabled}
           className='route-control-container--clear-btn'
         />
       </div>
@@ -92,12 +95,14 @@ const RouteForm = (props: Props) => {
           id='destination'
           label='To'
           value={destinationString}
+          disabled={props.disabled}
           onChange={handleDestinationInputChange}
           onBlur={handleInputDestinationBlur}
         />
         <Button
           onClick={handleClearDestinationInputButton}
           label='∅'
+          disabled={props.disabled}
           className='route-control-container--clear-btn'
         />
       </div>
@@ -105,7 +110,7 @@ const RouteForm = (props: Props) => {
         type='primary'
         htmlType='submit'
         label='Search'
-        disabled={(!formValidity.origin || !formValidity.destination)}
+        disabled={props.disabled || (!formValidity.origin || !formValidity.destination)}
       />
     </form>
   )
