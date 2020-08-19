@@ -1,4 +1,11 @@
+@import './app.css';
 @import './map-content.css';
 @import './route-control-container.css';
 @import './route-input.css';
 @import './error-panel.css';
+@import './graph-container.css';
+@import './graph.css';
+
+body {
+  margin: 0;
+}

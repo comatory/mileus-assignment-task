@@ -2,6 +2,7 @@ import React from 'react'
 
 import MapContainer from './map/map-container'
 import RouteControlContainer from './route-controls/route-control-container'
+import GraphContainer from './graph/graph-container'
 
 const AppContainer = () => {
 
@@ -9,6 +10,7 @@ const AppContainer = () => {
     <div className='app-container'>
       <RouteControlContainer />
       <MapContainer />
+      <GraphContainer />
     </div>
   )
 }

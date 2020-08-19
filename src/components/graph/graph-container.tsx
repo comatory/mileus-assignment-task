@@ -1,32 +1,40 @@
-import React, { Suspense, useState, useContext, useEffect, lazy } from 'react'
-import Context from '../context'
+import React, { Suspense, useState, lazy } from 'react'
+import classNames from 'classnames'
 
-// NOTE: not handling different legs
-const DEFAULT_LEG = 0
+import { useGraph } from '../../hooks/storage/graph'
+import Button from '../core/button'
 
 const Graph = lazy(() => import('./graph'))
 
 const Loading = () => {
   return (
-    <div className='loading'>
+    <div className='graph-container--loading'>
       Loading graph ...
     </div>
   )
 }
 
 const GraphContainer = () => {
-  const { graphStore } = useContext(Context)
-  const [ graphData, setGraphData ] = useState(null)
-  const [ activeRoute, setActiveRoute ] = useState(null)
+  const { data } = useGraph()
+  const [ hidden, setHidden ] = useState(false)
 
-  // NOTE: Not handling different leg of journeys because
-  //       this is not full featured app
-  const data = null
+  const handleHideButtonClick = () => {
+    setHidden(!hidden)
+  }
 
   return (
-    <div className='graph-container'>
+    <div className={classNames('graph-container', {
+        'graph-container--hidden': hidden,
+        'graph-container--loaded': Boolean(data),
+      })}>
       {data &&
       <Suspense fallback={<Loading />}>
+          <Button
+            className='graph-container__hide-btn'
+            type='secondary'
+            label={hidden ? '⇧' : '⇩'}
+            onClick={handleHideButtonClick}
+          />
           <Graph data={data} />
         </Suspense>
       }

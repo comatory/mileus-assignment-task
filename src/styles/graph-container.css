@@ -1,0 +1,39 @@
+.graph-container::root {
+  --graph-container-width: 500px;
+  --graph-container-height: 340px;
+  --graph-container-hide-btn-height: 30px;
+}
+
+.graph-container {
+  z-index: 1;
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background-color: #fff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+}
+
+.graph-container--loaded {
+  opacity: 1;
+}
+
+.graph-container--loading {
+  display:  flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--graph-container-width);
+  min-height: var(--graph-container-height);
+}
+
+.graph-container__hide-btn {
+  width: 50px;
+  height: var(--graph-container-hide-btn-height);
+  align-self: flex-end;
+}
+
+.graph-container--hidden {
+  bottom: -330px;
+}
