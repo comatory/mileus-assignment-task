@@ -51,6 +51,20 @@ export default class GraphUtils {
     return (speed * 60 * 60 * 0.001)
   }
 
+  static convertToKm(distanceInMeters: number): number {
+    return distanceInMeters / 1000
+  }
+
+  static convertToHoursAndMinutes(durationsSeconds: number): string {
+    const minutes = Math.floor((durationsSeconds / 60) % 60)
+    const hours = Math.floor((durationsSeconds / (60 * 60)) % 24)
+
+    const prefixedHours = (hours < 10) ? "0" + hours : hours;
+    const prefixedMinutes = (minutes < 10) ? "0" + minutes : minutes;
+
+    return [ prefixedHours, prefixedMinutes ].join(':')
+  }
+
   static addTimestamps(prevTimestamp: number | null, duration: number): number {
     if (!prevTimestamp) {
       return 0

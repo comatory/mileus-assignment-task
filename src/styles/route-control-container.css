@@ -1,12 +1,3 @@
-.route-control-container {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  z-index: 1;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
 .route-control-container__group {
   display: flex;
   align-items: center;

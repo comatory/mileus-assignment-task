@@ -5,6 +5,9 @@
 @import './error-panel.css';
 @import './graph-container.css';
 @import './graph.css';
+@import './player-container.css';
+@import './panel.css';
+@import './player-metadata.css';
 
 body {
   margin: 0;

@@ -1,0 +1,8 @@
+.player-metadata {
+  font-size: 0.9rem;
+  font-family: sans-serif;
+}
+
+.player-metadata__property {
+  font-weight: 400;
+}
