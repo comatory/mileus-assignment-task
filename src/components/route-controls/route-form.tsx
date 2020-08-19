@@ -17,6 +17,8 @@ interface Props {
   onDestinationInputClear: () => void,
   onOriginClearButtonClick: () => void,
   onDestinationClearButtonClick: () => void,
+  onOriginFocusButtonClick: () => void,
+  onDestinationFocusButtonClick: () => void,
 }
 
 const RouteForm = (props: Props) => {
@@ -108,9 +110,15 @@ const RouteForm = (props: Props) => {
         />
         <Button
           onClick={handleClearOriginInputButton}
-          label='∅'
+          label='×'
           disabled={props.disabled}
           className='route-control-container--clear-btn'
+        />
+        <Button
+          onClick={props.onOriginFocusButtonClick}
+          label='⊚'
+          disabled={props.disabled}
+          className='route-control-container--focus-btn'
         />
       </div>
       <div className='route-control-container__group'>
@@ -124,9 +132,15 @@ const RouteForm = (props: Props) => {
         />
         <Button
           onClick={handleClearDestinationInputButton}
-          label='∅'
+          label='×'
           disabled={props.disabled}
           className='route-control-container--clear-btn'
+        />
+        <Button
+          onClick={props.onDestinationFocusButtonClick}
+          label='⊚'
+          disabled={props.disabled}
+          className='route-control-container--focus-btn'
         />
       </div>
       <Button

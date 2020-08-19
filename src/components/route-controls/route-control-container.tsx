@@ -17,7 +17,7 @@ const RouteControlContainer = () => {
     }
     const lngLat = RouteUtils.convertStringToLngLat(value)
 
-    mapManager.addOriginMarker(lngLat)
+    mapManager.addOriginMarker(lngLat, true)
   }
 
   const handleDestinationInputBlur = (value: string, validity: boolean) => {
@@ -26,7 +26,7 @@ const RouteControlContainer = () => {
     }
     const lngLat = RouteUtils.convertStringToLngLat(value)
 
-    mapManager.addDestinationMarker(lngLat)
+    mapManager.addDestinationMarker(lngLat, true)
   }
 
   const handleClearOriginInputButton = () => {
@@ -64,6 +64,12 @@ const RouteControlContainer = () => {
   const handleDestinationInputClear = () => {
     mapManager.removeDestinationMarker()
   }
+  const handleOriginFocusButtonClick = () => {
+    mapManager.moveToOrigin()
+  }
+  const handleDestinationFocusButtonClick = () => {
+    mapManager.moveToDestination()
+  }
 
   return (
     <div className='route-control-container'>
@@ -77,6 +83,8 @@ const RouteControlContainer = () => {
         onDestinationInputBlur={handleDestinationInputBlur}
         onOriginClearButtonClick={handleClearOriginInputButton}
         onDestinationClearButtonClick={handleClearDestinationInputButton}
+        onOriginFocusButtonClick={handleOriginFocusButtonClick}
+        onDestinationFocusButtonClick={handleDestinationFocusButtonClick}
         onSubmit={handleSubmit}
       />
       {requestError && <ErrorPanel error={requestError} />}

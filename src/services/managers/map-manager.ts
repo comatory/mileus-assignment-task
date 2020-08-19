@@ -80,7 +80,7 @@ export default class MapManager {
     map.on('click', (e: MapMouseEvent) => this._handleClick(e, map))
   }
 
-  public addOriginMarker(lngLat: LngLat) {
+  public addOriginMarker(lngLat: LngLat, moveMap: boolean = false) {
     if (!this._map) {
       console.warn('MapManager#addOriginMarker -> Missing Map instance')
       return
@@ -88,10 +88,12 @@ export default class MapManager {
 
     this._routeActions.clearRouteRequestError()
     this._routeActions.setOrigin(lngLat)
-    this._addMarker(this._map, 'origin', lngLat)
+    this._addMarker(this._map, 'origin', lngLat, {
+      moveMap
+    })
   }
 
-  public addDestinationMarker(lngLat: LngLat) {
+  public addDestinationMarker(lngLat: LngLat, moveMap: boolean = false) {
     if (!this._map) {
       console.warn('MapManager#addDestinationMarker -> Missing Map instance')
       return
@@ -99,7 +101,9 @@ export default class MapManager {
 
     this._routeActions.clearRouteRequestError()
     this._routeActions.setDestination(lngLat)
-    this._addMarker(this._map, 'destination', lngLat)
+    this._addMarker(this._map, 'destination', lngLat, {
+      moveMap,
+    })
   }
 
   public async findRoute(origin: LngLat, destination: LngLat) {
@@ -124,13 +128,56 @@ export default class MapManager {
     this._routeActions.stopRouteRequest()
   }
 
-  private _addMarker(map: Map, markerId: string, lngLat: LngLat) {
+  public moveToOrigin() {
+    const originMarker = this._markers['origin']
+
+    if (!originMarker) {
+      return
+    }
+
+    const lngLat = originMarker.getLngLat()
+    this._moveToLngLat(lngLat)
+  }
+
+  public moveToDestination() {
+    const destinationMarker = this._markers['destination']
+
+    if (!destinationMarker) {
+      return
+    }
+
+    const lngLat = destinationMarker.getLngLat()
+    this._moveToLngLat(lngLat)
+  }
+
+  private _moveToLngLat(lngLat: LngLat) {
+    const map = this._map
+    if (!map) {
+      return
+    }
+
+    map.flyTo({
+      center: [ lngLat.lng, lngLat.lat ],
+      zoom: 14,
+    })
+  }
+
+  private _addMarker(
+    map: Map,
+    markerId: string,
+    lngLat: LngLat,
+    options: Partial<{ moveMap: boolean }> = {}
+  ) {
     this._clearMarker(markerId)
 
     this._markers[markerId as 'origin' | 'destination'] = new Marker()
       .setLngLat(lngLat)
       .togglePopup()
       .addTo(map)
+
+    if (options.moveMap) {
+      this._moveToLngLat(lngLat)
+    }
   }
 
   private _clearMarker(markerId: string) {
@@ -149,6 +196,7 @@ export default class MapManager {
     }
 
     this._routeActions.clearOrigin()
+    this._routeActions.clearRouteRequestError()
 
     originMarker.remove()
     this._markers['origin'] = null
@@ -166,6 +214,7 @@ export default class MapManager {
     }
 
     this._routeActions.clearDestination()
+    this._routeActions.clearRouteRequestError()
 
     destinationMarker.remove()
     this._markers['destination'] = null
@@ -252,7 +301,6 @@ export default class MapManager {
     if (map.getSource('route')) {
       map.removeSource('route')
     }
-
   }
 }
 

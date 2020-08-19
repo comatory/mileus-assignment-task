@@ -6,5 +6,11 @@
 }
 
 .route-control-container--clear-btn {
+  height: 20px;
   margin-left: 10px;
+}
+
+.route-control-container--focus-btn {
+  height: 20px;
+  margin-left: 5px;
 }
