@@ -73,7 +73,7 @@ export interface ClearRoutesAction extends Action {
 }
 
 
-export default class ConfigActions extends ActionCreator {
+export default class RouteActions extends ActionCreator {
   setOrigin(origin: LngLat) {
     this.dispatch({
       type: ROUTE_ACTION_SET_ORIGIN,
