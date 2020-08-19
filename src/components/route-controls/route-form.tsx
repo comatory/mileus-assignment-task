@@ -4,6 +4,7 @@ import { LngLat } from 'mapbox-gl'
 import RouteInput from './route-input'
 import Button from '../core/button'
 import RouteUtils from '../../utils/route-utils'
+import ValidationUtils from '../../utils/validation-utils'
 
 interface Props {
   origin: LngLat | null,
@@ -25,8 +26,17 @@ const RouteForm = (props: Props) => {
   const [ formValidity, setFormValidity ] = useState({ origin: false, destination: false })
 
   useEffect(() => {
-    setOriginString(props.origin ? RouteUtils.convertLngLatToString(props.origin) : originString)
-    setDestinationString(props.destination ? RouteUtils.convertLngLatToString(props.destination) : destinationString)
+    const nextOriginString = props.origin ? RouteUtils.convertLngLatToString(props.origin) : originString
+    const nextDestinationString: string = props.destination ? RouteUtils.convertLngLatToString(props.destination) : destinationString
+    setOriginString(nextOriginString)
+    setDestinationString(nextDestinationString)
+    setFormValidity((prevFormValidity) => {
+      return {
+        ...prevFormValidity,
+        origin: ValidationUtils.validateLatLngString(nextOriginString),
+        destination: ValidationUtils.validateLatLngString(nextDestinationString),
+      }
+    })
   }, [ props.origin, props.destination ])
 
   const handleRouteFormSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
