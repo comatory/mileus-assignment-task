@@ -87,11 +87,12 @@ export default class MapManager {
       return
     }
 
-    this._routeActions.clearRouteRequestError()
-    this._routeActions.setOrigin(lngLat)
     this._addMarker(this._map, 'origin', lngLat, {
       moveMap
     })
+
+    this._routeActions.clearRouteRequestError()
+    this._routeActions.setOrigin(lngLat)
   }
 
   public addDestinationMarker(lngLat: LngLat, moveMap: boolean = false) {
@@ -100,11 +101,12 @@ export default class MapManager {
       return
     }
 
-    this._routeActions.clearRouteRequestError()
-    this._routeActions.setDestination(lngLat)
     this._addMarker(this._map, 'destination', lngLat, {
       moveMap,
     })
+
+    this._routeActions.clearRouteRequestError()
+    this._routeActions.setDestination(lngLat)
   }
 
   public async findRoute(origin: LngLat, destination: LngLat) {
