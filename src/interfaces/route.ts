@@ -54,3 +54,14 @@ export interface RouteResponse extends ResponseDescriptor {
   responseText: string,
   statusCode: number,
 }
+
+export interface Feature {
+  type: 'Feature',
+  properties: {
+    color: string,
+  },
+  geometry: {
+    type: 'LineString',
+    coordinates: Array<[ number, number ]>,
+  }
+}

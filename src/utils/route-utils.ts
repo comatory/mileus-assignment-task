@@ -1,5 +1,21 @@
 import { LngLat } from 'mapbox-gl'
 
+import { Route, Feature } from '../interfaces/route'
+import { ACTIVE_LEG } from '../services/managers/map-manager'
+
+const DEFAULT_FEATURE_TYPE = 'Feature'
+const DEFAULT_FEATURE_GEOMETRY = 'LineString'
+
+enum SpeedColor {
+  Standing = 'red',
+  VerySlow = 'darkorange',
+  Slow = 'gold',
+  Normal = 'moccasin',
+  Faster = 'yellowgreen',
+  Fast = 'limegreen',
+  Blazing = 'springgreen',
+}
+
 export default class RouteUtils {
   static convertStringToLngLat(text: string): LngLat {
     const [ lng, lat ] = text.split(',').map((str) => parseFloat(str.trim()))
@@ -19,5 +35,55 @@ export default class RouteUtils {
       firstLngLat.lng === secondLngLat.lng &&
       firstLngLat.lat === secondLngLat.lat
     )
+  }
+
+  static getCoordinateSpeedColor(speed: number): string {
+    if (speed === 0) {
+      return SpeedColor.Standing
+    } else if (speed > 0 && speed < 1) {
+      return SpeedColor.VerySlow
+    } else if (speed > 1 && speed < 5) {
+      return SpeedColor.Slow
+    } else if (speed > 5 && speed < 15) {
+      return SpeedColor.Normal
+    } else if (speed > 15 && speed < 35) {
+      return SpeedColor.Faster
+    } else if (speed > 35 && speed < 60) {
+      return SpeedColor.Fast
+    }
+
+    return SpeedColor.Blazing
+  }
+
+  static createRouteFeatures(route: Route): Array<Feature> {
+    const leg = route.legs[ACTIVE_LEG]
+    const { annotation } = leg
+    const { speed } = annotation
+
+    return route.geometry.coordinates.reduce((
+      list: Array<Feature>,
+      coordinate: [ number, number ],
+      index: number,
+      array: Array<[ number, number ]>
+    ): Array<Feature> => {
+      const prevCoordinate = array[index - 1] || coordinate
+      const coordinateSpeed = speed[index]
+      const color = RouteUtils.getCoordinateSpeedColor(coordinateSpeed)
+      //const color = '#F7455D'
+
+      return [
+        ...list,
+        {
+          type: DEFAULT_FEATURE_TYPE,
+          properties: {
+            color,
+          },
+          geometry: {
+            type: DEFAULT_FEATURE_GEOMETRY,
+            coordinates: [ prevCoordinate, coordinate ],
+          }
+        },
+      ]
+    }, [])
   }
 }

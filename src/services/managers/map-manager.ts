@@ -9,6 +9,7 @@ import mapboxgl, {
 import RouteActions from '../actions/route-actions'
 import RouteRetriever from '../retrievers/route-retriever'
 import RouteStore from '../stores/route-store'
+import RouteUtils from '../../utils/route-utils'
 import { Route } from '../../interfaces/route'
 import GraphActions from '../actions/graph-actions'
 import GraphUtils from '../../utils/graph-utils'
@@ -267,28 +268,25 @@ export default class MapManager {
     }
 
     this._clearRoute(map)
+    const features = RouteUtils.createRouteFeatures(route)
 
-    // @ts-ignore: Incompatible type definitions
-    map.addSource('route', {
+    const routeSource = {
       type: 'geojson',
       data: {
-        type: 'Feature',
-        properties: {},
-        geometry: route.geometry,
+        type: 'FeatureCollection',
+        features,
       },
-    })
+    }
+    // @ts-ignore: Incompatible type definitions
+    map.addSource('route', routeSource)
 
     map.addLayer({
-      'id': 'route',
-      'type': 'line',
-      'source': 'route',
-      'layout': {
-      'line-join': 'round',
-      'line-cap': 'round'
-      },
-      'paint': {
-      'line-color': '#888',
-      'line-width': 8
+      id: 'route',
+      type: 'line',
+      source: 'route',
+      paint: {
+        'line-width': 3,
+        'line-color': [ 'get', 'color' ]
       }
     })
   }
