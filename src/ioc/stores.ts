@@ -3,7 +3,7 @@
 import { ioc } from '@adonisjs/fold'
 
 import vendor from './vendor'
-import ConfigStore from '../services/stores/config-store'
+import { ConfigStore, RouteStore } from '../services/stores'
 
 ioc.singleton('configStore', () => {
   return new ConfigStore({
@@ -11,7 +11,14 @@ ioc.singleton('configStore', () => {
   })
 })
 
+ioc.singleton('routeStore', () => {
+  return new RouteStore({
+    dispatcher: vendor.dispatcher,
+  })
+})
+
 export default {
   configStore: ioc.use('configStore'),
+  routeStore: ioc.use('routeStore'),
 }
 

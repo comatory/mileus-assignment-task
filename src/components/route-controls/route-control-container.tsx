@@ -1,27 +1,56 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useContext, useCallback } from 'react'
 
 import RouteInput from './route-input'
 import Button from '../core/button'
+import Context from '../context'
+import { useRoutes }  from '../../hooks/storage/route'
+import RouteUtils from '../../utils/route-utils'
 
 const RouteControlContainer = () => {
-  const [ origin, setOrigin ] = useState('')
-  const [ destination, setDestination ] = useState('')
+  const { routeActions } = useContext(Context)
+  const { origin, destination } = useRoutes()
+
+  const [ originString, setOriginString ] = useState(RouteUtils.convertLngLatToString(origin))
+  const [ destinationString, setDestinationString ] = useState(RouteUtils.convertLngLatToString(destination))
+
   const [ formValidity, setFormValidity ] = useState({ origin: false, destination: false })
 
   const handleOriginInputChange = useCallback((e: React.SyntheticEvent<HTMLInputElement>, _id: string, validity: boolean) => {
-    setOrigin(e.currentTarget.value)
-    setFormValidity((prevFormValidity) => ({ ...prevFormValidity, origin: validity }))
+    setOriginString(e.currentTarget.value)
   }, [ origin, formValidity ])
   const handleDestinationInputChange = useCallback((e: React.SyntheticEvent<HTMLInputElement>, _id: string, validity: boolean) => {
-    setDestination(e.currentTarget.value)
-    setFormValidity((prevFormValidity) => ({ ...prevFormValidity, destination: validity }))
+    setDestinationString(e.currentTarget.value)
   }, [ destination, formValidity ])
+  const handleInputOriginBlur = useCallback((e: React.SyntheticEvent<HTMLInputElement>, _id: string, validity: boolean) => {
+    const nextValidity = validity
+    setFormValidity((prevFormValidity) => ({ ...prevFormValidity, origin: nextValidity }))
+
+    if (!nextValidity) {
+      return
+    }
+    const lngLat = RouteUtils.convertStringToLngLat(e.currentTarget.value)
+
+    routeActions.setOrigin(lngLat)
+  }, [ origin ])
+  const handleInputDestinationBlur = useCallback((e: React.SyntheticEvent<HTMLInputElement>, _id: string, validity: boolean) => {
+    const nextValidity = validity
+    setFormValidity((prevFormValidity) => ({ ...prevFormValidity, destination: nextValidity }))
+
+    if (!nextValidity) {
+      return
+    }
+    const lngLat = RouteUtils.convertStringToLngLat(e.currentTarget.value)
+
+    routeActions.setDestination(lngLat)
+  }, [ destination ])
   const handleClearOriginInputButton = useCallback(() => {
-    setOrigin('')
+    routeActions.clearOrigin()
     setFormValidity((prevFormValidity) => ({ ...prevFormValidity, origin: false }))
+    setOriginString('')
   }, [ origin ])
   const handleClearDestinationInputButton = useCallback(() => {
-    setDestination('')
+    routeActions.clearDestination()
+    setDestinationString('')
     setFormValidity((prevFormValidity) => ({ ...prevFormValidity, destination: false }))
   }, [ destination ])
   const handleRouteFormSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
@@ -36,8 +65,9 @@ const RouteControlContainer = () => {
           <RouteInput
             id='origin'
             label='From'
-            value={origin}
+            value={originString}
             onChange={handleOriginInputChange}
+            onBlur={handleInputOriginBlur}
           />
           <Button
             onClick={handleClearOriginInputButton}
@@ -49,8 +79,9 @@ const RouteControlContainer = () => {
           <RouteInput
             id='destination'
             label='To'
-            value={destination}
+            value={destinationString}
             onChange={handleDestinationInputChange}
+            onBlur={handleInputDestinationBlur}
           />
           <Button
             onClick={handleClearDestinationInputButton}
