@@ -12,3 +12,7 @@ export interface Graph {
   segments: Array<Segment>,
 }
 
+export interface Animation {
+  durationsInMs: Array<number>,
+  distancesInPx: Array<number>,
+}

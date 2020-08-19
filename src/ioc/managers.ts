@@ -19,6 +19,7 @@ ioc.singleton('mapManager', () => {
 ioc.singleton('graphManager', () => {
   return new GraphManager({
     graphActions: actions.graphActions,
+    graphStore: stores.graphStore,
   })
 })
 
