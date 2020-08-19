@@ -1,0 +1,21 @@
+.route-input,
+.route-input__label {
+  font-family: sans-serif;
+  font-size: 0.9rem;
+}
+
+.route-input__label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  flex: 1;
+}
+
+.route-input {
+  margin-left: 5px;
+}
+
+.route-input--invalid {
+  border-color: crimson;
+}

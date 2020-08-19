@@ -1,0 +1,19 @@
+.route-control-container {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 1;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.route-control-container__group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.route-control-container--clear-btn {
+  margin-left: 10px;
+}
