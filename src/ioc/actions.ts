@@ -3,7 +3,11 @@
 import { ioc } from '@adonisjs/fold'
 
 import vendor from './vendor'
-import { ConfigActions, RouteActions } from '../services/actions'
+import {
+  ConfigActions,
+  RouteActions,
+  GraphActions,
+} from '../services/actions'
 
 ioc.singleton('configActions', () => {
   return new ConfigActions({
@@ -17,7 +21,14 @@ ioc.singleton('routeActions', () => {
   })
 })
 
+ioc.singleton('graphActions', () => {
+  return new GraphActions({
+    dispatcher: vendor.dispatcher,
+  })
+})
+
 export default {
   configActions: ioc.use('configActions'),
   routeActions: ioc.use('routeActions'),
+  graphActions: ioc.use('graphActions'),
 }

@@ -6,12 +6,14 @@ export interface Geometry {
   type: string,
 }
 
+export interface Annotation {
+  distance: Array<number>,
+  duration: Array<number>,
+  speed: Array<number>,
+}
+
 export interface Leg {
-  annotation: {
-    distance: Array<number>,
-    duration: Array<number>,
-    speed: Array<number>,
-  },
+  annotation: Annotation,
   distance: number,
   duration: number,
   steps: Array<any>,

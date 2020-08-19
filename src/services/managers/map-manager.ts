@@ -10,11 +10,16 @@ import RouteActions from '../actions/route-actions'
 import RouteRetriever from '../retrievers/route-retriever'
 import RouteStore from '../stores/route-store'
 import { Route } from '../../interfaces/route'
+import GraphActions from '../actions/graph-actions'
+import GraphUtils from '../../utils/graph-utils'
 
 interface Markers {
   origin: Marker | null,
   destination: Marker | null,
 }
+
+export const ACTIVE_ROUTE = 0
+export const ACTIVE_LEG = 0
 
 export default class MapManager {
   private _map: Map | null = null
@@ -22,15 +27,18 @@ export default class MapManager {
     origin: null,
     destination: null,
   }
+  private _graphActions: GraphActions
   private _routeActions: RouteActions
   private _routeRetriever: RouteRetriever
   private _routeStore: RouteStore
 
   constructor(services: {
+    graphActions: GraphActions,
     routeActions: RouteActions,
     routeRetriever: RouteRetriever,
     routeStore: RouteStore,
   }) {
+    this._graphActions = services.graphActions
     this._routeActions = services.routeActions
     this._routeRetriever = services.routeRetriever
     this._routeStore = services.routeStore
@@ -101,7 +109,14 @@ export default class MapManager {
       const routes = await this._routeRetriever.fetchRoute(origin, destination)
       this._routeActions.setRoutes(routes)
 
-      this._drawRoute(routes[0], this._map)
+      // NOTE: The app would eventually support multiple routes but for simplicity
+      //       (and I also have limited time) I decided to deal with single routes
+      //       and single leg of journey)
+      const route = routes[ACTIVE_ROUTE]
+      this._drawRoute(route, this._map)
+
+      const graphData = GraphUtils.createGraph(route)
+      this._graphActions.setData(graphData)
     } catch (err) {
       this._routeActions.setRouteRequestError(err)
     }

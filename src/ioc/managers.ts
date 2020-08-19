@@ -9,6 +9,7 @@ import stores from './stores'
 
 ioc.singleton('mapManager', () => {
   return new MapManager({
+    graphActions: actions.graphActions,
     routeActions: actions.routeActions,
     routeRetriever: retrievers.routeRetriever,
     routeStore: stores.routeStore,
