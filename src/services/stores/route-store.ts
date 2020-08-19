@@ -9,6 +9,7 @@ import {
   SetRouteRequestActions,
   SetRouteRequestFinishedAction,
   SetRouteRequestErrorAction,
+  ClearRouteRequestErrorAction,
   SetRoutesAction,
   ClearRoutesAction,
   ROUTE_ACTIONS_TYPES,
@@ -41,6 +42,7 @@ type RouteAction = (
   SetRouteRequestActions |
   SetRouteRequestFinishedAction |
   SetRouteRequestErrorAction |
+  ClearRouteRequestErrorAction |
   SetRoutesAction |
   ClearRoutesAction
 )
@@ -102,6 +104,11 @@ export default class RouteStore extends ReduceStore<State, RouteAction> {
         return {
            ...state,
            routeRequestError: error,
+        }
+      case ROUTE_ACTIONS_TYPES.ROUTE_ACTION_REQUEST_ERROR_CLEAR:
+        return {
+          ...state,
+          routeRequestError: null,
         }
       case ROUTE_ACTIONS_TYPES.ROUTE_ACTION_ROUTES_SET:
         const routesSetRequestAction = action as SetRoutesAction

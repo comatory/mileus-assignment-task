@@ -29,4 +29,24 @@ describe('RouteUtils', () => {
 
     expect(result).to.equal('')
   })
+
+  it('should compare different lng lat objects ' +
+     'based on their lat/lng values', () => {
+    const result = RouteUtils.doesLngLatObjectsEqual(
+      new LngLat(1.1, 1.2),
+      new LngLat(1.1, 1.5)
+    )
+
+    expect(result).to.be.false
+  })
+
+  it('should compare different lng lat objects ' +
+     'as same if both have same values', () => {
+    const result = RouteUtils.doesLngLatObjectsEqual(
+      new LngLat(1.1, 1.5),
+      new LngLat(1.1, 1.5)
+    )
+
+    expect(result).to.be.true
+  })
 })

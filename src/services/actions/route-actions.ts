@@ -11,6 +11,7 @@ export const ROUTE_ACTION_CLEAR_DESTINATION = 'ROUTE_ACTION_CLEAR_DESTINATION'
 export const ROUTE_ACTION_REQUEST = 'ROUTE_ACTION_REQUEST'
 export const ROUTE_ACTION_REQUEST_FINISHED = 'ROUTE_ACTION_REQUEST_FINISHED'
 export const ROUTE_ACTION_REQUEST_ERROR = 'ROUTE_ACTION_REQUEST_ERROR'
+export const ROUTE_ACTION_REQUEST_ERROR_CLEAR = 'ROUTE_ACTION_REQUEST_ERROR_CLEAR'
 export const ROUTE_ACTION_ROUTES_SET = 'ROUTE_ACTION_ROUTES_SET'
 export const ROUTE_ACTION_ROUTES_CLEAR = 'ROUTE_ACTION_ROUTES_CLEAR'
 
@@ -24,6 +25,7 @@ export const ROUTE_ACTIONS_TYPES = {
   [ROUTE_ACTION_REQUEST_ERROR]: ROUTE_ACTION_REQUEST_ERROR,
   [ROUTE_ACTION_ROUTES_SET]: ROUTE_ACTION_ROUTES_SET,
   [ROUTE_ACTION_ROUTES_CLEAR]: ROUTE_ACTION_ROUTES_CLEAR,
+  [ROUTE_ACTION_REQUEST_ERROR_CLEAR]: ROUTE_ACTION_REQUEST_ERROR_CLEAR,
 }
 
 export interface SetOriginAction extends Action {
@@ -55,6 +57,10 @@ export interface SetRouteRequestFinishedAction extends Action {
 export interface SetRouteRequestErrorAction extends Action {
   type: typeof ROUTE_ACTION_REQUEST_ERROR,
   data: { error: Error }
+}
+
+export interface ClearRouteRequestErrorAction extends Action {
+  type: typeof ROUTE_ACTION_REQUEST_ERROR_CLEAR,
 }
 
 export interface SetRoutesAction extends Action {
@@ -114,6 +120,13 @@ export default class ConfigActions extends ActionCreator {
     this.dispatch({
       type: ROUTE_ACTION_REQUEST_ERROR,
       data: { error },
+    })
+  }
+
+  clearRouteRequestError() {
+    this.dispatch({
+      type: ROUTE_ACTION_REQUEST_ERROR_CLEAR,
+      data: {},
     })
   }
 

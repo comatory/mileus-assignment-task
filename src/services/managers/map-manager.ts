@@ -8,6 +8,7 @@ import mapboxgl, {
 
 import RouteActions from '../actions/route-actions'
 import RouteRetriever from '../retrievers/route-retriever'
+import RouteStore from '../stores/route-store'
 import { Route } from '../../interfaces/route'
 
 interface Markers {
@@ -23,13 +24,16 @@ export default class MapManager {
   }
   private _routeActions: RouteActions
   private _routeRetriever: RouteRetriever
+  private _routeStore: RouteStore
 
   constructor(services: {
     routeActions: RouteActions,
     routeRetriever: RouteRetriever,
+    routeStore: RouteStore,
   }) {
     this._routeActions = services.routeActions
     this._routeRetriever = services.routeRetriever
+    this._routeStore = services.routeStore
   }
 
   public initialize(token: string) {
@@ -74,6 +78,8 @@ export default class MapManager {
       return
     }
 
+    this._routeActions.clearRouteRequestError()
+    this._routeActions.setOrigin(lngLat)
     this._addMarker(this._map, 'origin', lngLat)
   }
 
@@ -83,6 +89,8 @@ export default class MapManager {
       return
     }
 
+    this._routeActions.clearRouteRequestError()
+    this._routeActions.setDestination(lngLat)
     this._addMarker(this._map, 'destination', lngLat)
   }
 
@@ -125,6 +133,8 @@ export default class MapManager {
       return
     }
 
+    this._routeActions.clearOrigin()
+
     originMarker.remove()
     this._markers['origin'] = null
 
@@ -140,6 +150,8 @@ export default class MapManager {
       return
     }
 
+    this._routeActions.clearDestination()
+
     destinationMarker.remove()
     this._markers['destination'] = null
 
@@ -149,7 +161,6 @@ export default class MapManager {
   }
 
   private _handleClick = (e: MapMouseEvent, map: Map) => {
-    console.info('map clicked ', e.lngLat)
     const { lngLat } = e
     const { lat, lng } = lngLat
 
@@ -160,22 +171,23 @@ export default class MapManager {
 
     const originMarker = this._markers['origin']
     const destinationMarker = this._markers['destination']
+    const routeRequestError = this._routeStore.getRouteRequestError()
 
-    if (originMarker && destinationMarker) {
+    if (!routeRequestError && originMarker && destinationMarker) {
       return
     }
 
     const nextMarker = originMarker ? 'destination' : 'origin'
 
-    this._markers[nextMarker] = new Marker()
-      .setLngLat(lngLat)
-      .togglePopup()
-      .addTo(map)
+    if (routeRequestError && nextMarker === 'destination') {
+        this.addOriginMarker(lngLat)
+        return
+    }
 
     if (nextMarker === 'origin') {
-      this._routeActions.setOrigin(lngLat)
+      this.addOriginMarker(lngLat)
     } else {
-      this._routeActions.setDestination(lngLat)
+      this.addDestinationMarker(lngLat)
     }
   }
 

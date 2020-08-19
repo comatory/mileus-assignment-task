@@ -10,9 +10,11 @@ interface Props {
   origin: LngLat | null,
   destination: LngLat | null,
   disabled: boolean,
-  onSubmit: () => void,
+  onSubmit: (originString: string, destinationString: string) => void,
   onOriginInputBlur: (value: string, validity: boolean) => void,
+  onOriginInputClear: () => void,
   onDestinationInputBlur: (value: string, validity: boolean) => void,
+  onDestinationInputClear: () => void,
   onOriginClearButtonClick: () => void,
   onDestinationClearButtonClick: () => void,
 }
@@ -27,7 +29,8 @@ const RouteForm = (props: Props) => {
 
   useEffect(() => {
     const nextOriginString = props.origin ? RouteUtils.convertLngLatToString(props.origin) : originString
-    const nextDestinationString: string = props.destination ? RouteUtils.convertLngLatToString(props.destination) : destinationString
+    const nextDestinationString = props.destination ? RouteUtils.convertLngLatToString(props.destination) : destinationString
+
     setOriginString(nextOriginString)
     setDestinationString(nextDestinationString)
     setFormValidity((prevFormValidity) => {
@@ -42,15 +45,25 @@ const RouteForm = (props: Props) => {
   const handleRouteFormSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    props.onSubmit()
-  }, [ props.origin, props.destination ])
+    props.onSubmit(originString, destinationString)
+  }, [ originString, destinationString ])
 
   const handleOriginInputChange = useCallback((e: React.SyntheticEvent<HTMLInputElement>, _id: string, _validity: boolean) => {
-    setOriginString(e.currentTarget.value)
+    const { value } = e.currentTarget
+    setOriginString(value)
+
+    if (value === '') {
+      props.onOriginInputClear()
+    }
   }, [ originString, formValidity ])
 
   const handleDestinationInputChange = useCallback((e: React.SyntheticEvent<HTMLInputElement>, _id: string, _validity: boolean) => {
+    const { value } = e.currentTarget
     setDestinationString(e.currentTarget.value)
+
+    if (value === '') {
+      props.onDestinationInputClear()
+    }
   }, [ destinationString, formValidity ])
 
   const handleInputOriginBlur = useCallback((e: React.SyntheticEvent<HTMLInputElement>, id: string, validity: boolean) => {

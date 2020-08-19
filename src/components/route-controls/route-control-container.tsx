@@ -7,7 +7,7 @@ import RouteUtils from '../../utils/route-utils'
 import ErrorPanel from '../core/error-panel'
 
 const RouteControlContainer = () => {
-  const { mapManager, routeActions } = useContext(Context)
+  const { mapManager } = useContext(Context)
   const { origin, destination } = useRoutes()
   const { pending, requestError } = useRouteRequest()
 
@@ -17,7 +17,6 @@ const RouteControlContainer = () => {
     }
     const lngLat = RouteUtils.convertStringToLngLat(value)
 
-    routeActions.setOrigin(lngLat)
     mapManager.addOriginMarker(lngLat)
   }
 
@@ -27,22 +26,43 @@ const RouteControlContainer = () => {
     }
     const lngLat = RouteUtils.convertStringToLngLat(value)
 
-    routeActions.setDestination(lngLat)
     mapManager.addDestinationMarker(lngLat)
   }
 
   const handleClearOriginInputButton = () => {
-    routeActions.clearOrigin()
     mapManager.removeOriginMarker()
   }
 
   const handleClearDestinationInputButton = () => {
-    routeActions.clearDestination()
     mapManager.removeDestinationMarker()
   }
 
-  const handleSubmit = () => {
-    mapManager.findRoute(origin, destination)
+  const handleSubmit = (originString: string, destinationString: string) => {
+    const originFromString = RouteUtils.convertStringToLngLat(originString)
+    const destinationFromString = RouteUtils.convertStringToLngLat(destinationString)
+    const originUpdated = origin && !RouteUtils.doesLngLatObjectsEqual(originFromString, origin)
+    const destinationUpdated = destination && !RouteUtils.doesLngLatObjectsEqual(destinationFromString, destination)
+    const nextOrigin = originUpdated ? originFromString : origin
+    const nextDestination = destinationUpdated ? destinationFromString : destination
+
+    if (originUpdated) {
+      mapManager.removeOriginMarker()
+      mapManager.addOriginMarker(nextOrigin)
+    }
+
+    if (destinationUpdated) {
+      mapManager.removeDestinationMarker()
+      mapManager.addDestinationMarker(nextDestination)
+    }
+
+    mapManager.findRoute(nextOrigin, nextDestination)
+  }
+
+  const handleOriginInputClear = () => {
+    mapManager.removeOriginMarker()
+  }
+  const handleDestinationInputClear = () => {
+    mapManager.removeDestinationMarker()
   }
 
   return (
@@ -51,6 +71,8 @@ const RouteControlContainer = () => {
         origin={origin}
         destination={destination}
         disabled={pending}
+        onOriginInputClear={handleOriginInputClear}
+        onDestinationInputClear={handleDestinationInputClear}
         onOriginInputBlur={handleOriginInputBlur}
         onDestinationInputBlur={handleDestinationInputBlur}
         onOriginClearButtonClick={handleClearOriginInputButton}

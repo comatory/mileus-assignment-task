@@ -5,11 +5,13 @@ import { ioc } from '@adonisjs/fold'
 import { MapManager } from '../services/managers'
 import actions from './actions'
 import retrievers from './retrievers'
+import stores from './stores'
 
 ioc.singleton('mapManager', () => {
   return new MapManager({
     routeActions: actions.routeActions,
     routeRetriever: retrievers.routeRetriever,
+    routeStore: stores.routeStore,
   })
 })
 
