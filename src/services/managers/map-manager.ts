@@ -1,4 +1,6 @@
-import mapboxgl, { Map, Marker, MapMouseEvent, GeolocateControl } from 'mapbox-gl'
+import mapboxgl, { LngLat, Map, Marker, MapMouseEvent, GeolocateControl } from 'mapbox-gl'
+
+import RouteActions from '../actions/route-actions'
 
 interface Markers {
   origin: Marker | null,
@@ -10,6 +12,13 @@ export default class MapManager {
   private _markers: Markers = {
     origin: null,
     destination: null,
+  }
+  private _routeActions: RouteActions
+
+  constructor(services: {
+    routeActions: RouteActions,
+  }) {
+    this._routeActions = services.routeActions
   }
 
   public initialize(token: string) {
@@ -33,7 +42,6 @@ export default class MapManager {
       },
       trackUserLocation: true
     }))
-    //this._attachStoreListeners(this._map)
   }
 
   public removeMap() {
@@ -46,65 +54,85 @@ export default class MapManager {
   }
 
   _attachListeners(map: Map) {
-    map.on('click', this._handleClick)
+    map.on('click', (e: MapMouseEvent) => this._handleClick(e, map))
   }
 
-  //_attachStoreListeners(map) {
-  //  this._store.addListener('change', (state, prevState) => {
-  //    this._setOriginMarker(state.origin, map)
+  public addOriginMarker(lngLat: LngLat) {
+    if (!this._map) {
+      console.warn('MapManager#addOriginMarker -> Missing Map instance')
+      return
+    }
 
-  //    this._setDestinationMarker(state.destination, map)
+    this._addMarker(this._map, 'origin', lngLat)
+  }
 
-  //    if (
-  //      prevState.activeRoute !== state.activeRoute ||
-  //      prevState.osrmResult !== state.osrmResult
-  //    ) {
-  //      this._drawRoute(state.activeRoute, state.osrmResult, map)
-  //    }
-  //  })
-  //}
+  public addDestinationMarker(lngLat: LngLat) {
+    if (!this._map) {
+      console.warn('MapManager#addDestinationMarker -> Missing Map instance')
+      return
+    }
 
-  //_setOriginMarker(lngLat, map) {
-  //  const marker = this._markers['origin']
+    this._addMarker(this._map, 'destination', lngLat)
+  }
 
-  //  if (marker) {
-  //    marker.remove()
-  //  }
+  private _addMarker(map: Map, markerId: string, lngLat: LngLat) {
+    this._markers[markerId as 'origin' | 'destination'] = new Marker()
+      .setLngLat(lngLat)
+      .togglePopup()
+      .addTo(map)
+  }
 
-  //  if (!lngLat) {
-  //    return
-  //  }
+  public removeOriginMarker() {
+    const originMarker = this._markers['origin']
 
-  //  this._markers['origin'] = new mapboxgl.Marker()
-  //    .setLngLat(lngLat)
-  //    .togglePopup()
-  //    .addTo(map)
-  //}
+    if (!originMarker) {
+      return
+    }
 
-  //_setDestinationMarker(lngLat, map) {
-  //  const marker = this._markers['destination']
+    originMarker.remove()
+    this._markers['origin'] = null
+  }
 
-  //  if (marker) {
-  //    marker.remove()
-  //  }
+  public removeDestinationMarker() {
+    const destinationMarker = this._markers['destination']
 
-  //  if (!lngLat) {
-  //    return
-  //  }
+    if (!destinationMarker) {
+      return
+    }
 
-  //  this._markers['destination'] = new mapboxgl.Marker()
-  //    .setLngLat(lngLat)
-  //    .togglePopup()
-  //    .addTo(map)
-  //}
+    destinationMarker.remove()
+    this._markers['destination'] = null
+  }
 
-  _handleClick = (e: MapMouseEvent) => {
+  private _handleClick = (e: MapMouseEvent, map: Map) => {
     console.info('map clicked ', e.lngLat)
-    //if (!this._store.get('origin')) {
-    //  this._store.set('origin', e.lngLat)
-    //} else if (!this._store.get('destination')) {
-    //  this._store.set('destination', e.lngLat)
-    //}
+    const { lngLat } = e
+    const { lat, lng } = lngLat
+
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+      console.warn('MapManager#_handleClick = No lat/lng detected in mouse event')
+      return
+    }
+
+    const originMarker = this._markers['origin']
+    const destinationMarker = this._markers['destination']
+
+    if (originMarker && destinationMarker) {
+      return
+    }
+
+    const nextMarker = originMarker ? 'destination' : 'origin'
+
+    this._markers[nextMarker] = new Marker()
+      .setLngLat(lngLat)
+      .togglePopup()
+      .addTo(map)
+
+    if (nextMarker === 'origin') {
+      this._routeActions.setOrigin(lngLat)
+    } else {
+      this._routeActions.setDestination(lngLat)
+    }
   }
 
   //_drawRoute(activeRoute, osrmResult, map) {

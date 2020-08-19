@@ -11,7 +11,7 @@ interface Routes {
 export const useRoutes = (): Routes => {
   const { routeStore } = useContext(Context)
   const [ origin, setOrigin ] = useState(routeStore.getOrigin())
-  const [ destination, setDestination ] = useState(routeStore.getOrigin())
+  const [ destination, setDestination ] = useState(routeStore.getDestination())
 
   const handleRouteStoreChange = () => {
     setOrigin(routeStore.getOrigin())

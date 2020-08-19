@@ -3,9 +3,12 @@
 import { ioc } from '@adonisjs/fold'
 
 import { MapManager } from '../services/managers'
+import actions from './actions'
 
 ioc.singleton('mapManager', () => {
-  return new MapManager()
+  return new MapManager({
+    routeActions: actions.routeActions,
+  })
 })
 
 export default {
