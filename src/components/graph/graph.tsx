@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useEffect, useContext, useRef } from 'react'
 import {
   LineChart,
   Line,
@@ -9,6 +9,7 @@ import {
 } from 'recharts';
 
 import { Graph as GraphData } from '../../interfaces/graph'
+import Context from '../context'
 
 const formatTimeToLocale = (value: string) => {
   const date = new Date(value)
@@ -23,8 +24,21 @@ interface Props {
 }
 
 const Graph = (props: Props) => {
+  const { graphManager } = useContext(Context)
+  const ref = useRef(null)
+
+  useEffect(() => {
+    graphManager.registerPlayerGraphCanvas(ref)
+
+    return () => graphManager.unregisterPlayerGraphCanvas()
+  })
+
   return (
     <div className='graph'>
+      <canvas
+        id="graph-animation-canvas"
+        ref={ref}
+      />
       <LineChart
         width={480}
         height={300}

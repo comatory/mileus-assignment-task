@@ -58,4 +58,14 @@ export default class GraphUtils {
     return prevTimestamp + (duration * 1000)
   }
 
+  static getGraphGridDOMBounds(): DOMRectReadOnly | null {
+    const grids = document.getElementsByClassName('recharts-cartesian-grid')
+    const grid = grids && grids.length > 0 ? grids[0] : null
+
+    if (!grid) {
+      return null
+    }
+
+    return grid.getBoundingClientRect()
+  }
 }

@@ -2,7 +2,7 @@
 //             and DefinitelyTyped packages does not exist
 import { ioc } from '@adonisjs/fold'
 
-import { MapManager } from '../services/managers'
+import { GraphManager, MapManager } from '../services/managers'
 import actions from './actions'
 import retrievers from './retrievers'
 import stores from './stores'
@@ -16,6 +16,13 @@ ioc.singleton('mapManager', () => {
   })
 })
 
+ioc.singleton('graphManager', () => {
+  return new GraphManager({
+    graphActions: actions.graphActions,
+  })
+})
+
 export default {
+  graphManager: ioc.use('graphManager'),
   mapManager: ioc.use('mapManager'),
 }
