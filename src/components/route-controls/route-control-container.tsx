@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 
 import Context from '../context'
 import { useRoutes, useRouteRequest }  from '../../hooks/storage/route'
-import RouteForm from './route-form'
+import RouteInputContainer from './route-input-container'
 import RouteUtils from '../../utils/route-utils'
 import ErrorPanel from '../core/error-panel'
 
@@ -20,6 +20,17 @@ const RouteControlContainer = () => {
     mapManager.addOriginMarker(lngLat, true)
   }
 
+  const handleOriginInputSubmit = (value: string) => {
+    const lngLat = RouteUtils.convertStringToLngLat(value)
+
+    mapManager.addOriginMarker(lngLat, true)
+  }
+  const handleDestinationInputSubmit = (value: string) => {
+    const lngLat = RouteUtils.convertStringToLngLat(value)
+
+    mapManager.addDestinationMarker(lngLat, true)
+  }
+
   const handleDestinationInputBlur = (value: string, validity: boolean) => {
     if (!validity) {
       return
@@ -31,6 +42,7 @@ const RouteControlContainer = () => {
 
   const handleClearOriginInputButton = () => {
     mapManager.removeOriginMarker()
+
   }
 
   const handleClearDestinationInputButton = () => {
@@ -58,12 +70,6 @@ const RouteControlContainer = () => {
     mapManager.findRoute(nextOrigin, nextDestination)
   }
 
-  const handleOriginInputClear = () => {
-    mapManager.removeOriginMarker()
-  }
-  const handleDestinationInputClear = () => {
-    mapManager.removeDestinationMarker()
-  }
   const handleOriginFocusButtonClick = () => {
     mapManager.moveToOrigin()
   }
@@ -73,13 +79,13 @@ const RouteControlContainer = () => {
 
   return (
     <div className='route-control-container'>
-      <RouteForm
+      <RouteInputContainer
         origin={origin}
         destination={destination}
         disabled={pending}
-        onOriginInputClear={handleOriginInputClear}
-        onDestinationInputClear={handleDestinationInputClear}
+        onOriginSubmit={handleOriginInputSubmit}
         onOriginInputBlur={handleOriginInputBlur}
+        onDestinationSubmit={handleDestinationInputSubmit}
         onDestinationInputBlur={handleDestinationInputBlur}
         onOriginClearButtonClick={handleClearOriginInputButton}
         onDestinationClearButtonClick={handleClearDestinationInputButton}

@@ -1,16 +1,16 @@
-.route-control-container__group {
+.route-input-container__group {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 5px;
 }
 
-.route-control-container--clear-btn {
+.route-input-container--clear-btn {
   height: 20px;
   margin-left: 10px;
 }
 
-.route-control-container--focus-btn {
+.route-input-container--focus-btn {
   height: 20px;
   margin-left: 5px;
 }

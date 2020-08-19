@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LngLat } from 'mapbox-gl'
 
 import RouteInput from './route-input'
@@ -11,10 +11,10 @@ interface Props {
   destination: LngLat | null,
   disabled: boolean,
   onSubmit: (originString: string, destinationString: string) => void,
+  onOriginSubmit: (value: string) => void,
+  onDestinationSubmit: (value: string) => void,
   onOriginInputBlur: (value: string, validity: boolean) => void,
-  onOriginInputClear: () => void,
   onDestinationInputBlur: (value: string, validity: boolean) => void,
-  onDestinationInputClear: () => void,
   onOriginClearButtonClick: () => void,
   onDestinationClearButtonClick: () => void,
   onOriginFocusButtonClick: () => void,
@@ -35,6 +35,7 @@ const RouteForm = (props: Props) => {
 
     setOriginString(nextOriginString)
     setDestinationString(nextDestinationString)
+
     setFormValidity((prevFormValidity) => {
       return {
         ...prevFormValidity,
@@ -44,103 +45,91 @@ const RouteForm = (props: Props) => {
     })
   }, [ props.origin, props.destination ])
 
-  const handleRouteFormSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
+  const handleSubmission = () => {
     props.onSubmit(originString, destinationString)
-  }, [ originString, destinationString ])
+  }
 
-  const handleOriginInputChange = useCallback((e: React.SyntheticEvent<HTMLInputElement>, _id: string, _validity: boolean) => {
-    const { value } = e.currentTarget
+  const handleOriginSubmit = (value: string) => {
     setOriginString(value)
+    props.onOriginSubmit(value)
+  }
 
-    if (value === '') {
-      props.onOriginInputClear()
-    }
-  }, [ originString, formValidity ])
+  const handleDestinationSubmit = (value: string) => {
+    setOriginString(value)
+    props.onDestinationSubmit(value)
+  }
 
-  const handleDestinationInputChange = useCallback((e: React.SyntheticEvent<HTMLInputElement>, _id: string, _validity: boolean) => {
-    const { value } = e.currentTarget
-    setDestinationString(e.currentTarget.value)
-
-    if (value === '') {
-      props.onDestinationInputClear()
-    }
-  }, [ destinationString, formValidity ])
-
-  const handleInputOriginBlur = useCallback((e: React.SyntheticEvent<HTMLInputElement>, id: string, validity: boolean) => {
-    const nextValidity = validity
+  const handleInputOriginBlur = (value: string) => {
+    const nextValidity = ValidationUtils.validateLatLngString(value)
     setFormValidity((prevFormValidity) => ({ ...prevFormValidity, origin: nextValidity }))
 
-    props.onOriginInputBlur(e.currentTarget.value, nextValidity)
-  }, [ originString ])
+    props.onOriginInputBlur(value, nextValidity)
+  }
 
-  const handleInputDestinationBlur = useCallback((e: React.SyntheticEvent<HTMLInputElement>, _id: string, validity: boolean) => {
-    const nextValidity = validity
+  const handleInputDestinationBlur = (value: string) => {
+    const nextValidity = ValidationUtils.validateLatLngString(value)
     setFormValidity((prevFormValidity) => ({ ...prevFormValidity, destination: nextValidity }))
 
-    props.onDestinationInputBlur(e.currentTarget.value, nextValidity)
-  }, [ destinationString ])
+    props.onDestinationInputBlur(value, nextValidity)
+  }
 
-  const handleClearOriginInputButton = useCallback(() => {
+  const handleClearOriginInputButton = () => {
     setFormValidity((prevFormValidity) => ({ ...prevFormValidity, origin: false }))
     setOriginString('')
 
     props.onOriginClearButtonClick()
-  }, [ originString ])
-  const handleClearDestinationInputButton = useCallback(() => {
+  }
+  const handleClearDestinationInputButton = () => {
     setDestinationString('')
     setFormValidity((prevFormValidity) => ({ ...prevFormValidity, destination: false }))
 
     props.onDestinationClearButtonClick()
-  }, [ destinationString ])
+  }
 
   return (
-    <form
-      className='route-form'
-      onSubmit={handleRouteFormSubmit}>
-      <div className='route-control-container__group'>
+    <>
+      <div className='route-input-container__group'>
         <RouteInput
           id='origin'
           label='From'
           value={originString}
           disabled={props.disabled}
-          onChange={handleOriginInputChange}
           onBlur={handleInputOriginBlur}
+          onSubmit={handleOriginSubmit}
         />
         <Button
           onClick={handleClearOriginInputButton}
           label='×'
           disabled={props.disabled}
-          className='route-control-container--clear-btn'
+          className='route-input-container--clear-btn'
         />
         <Button
           onClick={props.onOriginFocusButtonClick}
           label='⊚'
           disabled={props.disabled}
-          className='route-control-container--focus-btn'
+          className='route-input-container--focus-btn'
         />
       </div>
-      <div className='route-control-container__group'>
+      <div className='route-input-container__group'>
         <RouteInput
           id='destination'
           label='To'
           value={destinationString}
           disabled={props.disabled}
-          onChange={handleDestinationInputChange}
           onBlur={handleInputDestinationBlur}
+          onSubmit={handleDestinationSubmit}
         />
         <Button
           onClick={handleClearDestinationInputButton}
           label='×'
           disabled={props.disabled}
-          className='route-control-container--clear-btn'
+          className='route-input-container--clear-btn'
         />
         <Button
           onClick={props.onDestinationFocusButtonClick}
           label='⊚'
           disabled={props.disabled}
-          className='route-control-container--focus-btn'
+          className='route-input-container--focus-btn'
         />
       </div>
       <Button
@@ -148,8 +137,9 @@ const RouteForm = (props: Props) => {
         htmlType='submit'
         label='Search'
         disabled={props.disabled || (!formValidity.origin || !formValidity.destination)}
+        onClick={handleSubmission}
       />
-    </form>
+    </>
   )
 }
 

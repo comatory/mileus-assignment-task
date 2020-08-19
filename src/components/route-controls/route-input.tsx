@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 
 import ValidationUtils from '../../utils/validation-utils'
@@ -7,39 +7,54 @@ interface Props {
   id: string,
   value: string,
   label: string,
-  valid?: boolean,
+  valid: boolean,
   disabled?: boolean,
-  onChange: (e: React.SyntheticEvent<HTMLInputElement>, id: string, validity: boolean) => void,
-  onBlur?: (e: React.SyntheticEvent<HTMLInputElement>, id: string, validity: boolean) => void,
-  onFocus?: (e: React.SyntheticEvent<HTMLInputElement>) => void,
+  //onChange: (e: React.SyntheticEvent<HTMLInputElement>, id: string, validity: boolean) => void,
+  onBlur?: (value: string) => void,
+  //onFocus?: (e: React.SyntheticEvent<HTMLInputElement>) => void,
+  onSubmit: (value: string) => void,
 }
 
 const RouteInput = (props: Props) => {
-  const [ inputValid, setInputValidity ] = useState(false)
-  const [ inputBlurred, setInputBlurred ] = useState(false)
+  const [ value, setValue ] = useState(props.value)
+  const [ valid, setValid ] = useState(ValidationUtils.validateLatLngString(value))
 
-  const handleInputBlur = useCallback((e: React.SyntheticEvent<HTMLInputElement>) => {
-    const nextInputValidity = ValidationUtils.validateLatLngString(props.value)
-    setInputBlurred(true)
+  useEffect(() => {
+    setValue(props.value)
+    setValid(props.valid)
+  }, [ props.value ])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.currentTarget
+
+    setValue(value)
+  }
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const { keyCode } = e as any
+
+    const valid = ValidationUtils.validateLatLngString(value)
+    if (keyCode === 13 && valid) {
+      props.onSubmit(value)
+    }
+  }
+
+  const handleInputBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.currentTarget
+    const valid = ValidationUtils.validateLatLngString(value)
+
+    setValid(valid)
 
     if (props.onBlur) {
-      props.onBlur(e, props.id, nextInputValidity)
+      props.onBlur(value)
     }
-  }, [ props.value ])
-  const handleInputChange = useCallback((e: React.SyntheticEvent<HTMLInputElement>) => {
-    const nextInputValidity = ValidationUtils.validateLatLngString(props.value)
-    setInputValidity(nextInputValidity)
-
-    props.onChange(e, props.id, nextInputValidity)
-  }, [ props.value ])
-
-  const valid = inputBlurred ? inputValid : true
+  }
 
   const labelClassName = classNames('route-input__label', {
-    'route-input__label--invalid': Boolean(!valid),
+    'route-input__label--invalid': !valid,
   })
   const className = classNames('route-input', {
-    'route-input--invalid': Boolean(!valid),
+    'route-input--invalid': !valid,
   })
 
   return (
@@ -52,13 +67,17 @@ const RouteInput = (props: Props) => {
         className={className}
         type='text'
         onChange={handleInputChange}
+        onKeyDown={handleInputKeyDown}
         onBlur={handleInputBlur}
-        onFocus={props.onFocus}
-        value={props.value}
+        value={value}
         disabled={Boolean(props.disabled)}
       />
     </label>
   )
+}
+
+RouteInput.defaultProps = {
+  valid: true,
 }
 
 export default RouteInput
