@@ -7,12 +7,13 @@ const DEFAULT_FEATURE_TYPE = 'Feature'
 const DEFAULT_FEATURE_GEOMETRY = 'LineString'
 
 enum SpeedColor {
-  Standing = 'red',
-  VerySlow = 'darkorange',
-  Slow = 'gold',
-  Normal = 'moccasin',
+  Standing = 'crimson',
+  VerySlow = 'salmon',
+  Slow = 'coral',
+  Slower = 'orange',
+  Normal = 'green',
   Faster = 'yellowgreen',
-  Fast = 'limegreen',
+  Fast = 'lightgreen',
   Blazing = 'springgreen',
 }
 
@@ -40,15 +41,17 @@ export default class RouteUtils {
   static getCoordinateSpeedColor(speed: number): string {
     if (speed === 0) {
       return SpeedColor.Standing
-    } else if (speed > 0 && speed < 1) {
+    } else if (speed > 0 && speed < 7) {
       return SpeedColor.VerySlow
-    } else if (speed > 1 && speed < 5) {
+    } else if (speed > 7 && speed < 13) {
       return SpeedColor.Slow
-    } else if (speed > 5 && speed < 15) {
+    } else if (speed > 13 && speed < 16) {
+      return SpeedColor.Slower
+    } else if (speed > 16 && speed < 19) {
       return SpeedColor.Normal
-    } else if (speed > 15 && speed < 35) {
+    } else if (speed > 19 && speed < 24) {
       return SpeedColor.Faster
-    } else if (speed > 35 && speed < 60) {
+    } else if (speed > 24 && speed < 30) {
       return SpeedColor.Fast
     }
 
