@@ -231,6 +231,11 @@ export default class MapManager {
     }
   }
 
+  public removeMarkers() {
+    this.removeOriginMarker()
+    this.removeDestinationMarker()
+  }
+
   private _handleClick = (e: MapMouseEvent, map: Map) => {
     const { lngLat } = e
     const { lat, lng } = lngLat

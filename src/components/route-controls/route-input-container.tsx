@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { LngLat } from 'mapbox-gl'
 
 import RouteInput from './route-input'
@@ -11,6 +11,7 @@ interface Props {
   destination: LngLat | null,
   disabled: boolean,
   onSubmit: (originString: string, destinationString: string) => void,
+  onReset: () => void,
   onOriginSubmit: (value: string) => void,
   onDestinationSubmit: (value: string) => void,
   onOriginInputBlur: (value: string, validity: boolean) => void,
@@ -30,8 +31,8 @@ const RouteForm = (props: Props) => {
   const [ formValidity, setFormValidity ] = useState({ origin: false, destination: false })
 
   useEffect(() => {
-    const nextOriginString = props.origin ? RouteUtils.convertLngLatToString(props.origin) : originString
-    const nextDestinationString = props.destination ? RouteUtils.convertLngLatToString(props.destination) : destinationString
+    const nextOriginString = props.origin ? RouteUtils.convertLngLatToString(props.origin) : ''
+    const nextDestinationString = props.destination ? RouteUtils.convertLngLatToString(props.destination) : ''
 
     setOriginString(nextOriginString)
     setDestinationString(nextDestinationString)
@@ -45,9 +46,9 @@ const RouteForm = (props: Props) => {
     })
   }, [ props.origin, props.destination ])
 
-  const handleSubmission = () => {
+  const handleSubmission = useCallback(() => {
     props.onSubmit(originString, destinationString)
-  }
+  },[ originString, destinationString ])
 
   const handleOriginSubmit = (value: string) => {
     setOriginString(value)
@@ -132,13 +133,22 @@ const RouteForm = (props: Props) => {
           className='route-input-container--focus-btn'
         />
       </div>
-      <Button
-        type='primary'
-        htmlType='submit'
-        label='Search'
-        disabled={props.disabled || (!formValidity.origin || !formValidity.destination)}
-        onClick={handleSubmission}
-      />
+      <div className='route-input-container__main-controls'>
+        <Button
+          type='primary'
+          className='route-input-container__reset-btn'
+          label='Reset'
+          disabled={props.disabled}
+          onClick={props.onReset}
+        />
+        <Button
+          type='primary'
+          htmlType='submit'
+          label='Search'
+          disabled={props.disabled || (!formValidity.origin || !formValidity.destination)}
+          onClick={handleSubmission}
+        />
+      </div>
     </>
   )
 }

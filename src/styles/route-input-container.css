@@ -14,3 +14,14 @@
   height: 20px;
   margin-left: 5px;
 }
+
+.route-input-container__reset-btn {
+  margin-right: 5px;
+}
+
+.route-input-container__main-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 15px;
+}

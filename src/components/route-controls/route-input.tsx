@@ -9,9 +9,7 @@ interface Props {
   label: string,
   valid: boolean,
   disabled?: boolean,
-  //onChange: (e: React.SyntheticEvent<HTMLInputElement>, id: string, validity: boolean) => void,
   onBlur?: (value: string) => void,
-  //onFocus?: (e: React.SyntheticEvent<HTMLInputElement>) => void,
   onSubmit: (value: string) => void,
 }
 

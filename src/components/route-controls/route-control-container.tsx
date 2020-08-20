@@ -70,6 +70,10 @@ const RouteControlContainer = () => {
     mapManager.findRoute(nextOrigin, nextDestination)
   }
 
+  const handleReset = () => {
+    mapManager.removeMarkers()
+  }
+
   const handleOriginFocusButtonClick = () => {
     mapManager.moveToOrigin()
   }
@@ -92,6 +96,7 @@ const RouteControlContainer = () => {
         onOriginFocusButtonClick={handleOriginFocusButtonClick}
         onDestinationFocusButtonClick={handleDestinationFocusButtonClick}
         onSubmit={handleSubmit}
+        onReset={handleReset}
       />
       {requestError && <ErrorPanel error={requestError} />}
     </div>
