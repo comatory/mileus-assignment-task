@@ -26,6 +26,14 @@ const PlayerContainer = () => {
     graphManager.stop()
   }, [ data ])
 
+  const handlePauseButtonClick = useCallback(() => {
+    if (!data) {
+      return
+    }
+
+    graphManager.pause()
+  }, [ data ])
+
   return (
     <div className={classNames('player-container', {
       'player-container--enabled': Boolean(data),
@@ -33,6 +41,7 @@ const PlayerContainer = () => {
       <PlayerControls
         disabled={!data}
         onPlayRequest={handlePlayButtonClick}
+        onPauseRequest={handlePauseButtonClick}
         onStopRequest={handleStopButtonClick}
       />
       <PlayerMetadata data={data} />

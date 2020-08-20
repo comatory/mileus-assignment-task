@@ -12,8 +12,6 @@ export default class GraphManager {
   private _graphStore: GraphStore
   private _canvas: HTMLCanvasElement | null = null
   private _animation: PlayerAnimation | null = null
-  private _timer: number | null = null
-  private _animationRequestId: number | null = null
 
   constructor(services: {
     graphActions: GraphActions,
@@ -71,29 +69,26 @@ export default class GraphManager {
 
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
-    this._animation = new PlayerAnimation(ctx, animationData.durationsInMs, animationData.distancesInPx)
-
-    this._timer = window.setInterval(() => {
-      if (!this._animation) {
-        return
-      }
-      this._animationRequestId = window.requestAnimationFrame(this._animation.play)
-    }, PAINT_RATE)
-
-    window.setTimeout(() => {
-      this._timer && window.clearInterval(this._timer)
-    }, graphData.duration * 1000)
+    this._animation = new PlayerAnimation(
+      ctx,
+      animationData.durationsInMs,
+      animationData.distancesInPx, {
+        totalDurationInMs: graphData.duration * 1000,
+    })
+    this._animation.play()
   }
 
   public stop() {
-    if (this._timer) {
-      window.clearInterval(this._timer)
+    if (this._animation) {
+      this._animation.stop()
     }
     this._animation = null
-    if (this._animationRequestId) {
-      window.cancelAnimationFrame(this._animationRequestId)
+  }
+
+  public pause() {
+    if (this._animation) {
+      this._animation.pause()
     }
-    this._animationRequestId = null
   }
 
   private _matchCanvasSize(width: number, height: number) {

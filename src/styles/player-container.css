@@ -4,6 +4,10 @@
   border-top: 1px solid gray;
 }
 
+.player-controls__pause-btn {
+  margin-left: 5px;
+}
+
 .player-controls__stop-btn {
   margin-left: 5px;
 }
