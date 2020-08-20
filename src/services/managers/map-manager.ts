@@ -52,9 +52,9 @@ export default class MapManager {
   public createMap(node: HTMLElement) {
     this._map = new Map({
       container: node.id,
-      style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-      center: [-74.5, 40], // starting position [lng, lat]
-      zoom: 9 // starting zoom
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [ 14.422235843328906, 50.08298059442754 ],
+      zoom: 18,
     })
 
     this._attachListeners(this._map)

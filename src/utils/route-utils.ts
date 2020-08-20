@@ -8,9 +8,9 @@ const DEFAULT_FEATURE_GEOMETRY = 'LineString'
 
 enum SpeedColor {
   Standing = 'crimson',
-  VerySlow = 'salmon',
-  Slow = 'coral',
-  Slower = 'orange',
+  VerySlow = 'coral',
+  Slow = 'orange',
+  Slower = 'gold',
   Normal = 'green',
   Faster = 'yellowgreen',
   Fast = 'lightgreen',
