@@ -200,6 +200,8 @@ export default class MapManager {
 
     this._routeActions.clearOrigin()
     this._routeActions.clearRouteRequestError()
+    this._routeActions.clearRoutes()
+    this._graphActions.clearData()
 
     originMarker.remove()
     this._markers['origin'] = null
@@ -218,6 +220,8 @@ export default class MapManager {
 
     this._routeActions.clearDestination()
     this._routeActions.clearRouteRequestError()
+    this._routeActions.clearRoutes()
+    this._graphActions.clearData()
 
     destinationMarker.remove()
     this._markers['destination'] = null
