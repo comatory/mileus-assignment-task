@@ -35,7 +35,7 @@ const GraphContainer = () => {
             label={hidden ? '⇧' : '⇩'}
             onClick={handleHideButtonClick}
           />
-          <Graph data={data} />
+          <Graph data={data} hidden={hidden} />
         </Suspense>
       }
     </div>

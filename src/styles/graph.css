@@ -6,3 +6,7 @@
 #graph-animation-canvas {
   position: fixed;
 }
+
+.animation-canvas--hidden {
+  display: none;
+}

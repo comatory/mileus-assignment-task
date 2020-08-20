@@ -7,6 +7,7 @@ import {
   YAxis,
   Tooltip
 } from 'recharts';
+import classNames from 'classnames'
 
 import { Graph as GraphData } from '../../interfaces/graph'
 import Context from '../context'
@@ -21,6 +22,7 @@ const formatTimeToLocale = (value: string) => {
 
 interface Props {
   data: GraphData,
+  hidden: boolean,
 }
 
 const Graph = (props: Props) => {
@@ -31,13 +33,16 @@ const Graph = (props: Props) => {
     graphManager.registerPlayerGraphCanvas(ref)
 
     return () => graphManager.unregisterPlayerGraphCanvas()
-  })
+  }, [ props.data ])
 
   return (
     <div className='graph'>
       <canvas
         id="graph-animation-canvas"
         ref={ref}
+        className={classNames('animation-canvas', {
+          'animation-canvas--hidden': props.hidden,
+        })}
       />
       <LineChart
         width={480}
