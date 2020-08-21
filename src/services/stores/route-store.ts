@@ -33,8 +33,9 @@ const defaults: State = {
 }
 
 const initialState: State = defaults
+const DEFAULT_EMPTY_ROUTES: Array<Route> = []
 
-type RouteAction = (
+export type RouteAction = (
   SetOriginAction |
   SetDestinationAction |
   ClearOriginAction |
@@ -142,6 +143,10 @@ export default class RouteStore extends ReduceStore<State, RouteAction> {
 
   public getRouteRequestError(): Error | null {
     return this.getState().routeRequestError
+  }
+
+  public getRoutes(): Array<Route> {
+    return this.getState().routes || DEFAULT_EMPTY_ROUTES
   }
 }
 
