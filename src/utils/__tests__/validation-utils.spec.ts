@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 
-import ValidationUtils from './validation-utils'
+import ValidationUtils from '../validation-utils'
 
 describe('ValidationUtils', () => {
   it('should return false if input contains letters', () => {

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 
-import GraphUtils from './graph-utils'
+import GraphUtils from '../graph-utils'
 
 describe('GraphUtils', () => {
   describe('timestamps', () => {

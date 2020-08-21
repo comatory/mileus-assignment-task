@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { LngLat } from 'mapbox-gl'
 
-import RouteUtils from './route-utils'
+import RouteUtils from '../route-utils'
 
 describe('RouteUtils', () => {
   it('should convert string to LngLat object', () => {
