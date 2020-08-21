@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 import ValidationUtils from '../../utils/validation-utils'
 
-interface Props {
+export interface Props {
   id: string,
   value: string,
   label: string,
@@ -20,7 +20,7 @@ const RouteInput = (props: Props) => {
   useEffect(() => {
     setValue(props.value)
     setValid(props.valid)
-  }, [ props.value ])
+  }, [ props.value, props.valid ])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget
