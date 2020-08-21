@@ -22,7 +22,7 @@ export const useRoutes = (): Routes => {
     const subscriber = routeStore.addListener(handleRouteStoreChange)
 
     return () => subscriber.remove()
-  })
+  }, [])
 
   return { origin, destination }
 }

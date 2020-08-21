@@ -15,6 +15,7 @@ import {
   ROUTE_ACTIONS_TYPES,
 } from '../actions/route-actions'
 import { Route } from '../../interfaces/route'
+import { IRouteStore } from '../../interfaces/stores'
 
 interface State {
   origin: LngLat | null,
@@ -48,7 +49,7 @@ export type RouteAction = (
   ClearRoutesAction
 )
 
-export default class RouteStore extends ReduceStore<State, RouteAction> {
+export default class RouteStore extends ReduceStore<State, RouteAction> implements IRouteStore {
   constructor(services: {
     dispatcher: Dispatcher<RouteAction>,
   }) {
