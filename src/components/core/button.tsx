@@ -1,10 +1,10 @@
 import * as React from 'react'
 import classNames from 'classnames'
 
-interface Props {
+export interface Props {
   onClick?: (e: React.SyntheticEvent<HTMLButtonElement>) => void,
   type: 'primary' | 'secondary',
-  htmlType?: 'submit' | 'reset' | 'button',
+  htmlType: 'submit' | 'reset' | 'button',
   size: 'normal' | 'small'
   label: string,
   className?: string,
