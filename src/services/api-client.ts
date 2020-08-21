@@ -1,4 +1,4 @@
-import { ResponseDescriptor, IApiClient } from '../interfaces/apis'
+import { IApiClient, ResponseDescriptor } from '../interfaces/apis'
 
 const BASE_REQUEST_OPTIONS = {
   headers: {

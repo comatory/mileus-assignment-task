@@ -3,14 +3,11 @@ import { LngLat } from 'mapbox-gl'
 
 import RouteRetriever from '../route-retriever'
 import MockApiClient from '../../../mocks/api-client.mock'
-import { IApiClient } from '../../../interfaces/apis'
-import ioc from '../../../ioc'
-import Ioc from '../../../interfaces/ioc'
 import UrlUtils from '../../../utils/url-utils'
 import TestUtils from '../../../utils/test-utils'
 
-interface TestServices extends Ioc {
-  apiClient: IApiClient,
+interface TestServices {
+  apiClient: MockApiClient,
 }
 
 describe('RouteRetriever', () => {
@@ -18,7 +15,6 @@ describe('RouteRetriever', () => {
 
   beforeEach(() => {
     services = {
-      ...ioc,
       apiClient: new MockApiClient(),
     }
   })

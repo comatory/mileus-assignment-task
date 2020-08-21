@@ -1,14 +1,14 @@
 import { LngLat } from 'mapbox-gl'
 
-import ApiClient from '../api-client'
+import { IApiClient } from '../../interfaces/apis'
 import UrlUtils from '../../utils/url-utils'
 import { RouteResponse, Route } from '../../interfaces/route'
 
 export default class RouteRetriever {
-  private _apiClient: ApiClient
+  private _apiClient: IApiClient
 
   constructor(services: {
-    apiClient: ApiClient
+    apiClient: IApiClient
   }) {
     this._apiClient = services.apiClient
   }

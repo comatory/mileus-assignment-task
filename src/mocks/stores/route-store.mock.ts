@@ -1,20 +1,11 @@
 import { LngLat } from 'mapbox-gl'
 import EventEmitter from 'events'
 
-import { IRouteStore } from '../../interfaces/stores'
 import { Route } from '../../interfaces/route'
 
 const DEFAULT_EMPTY_ROUTES_IN_TEST: Array<Route> = []
 
-export interface IMockRouteStore extends IRouteStore {
-  setOriginInTest(origin: LngLat): void,
-  setDestinationInTest(destination: LngLat): void,
-  setRouteRequestPendingInTest(pending: boolean): void,
-  setRouteRequestErrorInTest(error: Error): void,
-  setRoutesInTest(routes: Array<Route>): void,
-}
-
-export default class MockRouteStore implements IMockRouteStore {
+export default class MockRouteStore {
   private _origin: LngLat | null = null
   private _destination: LngLat | null = null
   private _routeRequestPending: boolean = false

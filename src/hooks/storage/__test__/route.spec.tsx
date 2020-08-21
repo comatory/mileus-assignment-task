@@ -5,17 +5,16 @@ import { LngLat } from 'mapbox-gl'
 
 import { useRoutes, useRouteRequest } from '../route'
 import Context from '../../../components/context'
-import Ioc from '../../../interfaces/ioc'
 import ioc from '../../../ioc'
 
-import MockRouteStore, { IMockRouteStore } from '../../../mocks/stores/route-store.mock'
+import MockRouteStore from '../../../mocks/stores/route-store.mock'
 
-interface TestContext extends Ioc {
-  routeStore: IMockRouteStore,
+interface ITestContext {
+  routeStore: MockRouteStore,
 }
 
 describe('route hooks', () => {
-  let context: TestContext
+  let context: ITestContext
 
   beforeEach(() => {
     context = {
@@ -24,8 +23,10 @@ describe('route hooks', () => {
     }
   })
 
-  const createTestContext = (context: TestContext): React.FunctionComponent => ({ children }: { children?: React.ReactNode }) => {
+  const createTestContext = (context: ITestContext): React.FunctionComponent => ({ children }: { children?: React.ReactNode }) => {
     return (
+      // @ts-ignore: I would have to create a context that can be re-used with tests as well. This would probably include
+      //             converting all classes to include interfaces that are same for implementations & mocks
       <Context.Provider value={context}>
         {children}
       </Context.Provider>
