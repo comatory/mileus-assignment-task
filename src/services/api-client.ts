@@ -1,4 +1,4 @@
-import { ResponseDescriptor } from '../interfaces/apis'
+import { ResponseDescriptor, IApiClient } from '../interfaces/apis'
 
 const BASE_REQUEST_OPTIONS = {
   headers: {
@@ -7,7 +7,7 @@ const BASE_REQUEST_OPTIONS = {
 }
 
 
-export default class ApiClient {
+export default class ApiClient implements IApiClient {
   private _fetch: Fetch
 
   constructor(services: {

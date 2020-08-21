@@ -14,7 +14,7 @@ import {
   ConfigStore,
   GraphStore,
 } from '../services/stores'
-import ApiClient from '../services/api-client'
+import { IApiClient } from './apis'
 
 interface Ioc {
   dispatcher: Dispatcher<Action>
@@ -22,7 +22,7 @@ interface Ioc {
   configActions: ConfigActions,
   routeActions: RouteActions,
   graphActions: GraphActions,
-  apiClient: ApiClient,
+  apiClient: IApiClient,
   graphManager: GraphManager,
   mapManager: MapManager,
   routeRetriever: RouteRetriever,
