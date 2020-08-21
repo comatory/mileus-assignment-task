@@ -6,10 +6,12 @@ import { GraphManager, MapManager } from '../services/managers'
 import actions from './actions'
 import retrievers from './retrievers'
 import stores from './stores'
+import vendor from './vendor'
 
 ioc.singleton('mapManager', () => {
   return new MapManager({
     graphActions: actions.graphActions,
+    mapFactory: vendor.mapFactory,
     routeActions: actions.routeActions,
     routeRetriever: retrievers.routeRetriever,
     routeStore: stores.routeStore,

@@ -11,6 +11,7 @@ import RouteUtils from '../../utils/route-utils'
 import { IRouteRetriever } from '../../interfaces/retrievers'
 import { IRouteStore } from '../../interfaces/stores'
 import { Route } from '../../interfaces/route'
+import { IMapFactory } from '../../interfaces/map'
 import GraphActions from '../actions/graph-actions'
 import GraphUtils from '../../utils/graph-utils'
 
@@ -29,17 +30,20 @@ export default class MapManager {
     destination: null,
   }
   private _graphActions: GraphActions
+  private _mapFactory: IMapFactory
   private _routeActions: RouteActions
   private _routeRetriever: IRouteRetriever
   private _routeStore: IRouteStore
 
   constructor(services: {
     graphActions: GraphActions,
+    mapFactory: IMapFactory,
     routeActions: RouteActions,
     routeRetriever: IRouteRetriever,
     routeStore: IRouteStore,
   }) {
     this._graphActions = services.graphActions
+    this._mapFactory = services.mapFactory
     this._routeActions = services.routeActions
     this._routeRetriever = services.routeRetriever
     this._routeStore = services.routeStore
@@ -50,7 +54,7 @@ export default class MapManager {
   }
 
   public createMap(node: HTMLElement) {
-    this._map = new Map({
+    this._map = this._mapFactory({
       container: node.id,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [ 14.422235843328906, 50.08298059442754 ],
