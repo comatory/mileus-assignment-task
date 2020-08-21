@@ -7,9 +7,9 @@ import mapboxgl, {
 } from 'mapbox-gl'
 
 import RouteActions from '../actions/route-actions'
-import RouteRetriever from '../retrievers/route-retriever'
-import RouteStore from '../stores/route-store'
 import RouteUtils from '../../utils/route-utils'
+import { IRouteRetriever } from '../../interfaces/retrievers'
+import { IRouteStore } from '../../interfaces/stores'
 import { Route } from '../../interfaces/route'
 import GraphActions from '../actions/graph-actions'
 import GraphUtils from '../../utils/graph-utils'
@@ -30,14 +30,14 @@ export default class MapManager {
   }
   private _graphActions: GraphActions
   private _routeActions: RouteActions
-  private _routeRetriever: RouteRetriever
-  private _routeStore: RouteStore
+  private _routeRetriever: IRouteRetriever
+  private _routeStore: IRouteStore
 
   constructor(services: {
     graphActions: GraphActions,
     routeActions: RouteActions,
-    routeRetriever: RouteRetriever,
-    routeStore: RouteStore,
+    routeRetriever: IRouteRetriever,
+    routeStore: IRouteStore,
   }) {
     this._graphActions = services.graphActions
     this._routeActions = services.routeActions

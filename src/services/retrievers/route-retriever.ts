@@ -3,8 +3,9 @@ import { LngLat } from 'mapbox-gl'
 import { IApiClient } from '../../interfaces/apis'
 import UrlUtils from '../../utils/url-utils'
 import { RouteResponse, Route } from '../../interfaces/route'
+import { IRouteRetriever } from '../../interfaces/retrievers'
 
-export default class RouteRetriever {
+export default class RouteRetriever implements IRouteRetriever {
   private _apiClient: IApiClient
 
   constructor(services: {
