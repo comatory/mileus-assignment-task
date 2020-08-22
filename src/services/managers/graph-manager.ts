@@ -76,14 +76,20 @@ export default class GraphManager {
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
     play(ctx, data, totalDistance)
+
+    this._graphActions.playAnimation()
   }
 
   public stop() {
     stop()
+
+    this._graphActions.pauseAnimation()
   }
 
   public pause() {
     pause()
+
+    this._graphActions.pauseAnimation()
   }
 
   public reset() {

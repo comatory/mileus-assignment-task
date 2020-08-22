@@ -5,9 +5,11 @@ import Context from '../context'
 import { useGraph } from '../../hooks/storage/graph'
 import PlayerControls from './player-controls'
 import PlayerMetadata from './player-metadata'
+import { useGraphAnimation } from '../../hooks/storage/graph'
 
 const PlayerContainer = () => {
   const { graphManager } = useContext(Context)
+  const { isAnimationPlaying } = useGraphAnimation()
   const { data } = useGraph()
 
   const handlePlayButtonClick = useCallback(() => {
@@ -40,6 +42,7 @@ const PlayerContainer = () => {
       })}>
       <PlayerControls
         disabled={!data}
+        isAnimationPlaying={isAnimationPlaying}
         onPlayRequest={handlePlayButtonClick}
         onPauseRequest={handlePauseButtonClick}
         onStopRequest={handleStopButtonClick}

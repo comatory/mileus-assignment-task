@@ -24,3 +24,26 @@ export const useGraph = (): GraphData => {
   return { data: graphData }
 }
 
+interface GraphAnimationData {
+  isAnimationPlaying: boolean,
+}
+
+export const useGraphAnimation = (): GraphAnimationData => {
+  const { graphStore } = useContext(Context)
+  const [
+    isAnimationPlaying,
+    setIsAnimationPlaying ,
+  ] = useState(graphStore.isAnimationPlaying())
+
+  const handleGraphStoreChange = () => {
+    setIsAnimationPlaying(graphStore.isAnimationPlaying())
+  }
+
+  useEffect(() => {
+    const subscriber = graphStore.addListener(handleGraphStoreChange)
+
+    return () => subscriber.remove()
+  })
+
+  return { isAnimationPlaying }
+}

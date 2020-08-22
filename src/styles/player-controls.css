@@ -1,0 +1,8 @@
+.player-controls__pause-btn,
+.player-controls__play-btn {
+  width: 80px;
+}
+
+.player-controls__pause-btn--playing {
+  margin-left: 0;
+}

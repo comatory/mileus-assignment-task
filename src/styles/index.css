@@ -9,6 +9,7 @@
 @import './player-container.css';
 @import './panel.css';
 @import './player-metadata.css';
+@import './player-controls.css';
 
 body {
   margin: 0;

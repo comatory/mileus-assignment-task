@@ -3,21 +3,30 @@ import { ReduceStore } from 'flux/utils'
 import {
   SetGraphDataAction,
   ClearGraphDataAction,
+  SetGraphAnimationPlayAction,
+  SetGraphAnimationPauseAction,
   GRAPH_ACTION_TYPES,
 } from '../actions/graph-actions'
 import { Graph } from '../../interfaces/graph'
 
 interface State {
   data: Graph | null,
+  isAnimationPlaying: boolean,
 }
 
 const defaults: State = {
-  data: null
+  data: null,
+  isAnimationPlaying: false,
 }
 
 const initialState: State = defaults
 
-type GraphAction = SetGraphDataAction | ClearGraphDataAction
+type GraphAction = (
+  SetGraphDataAction |
+  ClearGraphDataAction |
+  SetGraphAnimationPlayAction |
+  SetGraphAnimationPauseAction
+)
 
 export default class GraphStore extends ReduceStore<State, GraphAction> {
   constructor(services: {
@@ -44,6 +53,16 @@ export default class GraphStore extends ReduceStore<State, GraphAction> {
           ...state,
           data: null,
         }
+      case GRAPH_ACTION_TYPES.GRAPH_ACTION_ANIMATION_PLAY:
+        return {
+          ...state,
+          isAnimationPlaying: true,
+        }
+      case GRAPH_ACTION_TYPES.GRAPH_ACTION_ANIMATION_PAUSE:
+        return {
+          ...state,
+          isAnimationPlaying: false,
+        }
       default:
         return state
     }
@@ -51,6 +70,10 @@ export default class GraphStore extends ReduceStore<State, GraphAction> {
 
   getGraphData(): Graph | null {
     return this.getState().data
+  }
+
+  isAnimationPlaying(): boolean {
+    return this.getState().isAnimationPlaying
   }
 }
 
