@@ -1,7 +1,7 @@
 import { LngLat } from 'mapbox-gl'
 
-import { Route, Feature } from '../interfaces/route'
-import { ACTIVE_LEG } from '../services/managers/map-manager'
+import { Route, Feature, Annotation } from '../interfaces/route'
+import { ACTIVE_LEG } from '../constants'
 
 const DEFAULT_FEATURE_TYPE = 'Feature'
 const DEFAULT_FEATURE_GEOMETRY = 'LineString'
@@ -88,5 +88,11 @@ export default class RouteUtils {
         },
       ]
     }, [])
+  }
+
+  // NOTE: Summing up all distances manually because "distance" property on
+  //       API response is not accurate enough for calculation
+  static getSumOfAllDistances(annotation: Annotation): number {
+    return annotation.distance.reduce((acc: number, distance: number) => acc += distance, 0)
   }
 }

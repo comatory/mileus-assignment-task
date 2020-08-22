@@ -14,8 +14,9 @@ import {
   ClearRoutesAction,
   ROUTE_ACTIONS_TYPES,
 } from '../actions/route-actions'
-import { Route } from '../../interfaces/route'
+import { Route, Leg } from '../../interfaces/route'
 import { IRouteStore } from '../../interfaces/stores'
+import { ACTIVE_LEG, ACTIVE_ROUTE } from '../../constants'
 
 interface State {
   origin: LngLat | null,
@@ -148,6 +149,13 @@ export default class RouteStore extends ReduceStore<State, RouteAction> implemen
 
   public getRoutes(): Array<Route> {
     return this.getState().routes || DEFAULT_EMPTY_ROUTES
+  }
+
+  public getActiveLeg(): Leg | null {
+    const route = this.getRoutes()[ACTIVE_ROUTE]
+    const leg = route ? route.legs[ACTIVE_LEG] : null
+
+    return leg
   }
 }
 

@@ -14,14 +14,12 @@ import { Route } from '../../interfaces/route'
 import { IMapFactory } from '../../interfaces/map'
 import GraphActions from '../actions/graph-actions'
 import GraphUtils from '../../utils/graph-utils'
+import { ACTIVE_ROUTE } from '../../constants'
 
 interface Markers {
   origin: Marker | null,
   destination: Marker | null,
 }
-
-export const ACTIVE_ROUTE = 0
-export const ACTIVE_LEG = 0
 
 export default class MapManager {
   private _map: Map | null = null

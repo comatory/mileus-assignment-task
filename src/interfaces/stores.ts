@@ -1,5 +1,6 @@
 import { LngLat } from 'mapbox-gl'
-import { Route } from './route'
+
+import { Leg, Route } from './route'
 
 import { CONFIG_ACTIONS_TYPES } from '../services/actions/config-actions'
 import { ROUTE_ACTIONS_TYPES } from '../services/actions/route-actions'
@@ -22,4 +23,5 @@ export interface IRouteStore {
   isRouteRequestPending(): boolean,
   getRouteRequestError(): Error | null,
   getRoutes(): Array<Route>,
+  getActiveLeg(): Leg | null,
 }

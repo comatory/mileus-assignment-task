@@ -1,8 +1,9 @@
 import { LngLat } from 'mapbox-gl'
 import EventEmitter from 'events'
 
-import { Route } from '../../interfaces/route'
+import { Route, Leg } from '../../interfaces/route'
 import { IRouteStore } from '../../interfaces/stores'
+import { ACTIVE_LEG, ACTIVE_ROUTE } from '../../constants'
 
 const DEFAULT_EMPTY_ROUTES_IN_TEST: Array<Route> = []
 
@@ -41,6 +42,13 @@ export default class MockRouteStore implements IRouteStore {
     return {
       remove: () => this.remove(callback)
     }
+  }
+
+  getActiveLeg(): Leg | null {
+    const route = this.getRoutes()[ACTIVE_ROUTE]
+    const leg = route ? route.legs[ACTIVE_LEG] : null
+
+    return leg
   }
 
   remove = (callback: () => void) => {

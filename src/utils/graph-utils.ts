@@ -1,6 +1,6 @@
 import { Route, RouteResponse, Annotation } from '../interfaces/route'
-import { Graph, Segment, Animation } from '../interfaces/graph'
-import { ACTIVE_LEG } from '../services/managers/map-manager'
+import { Graph, Segment } from '../interfaces/graph'
+import { ACTIVE_LEG } from '../constants'
 
 export default class GraphUtils {
   // NOTE: This util is unused but would be used for extracting muliple routes & legs
@@ -81,28 +81,5 @@ export default class GraphUtils {
     }
 
     return grid.getBoundingClientRect()
-  }
-
-  static parseSegmentsToAnimationData(graphData: Graph, width: number): Animation {
-    const segments = graphData.segments
-    const totalDistance = graphData.distance
-
-    return segments.reduce((acc: Animation, segment: Segment) => {
-      const ratio = segment.distance / totalDistance
-      return {
-        ...acc,
-        durationsInMs: [
-          ...acc.durationsInMs,
-          segment.duration * 1000 // convert to miliseconds,
-        ],
-        distancesInPx: [
-          ...acc.distancesInPx,
-          width * ratio,
-        ],
-      }
-    }, {
-      distancesInPx: [],
-      durationsInMs: [],
-    })
   }
 }

@@ -7,7 +7,7 @@ import RouteUtils from '../../utils/route-utils'
 import ErrorPanel from '../core/error-panel'
 
 const RouteControlContainer = () => {
-  const { mapManager } = useContext(Context)
+  const { graphManager, mapManager } = useContext(Context)
   const { origin, destination } = useRoutes()
   const { pending, requestError } = useRouteRequest()
 
@@ -72,6 +72,7 @@ const RouteControlContainer = () => {
 
   const handleReset = () => {
     mapManager.removeMarkers()
+    graphManager.reset()
   }
 
   const handleOriginFocusButtonClick = () => {

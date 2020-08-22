@@ -22,6 +22,7 @@ ioc.singleton('graphManager', () => {
   return new GraphManager({
     graphActions: actions.graphActions,
     graphStore: stores.graphStore,
+    routeStore: stores.routeStore,
   })
 })
 

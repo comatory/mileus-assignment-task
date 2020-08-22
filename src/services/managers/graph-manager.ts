@@ -3,22 +3,26 @@ import * as React from 'react'
 import GraphActions from '../actions/graph-actions'
 import GraphStore from '../stores/graph-store'
 import GraphUtils from '../../utils/graph-utils'
-import PlayerAnimation from '../../entities/player-animation'
+import RouteUtils from '../../utils/route-utils'
+import { IRouteStore } from '../../interfaces/stores'
+import { play, pause, stop, reset } from '../../animation/graph-animation'
 
 export const PAINT_RATE = 40
 
 export default class GraphManager {
   private _graphActions: GraphActions
   private _graphStore: GraphStore
+  private _routeStore: IRouteStore
   private _canvas: HTMLCanvasElement | null = null
-  private _animation: PlayerAnimation | null = null
 
   constructor(services: {
     graphActions: GraphActions,
     graphStore: GraphStore,
+    routeStore: IRouteStore,
   }) {
     this._graphActions = services.graphActions
     this._graphStore = services.graphStore
+    this._routeStore = services.routeStore
   }
 
   public registerPlayerGraphCanvas(ref: React.RefObject<HTMLCanvasElement> | null) {
@@ -58,37 +62,32 @@ export default class GraphManager {
       return
     }
 
-    const graphData = this._graphStore.getGraphData()
+    const activeLegData = this._routeStore.getActiveLeg()
     
-    if (!graphData) {
+    if (!activeLegData) {
       return
     }
 
-    const width = canvas.width
-    const animationData = GraphUtils.parseSegmentsToAnimationData(graphData, width)
+    const { annotation } = activeLegData
+    const data = GraphUtils.parseAnnotation(annotation)
+
+    const totalDistance = RouteUtils.getSumOfAllDistances(annotation)
 
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
-    this._animation = new PlayerAnimation(
-      ctx,
-      animationData.durationsInMs,
-      animationData.distancesInPx, {
-        totalDurationInMs: graphData.duration * 1000,
-    })
-    this._animation.play()
+    play(ctx, data, totalDistance)
   }
 
   public stop() {
-    if (this._animation) {
-      this._animation.stop()
-    }
-    this._animation = null
+    stop()
   }
 
   public pause() {
-    if (this._animation) {
-      this._animation.pause()
-    }
+    pause()
+  }
+
+  public reset() {
+    reset()
   }
 
   private _matchCanvasSize(width: number, height: number) {
