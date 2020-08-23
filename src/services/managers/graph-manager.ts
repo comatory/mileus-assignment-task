@@ -4,13 +4,14 @@ import GraphActions from '../actions/graph-actions'
 import GraphStore from '../stores/graph-store'
 import GraphUtils from '../../utils/graph-utils'
 import RouteUtils from '../../utils/route-utils'
+import { IGraphManager } from '../../interfaces/managers'
 import { IRouteStore } from '../../interfaces/stores'
 import { IAnimation, IAnimationFactory } from '../../interfaces/animation'
 import { PlayState } from '../animation'
 
 export const PAINT_RATE = 40
 
-export default class GraphManager {
+export default class GraphManager implements IGraphManager {
   private _animationFactory: IAnimationFactory
   private _graphActions: GraphActions
   private _graphStore: GraphStore

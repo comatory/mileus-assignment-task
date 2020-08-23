@@ -12,6 +12,7 @@ import { IRouteRetriever } from '../../interfaces/retrievers'
 import { IRouteStore } from '../../interfaces/stores'
 import { Route } from '../../interfaces/route'
 import { IMapFactory } from '../../interfaces/map'
+import { IMapManager } from '../../interfaces/managers'
 import GraphActions from '../actions/graph-actions'
 import GraphUtils from '../../utils/graph-utils'
 import { ACTIVE_ROUTE } from '../../constants'
@@ -21,7 +22,7 @@ interface Markers {
   destination: Marker | null,
 }
 
-export default class MapManager {
+export default class MapManager implements IMapManager {
   private _map: Map | null = null
   private _markers: Markers = {
     origin: null,

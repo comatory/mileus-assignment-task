@@ -6,7 +6,7 @@ import Button from '../core/button'
 import RouteUtils from '../../utils/route-utils'
 import ValidationUtils from '../../utils/validation-utils'
 
-interface Props {
+export interface Props {
   origin: LngLat | null,
   destination: LngLat | null,
   disabled: boolean,
@@ -22,7 +22,7 @@ interface Props {
   onDestinationFocusButtonClick: () => void,
 }
 
-const RouteForm = (props: Props) => {
+const RouteInputContainer = (props: Props) => {
   const defaultOriginStringValue = props.origin ? RouteUtils.convertLngLatToString(props.origin) : ''
   const defaultDestinationStringValue = props.destination ? RouteUtils.convertLngLatToString(props.destination) : ''
 
@@ -155,4 +155,4 @@ const RouteForm = (props: Props) => {
   )
 }
 
-export default RouteForm
+export default RouteInputContainer

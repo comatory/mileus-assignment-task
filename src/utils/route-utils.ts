@@ -31,7 +31,11 @@ export default class RouteUtils {
     return (lng && lat) ? ([ lng, lat ]).join(', ') : ''
   }
 
-  static doesLngLatObjectsEqual(firstLngLat: LngLat, secondLngLat: LngLat): boolean {
+  static doesLngLatObjectsEqual(firstLngLat: LngLat | null, secondLngLat: LngLat | null): boolean {
+    if (!firstLngLat || !secondLngLat) {
+      return false
+    }
+
     return (
       firstLngLat.lng === secondLngLat.lng &&
       firstLngLat.lat === secondLngLat.lat

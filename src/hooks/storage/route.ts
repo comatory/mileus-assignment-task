@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { LngLat } from 'mapbox-gl'
 
 import Context from '../../components/context'
@@ -9,7 +9,8 @@ interface Routes {
 }
 
 export const useRoutes = (): Routes => {
-  const { routeStore } = useContext(Context)
+  const context = useContext(Context)
+  const { routeStore } = context
   const [ origin, setOrigin ] = useState(routeStore.getOrigin())
   const [ destination, setDestination ] = useState(routeStore.getDestination())
 
@@ -33,7 +34,8 @@ interface RouteRequestState {
 }
 
 export const useRouteRequest = (): RouteRequestState => {
-  const { routeStore } = useContext(Context)
+  const context = useContext(Context)
+  const { routeStore } = context
   const [ pending, setPending ] = useState(routeStore.isRouteRequestPending())
   const [ requestError, setRequestError ] = useState(routeStore.getRouteRequestError())
 
