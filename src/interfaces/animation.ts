@@ -11,5 +11,8 @@ export interface IAnimation extends EventEmitter {
 export type IAnimationFactory = (
   data: Array<Segment>,
   totalDistance: number,
-  ctx: CanvasRenderingContext2D
+  ctx: CanvasRenderingContext2D,
+  options: Partial<{
+    multiplicationFactor: number,
+  }>,
 ) => IAnimation

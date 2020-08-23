@@ -2,6 +2,7 @@ import { EventEmitter } from 'events'
 
 import { IAnimation } from '../interfaces/animation'
 import { Segment } from '../interfaces/graph'
+import { DEFAULT_MULTIPLICATION_FACTOR } from '../constants'
 
 const FALLBACK_REFRESH_RATE_IN_MILISECONDS = 16.6
 const DEFAULT_PLAYING_EMIT_RATE_IN_MILISECONDS = 100
@@ -25,6 +26,7 @@ export default class Animation extends EventEmitter implements IAnimation {
   private _pauses: number | null = null
   private _isPlaying: boolean = false
   private _totalDistance: number
+  private _multiplicationFactor: number = DEFAULT_MULTIPLICATION_FACTOR
 
   private _id: number | null = null
   private _ctx: CanvasRenderingContext2D
@@ -35,7 +37,10 @@ export default class Animation extends EventEmitter implements IAnimation {
   constructor(
     data: Array<Segment>,
     totalDistance: number,
-    ctx: CanvasRenderingContext2D
+    ctx: CanvasRenderingContext2D,
+    options: Partial<{
+      multiplicationFactor: number,
+    }> = {}
   ) {
     super()
     this._data = data
@@ -44,9 +49,12 @@ export default class Animation extends EventEmitter implements IAnimation {
     this._width = ctx.canvas.width
     this._height = ctx.canvas.height
     this._totalDistance = totalDistance
+    this._multiplicationFactor = options.multiplicationFactor || DEFAULT_MULTIPLICATION_FACTOR
+    this._emitRate = DEFAULT_PLAYING_EMIT_RATE_IN_MILISECONDS * this._multiplicationFactor
   }
 
   private _draw = (timestamp: number) => {
+    timestamp *= this._multiplicationFactor
     this.emit(PlayState.Playing, { timestamp, x: this._x })
 
     timestamp = (this._pauses !== null) ?
@@ -72,14 +80,14 @@ export default class Animation extends EventEmitter implements IAnimation {
 
     const segmentTimeDelta = timestamp - this._prevSegmentTimestamp
 
-    const prevDuration = this._data[this._index]['duration'] * 1000
+    const prevDuration = this._calculateDuration(this._data[this._index]['duration'])
     if (segmentTimeDelta > prevDuration) {
       this._prevSegmentTimestamp = timestamp
 
       this._index += 1
     }
 
-    const duration = this._data[this._index] ? this._data[this._index]['duration'] * 1000 : null
+    const duration = this._data[this._index] ? this._calculateDuration(this._data[this._index]['duration']) : null
     const distance = this._data[this._index] ? this._data[this._index]['distance'] : null
 
     if (distance === null || duration === null ) {
@@ -127,7 +135,7 @@ export default class Animation extends EventEmitter implements IAnimation {
 
   public play = () => {
     this._isPlaying = true
-    this._startTime = performance.now()
+    this._startTime = performance.now() * this._multiplicationFactor
 
     const pauseTime = this._pauseTime
 
@@ -145,7 +153,7 @@ export default class Animation extends EventEmitter implements IAnimation {
 
   public pause = () => {
     this._isPlaying = false
-    this._pauseTime = performance.now()
+    this._pauseTime = performance.now() * this._multiplicationFactor
     this._id && window.cancelAnimationFrame(this._id)
     this._id = null
 
@@ -161,5 +169,9 @@ export default class Animation extends EventEmitter implements IAnimation {
     this.emit(PlayState.Stopped, { x: this._x })
 
     this.reset()
+  }
+
+  private _calculateDuration = (duration: number): number => {
+    return (duration * 1000) / this._multiplicationFactor
   }
 }

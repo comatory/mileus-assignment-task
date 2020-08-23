@@ -75,13 +75,19 @@ export default class GraphManager {
 
     const { annotation } = activeLegData
     const data = GraphUtils.parseAnnotation(annotation)
-
     const totalDistance = RouteUtils.getSumOfAllDistances(annotation)
-
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
+    const multiplicationFactor = this._graphStore.getMultiplicationFactor()
+
     if (!this._animation) {
-      this._animation = this._animationFactory(data, totalDistance, ctx)
+      this._animation = this._animationFactory(
+        data,
+        totalDistance,
+        ctx, {
+          multiplicationFactor,
+        }
+      )
     }
 
     this._attachAnimationListeners(this._animation)

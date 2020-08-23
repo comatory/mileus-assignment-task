@@ -10,9 +10,12 @@ ioc.bind('animationFactory', (_app: Ioc) => {
   return (
     data: Array<Segment>,
     totalDistance: number,
-    ctx: CanvasRenderingContext2D
+    ctx: CanvasRenderingContext2D,
+    options: Partial<{
+      multiplicationFactor: number,
+    }> = {},
   ): IAnimation => {
-    return new Animation(data, totalDistance, ctx)
+    return new Animation(data, totalDistance, ctx, options)
   }
 })
 

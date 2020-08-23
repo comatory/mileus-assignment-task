@@ -8,7 +8,7 @@ import PlayerMetadata from './player-metadata'
 import { useGraphAnimation } from '../../hooks/storage/graph'
 
 const PlayerContainer = () => {
-  const { graphManager } = useContext(Context)
+  const { graphManager, graphActions } = useContext(Context)
   const { isAnimationPlaying } = useGraphAnimation()
   const { data } = useGraph()
 
@@ -26,7 +26,7 @@ const PlayerContainer = () => {
     }
 
     graphManager.stop()
-  }, [ graphManager, data ])
+  }, [ data ])
 
   const handlePauseButtonClick = useCallback(() => {
     if (!data) {
@@ -34,18 +34,24 @@ const PlayerContainer = () => {
     }
 
     graphManager.pause()
-  }, [ graphManager, data ])
+  }, [ data ])
+
+  const handleMultiplicationSelectChange = useCallback((value: number) => {
+    graphActions.setMultiplication(value)
+  }, [ data ])
 
   return (
     <div className={classNames('player-container', {
       'player-container--enabled': Boolean(data),
       })}>
       <PlayerControls
-        disabled={!data}
+        controlDisabled={!Boolean(data)}
+        multiplicationDisabled={Boolean(data)}
         isAnimationPlaying={isAnimationPlaying}
         onPlayRequest={handlePlayButtonClick}
         onPauseRequest={handlePauseButtonClick}
         onStopRequest={handleStopButtonClick}
+        onSelectMultiplication={handleMultiplicationSelectChange}
       />
       <PlayerMetadata data={data} />
     </div>

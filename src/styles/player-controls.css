@@ -6,3 +6,8 @@
 .player-controls__pause-btn--playing {
   margin-left: 0;
 }
+
+.player-controls__multiplication-select {
+  margin-left: 5px;
+  height: 21px;
+}

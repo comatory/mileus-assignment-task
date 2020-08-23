@@ -6,18 +6,22 @@ import {
   SetGraphAnimationPlayAction,
   SetGraphAnimationPauseAction,
   SetGraphAnimationFinishedAction,
+  SetGraphAnimationMultiplicationAction,
   GRAPH_ACTION_TYPES,
 } from '../actions/graph-actions'
 import { Graph } from '../../interfaces/graph'
+import { DEFAULT_MULTIPLICATION_FACTOR } from '../../constants'
 
 interface State {
   data: Graph | null,
   isAnimationPlaying: boolean,
+  multiplication: number,
 }
 
 const defaults: State = {
   data: null,
   isAnimationPlaying: false,
+  multiplication: DEFAULT_MULTIPLICATION_FACTOR,
 }
 
 const initialState: State = defaults
@@ -27,7 +31,8 @@ type GraphAction = (
   ClearGraphDataAction |
   SetGraphAnimationPlayAction |
   SetGraphAnimationPauseAction |
-  SetGraphAnimationFinishedAction
+  SetGraphAnimationFinishedAction |
+  SetGraphAnimationMultiplicationAction
 )
 
 export default class GraphStore extends ReduceStore<State, GraphAction> {
@@ -66,6 +71,14 @@ export default class GraphStore extends ReduceStore<State, GraphAction> {
           ...state,
           isAnimationPlaying: false,
         }
+      case GRAPH_ACTION_TYPES.GRAPH_ACTION_MULTIPLICATION_SET:
+        const setMultiplicationGraphAction = action as SetGraphAnimationMultiplicationAction
+        const { multiplication } = setMultiplicationGraphAction.data
+
+        return {
+           ...state,
+          multiplication,
+        }
       default:
         return state
     }
@@ -77,6 +90,10 @@ export default class GraphStore extends ReduceStore<State, GraphAction> {
 
   isAnimationPlaying(): boolean {
     return this.getState().isAnimationPlaying
+  }
+
+  getMultiplicationFactor(): number {
+    return this.getState().multiplication
   }
 }
 
