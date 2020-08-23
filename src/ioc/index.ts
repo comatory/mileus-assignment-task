@@ -4,6 +4,7 @@ import stores from './stores'
 import managers from './managers'
 import apis from './apis'
 import retrievers from './retrievers'
+import animation from './animation'
 
 export default {
   ...vendor,
@@ -12,4 +13,5 @@ export default {
   ...managers,
   ...apis,
   ...retrievers,
+  ...animation,
 }

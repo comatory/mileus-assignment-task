@@ -5,21 +5,26 @@ import GraphStore from '../stores/graph-store'
 import GraphUtils from '../../utils/graph-utils'
 import RouteUtils from '../../utils/route-utils'
 import { IRouteStore } from '../../interfaces/stores'
-import { play, pause, stop, reset } from '../../animation/graph-animation'
+import { IAnimation, IAnimationFactory } from '../../interfaces/animation'
+import { PlayState } from '../animation'
 
 export const PAINT_RATE = 40
 
 export default class GraphManager {
+  private _animationFactory: IAnimationFactory
   private _graphActions: GraphActions
   private _graphStore: GraphStore
   private _routeStore: IRouteStore
   private _canvas: HTMLCanvasElement | null = null
+  private _animation: IAnimation | null = null
 
   constructor(services: {
+    animationFactory: IAnimationFactory,
     graphActions: GraphActions,
     graphStore: GraphStore,
     routeStore: IRouteStore,
   }) {
+    this._animationFactory = services.animationFactory
     this._graphActions = services.graphActions
     this._graphStore = services.graphStore
     this._routeStore = services.routeStore
@@ -75,25 +80,43 @@ export default class GraphManager {
 
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
-    play(ctx, data, totalDistance)
+    if (!this._animation) {
+      this._animation = this._animationFactory(data, totalDistance, ctx)
+    }
+
+    this._attachAnimationListeners(this._animation)
+    this._animation.play()
 
     this._graphActions.playAnimation()
   }
 
   public stop() {
-    stop()
+    if (!this._animation) {
+      return
+    }
 
+    this._animation.stop()
     this._graphActions.pauseAnimation()
   }
 
   public pause() {
-    pause()
+    if (!this._animation) {
+      return
+    }
 
+    this._animation.pause()
     this._graphActions.pauseAnimation()
   }
 
   public reset() {
-    reset()
+    if (!this._animation) {
+      return
+    }
+
+    this._removeAnimationListeners(this._animation)
+
+    this._animation.reset()
+    this._animation = null
   }
 
   private _matchCanvasSize(width: number, height: number) {
@@ -119,5 +142,17 @@ export default class GraphManager {
     this._canvas.style.bottom = `${bottom}px`
     this._canvas.style.left = `${left}px`
     this._canvas.style.right = `${right}px`
+  }
+
+  private _attachAnimationListeners(animation: IAnimation) {
+    animation.addListener(PlayState.Finished, this._setAnimationAsFinished)
+  }
+
+  private _removeAnimationListeners(animation: IAnimation) {
+    animation.removeListener(PlayState.Finished, () => this._setAnimationAsFinished)
+  }
+
+  private _setAnimationAsFinished = () => {
+    this._graphActions.finishAnimation()
   }
 }

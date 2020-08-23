@@ -7,12 +7,14 @@ export const GRAPH_ACTION_SET_DATA = 'GRAPH_ACTION_SET_DATA'
 export const GRAPH_ACTION_CLEAR_DATA = 'GRAPH_ACTION_CLEAR_DATA'
 export const GRAPH_ACTION_ANIMATION_PLAY = 'GRAPH_ACTION_ANIMATION_PLAY'
 export const GRAPH_ACTION_ANIMATION_PAUSE = 'GRAPH_ACTION_ANIMATION_PAUSE'
+export const GRAPH_ACTION_ANIMATION_FINISHED  = 'GRAPH_ACTION_ANIMATION_FINISHED'
 
 export const GRAPH_ACTION_TYPES = {
   [GRAPH_ACTION_SET_DATA]: GRAPH_ACTION_SET_DATA,
   [GRAPH_ACTION_CLEAR_DATA]: GRAPH_ACTION_CLEAR_DATA,
   [GRAPH_ACTION_ANIMATION_PLAY]: GRAPH_ACTION_ANIMATION_PLAY,
   [GRAPH_ACTION_ANIMATION_PAUSE]: GRAPH_ACTION_ANIMATION_PAUSE,
+  [GRAPH_ACTION_ANIMATION_FINISHED]: GRAPH_ACTION_ANIMATION_FINISHED,
 }
 
 export interface  SetGraphDataAction extends Action {
@@ -30,6 +32,10 @@ export interface SetGraphAnimationPlayAction extends Action {
 
 export interface SetGraphAnimationPauseAction extends Action {
   type: typeof GRAPH_ACTION_ANIMATION_PAUSE,
+}
+
+export interface SetGraphAnimationFinishedAction extends Action {
+  type: typeof GRAPH_ACTION_ANIMATION_FINISHED,
 }
 
 export default class GraphActions extends ActionCreator {
@@ -57,6 +63,13 @@ export default class GraphActions extends ActionCreator {
   pauseAnimation() {
     this.dispatch({
       type: GRAPH_ACTION_ANIMATION_PAUSE,
+      data: {},
+    })
+  }
+
+  finishAnimation() {
+    this.dispatch({
+      type: GRAPH_ACTION_ANIMATION_FINISHED,
       data: {},
     })
   }

@@ -5,6 +5,7 @@ import {
   ClearGraphDataAction,
   SetGraphAnimationPlayAction,
   SetGraphAnimationPauseAction,
+  SetGraphAnimationFinishedAction,
   GRAPH_ACTION_TYPES,
 } from '../actions/graph-actions'
 import { Graph } from '../../interfaces/graph'
@@ -25,7 +26,8 @@ type GraphAction = (
   SetGraphDataAction |
   ClearGraphDataAction |
   SetGraphAnimationPlayAction |
-  SetGraphAnimationPauseAction
+  SetGraphAnimationPauseAction |
+  SetGraphAnimationFinishedAction
 )
 
 export default class GraphStore extends ReduceStore<State, GraphAction> {
@@ -59,6 +61,7 @@ export default class GraphStore extends ReduceStore<State, GraphAction> {
           isAnimationPlaying: true,
         }
       case GRAPH_ACTION_TYPES.GRAPH_ACTION_ANIMATION_PAUSE:
+      case GRAPH_ACTION_TYPES.GRAPH_ACTION_ANIMATION_FINISHED:
         return {
           ...state,
           isAnimationPlaying: false,

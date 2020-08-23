@@ -17,7 +17,8 @@ ioc.bind('mapFactory', (_app: Ioc) => {
     if (map) {
       return map
     }
-    return new Map(options)
+    map = new Map(options)
+    return map
   }
 })
 

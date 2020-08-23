@@ -7,6 +7,7 @@ import actions from './actions'
 import retrievers from './retrievers'
 import stores from './stores'
 import vendor from './vendor'
+import animation from './animation'
 
 ioc.singleton('mapManager', () => {
   return new MapManager({
@@ -20,6 +21,7 @@ ioc.singleton('mapManager', () => {
 
 ioc.singleton('graphManager', () => {
   return new GraphManager({
+    animationFactory: animation.animationFactory,
     graphActions: actions.graphActions,
     graphStore: stores.graphStore,
     routeStore: stores.routeStore,
