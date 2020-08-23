@@ -1,7 +1,16 @@
 import { MapboxOptions, Map } from 'mapbox-gl'
 
-export default (map: Map): (options: MapboxOptions) => Map => {
-  return (_options: MapboxOptions) => {
+
+let map: Map
+
+export default () => {
+  return (options: MapboxOptions) => {
+    if (map) {
+      return map
+    }
+    map = new Map(options)
     return map
   }
 }
+
+export const getMap = () => map

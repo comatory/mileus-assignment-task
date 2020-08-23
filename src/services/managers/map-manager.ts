@@ -59,10 +59,12 @@ export default class MapManager {
       zoom: 18,
     })
 
-    this._attachListeners(this._map)
+    const map = this._map
+
+    this._attachListeners(map)
 
     // NOTE: Might not work in Chromium, works fine in Chrome / FF
-    this._map.addControl(new GeolocateControl({
+    map.addControl(new GeolocateControl({
       positionOptions: {
         enableHighAccuracy: true
       },
@@ -277,6 +279,10 @@ export default class MapManager {
 
     if (!map) {
       console.error('MapManager#_drawRoute -> No map available')
+      return
+    }
+
+    if (!map.isStyleLoaded()) {
       return
     }
 

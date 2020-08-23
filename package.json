@@ -19,6 +19,7 @@
     "start": "react-scripts start --no-cache",
     "build": "react-scripts build",
     "test": "react-scripts test --no-cache",
+    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -54,6 +55,7 @@
     "chai-enzyme": "^1.0.0-beta.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",
+    "jest-webgl-canvas-mock": "^0.2.3",
     "sinon": "^9.0.3",
     "sinon-chai": "^3.5.0",
     "typescript": "^3.7.5"
