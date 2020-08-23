@@ -113,6 +113,8 @@ export default class Animation extends EventEmitter implements IAnimation {
   }
 
   public reset = () => {
+    this.pause()
+
     this._index = 0
     this._x = 0
     this._prevTimestamp = null

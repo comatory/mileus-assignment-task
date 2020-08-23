@@ -117,6 +117,8 @@ export default class GraphManager {
 
     this._animation.reset()
     this._animation = null
+
+    this._graphActions.finishAnimation()
   }
 
   private _matchCanvasSize(width: number, height: number) {
