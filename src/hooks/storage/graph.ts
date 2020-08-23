@@ -19,7 +19,7 @@ export const useGraph = (): GraphData => {
     const subscriber = graphStore.addListener(handleGraphStoreChange)
 
     return () => subscriber.remove()
-  })
+  }, [])
 
   return { data: graphData }
 }
@@ -43,7 +43,7 @@ export const useGraphAnimation = (): GraphAnimationData => {
     const subscriber = graphStore.addListener(handleGraphStoreChange)
 
     return () => subscriber.remove()
-  })
+  }, [])
 
   return { isAnimationPlaying }
 }

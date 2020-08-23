@@ -9,8 +9,8 @@ interface Props {
 
 const PlayerMetadata = (props: Props) => {
   const { data } = props
-  const distanceInKm = data && GraphUtils.convertToKm(data.distance) || 'N/A'
-  const durationInMinutes = data && GraphUtils.convertToHoursAndMinutes(data.duration) || 'N/A'
+  const distanceInKm = (data && GraphUtils.convertToKm(data.distance)) || 'N/A'
+  const durationInMinutes = (data && GraphUtils.convertToHoursAndMinutes(data.duration)) || 'N/A'
 
   return (
     <div className='player-metadata'>

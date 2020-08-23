@@ -18,7 +18,7 @@ const PlayerContainer = () => {
     }
 
     graphManager.play()
-  }, [ data ])
+  }, [ graphManager, data ])
 
   const handleStopButtonClick = useCallback(() => {
     if (!data) {
@@ -26,7 +26,7 @@ const PlayerContainer = () => {
     }
 
     graphManager.stop()
-  }, [ data ])
+  }, [ graphManager, data ])
 
   const handlePauseButtonClick = useCallback(() => {
     if (!data) {
@@ -34,7 +34,7 @@ const PlayerContainer = () => {
     }
 
     graphManager.pause()
-  }, [ data ])
+  }, [ graphManager, data ])
 
   return (
     <div className={classNames('player-container', {

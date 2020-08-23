@@ -30,9 +30,11 @@ const RouteForm = (props: Props) => {
   const [ destinationString, setDestinationString ] = useState(defaultDestinationStringValue)
   const [ formValidity, setFormValidity ] = useState({ origin: false, destination: false })
 
+  const { origin, destination, onSubmit } = props
+
   useEffect(() => {
-    const nextOriginString = props.origin ? RouteUtils.convertLngLatToString(props.origin) : ''
-    const nextDestinationString = props.destination ? RouteUtils.convertLngLatToString(props.destination) : ''
+    const nextOriginString = origin ? RouteUtils.convertLngLatToString(origin) : ''
+    const nextDestinationString = destination ? RouteUtils.convertLngLatToString(destination) : ''
 
     setOriginString(nextOriginString)
     setDestinationString(nextDestinationString)
@@ -44,11 +46,11 @@ const RouteForm = (props: Props) => {
         destination: ValidationUtils.validateLatLngString(nextDestinationString),
       }
     })
-  }, [ props.origin, props.destination ])
+  }, [ origin, destination ])
 
   const handleSubmission = useCallback(() => {
-    props.onSubmit(originString, destinationString)
-  },[ originString, destinationString ])
+    onSubmit(originString, destinationString)
+  },[ originString, destinationString, onSubmit ])
 
   const handleOriginSubmit = (value: string) => {
     setOriginString(value)

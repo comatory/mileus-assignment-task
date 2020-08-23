@@ -12,7 +12,7 @@ const MapContainer = () => {
     mapManager.createMap(mapContent.current)
 
     return () => mapManager.removeMap()
-  })
+  }, [])
     
 
   return (

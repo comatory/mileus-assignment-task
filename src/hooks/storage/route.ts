@@ -46,7 +46,7 @@ export const useRouteRequest = (): RouteRequestState => {
     const subscriber = routeStore.addListener(handleRouteStoreChange)
 
     return () => subscriber.remove()
-  })
+  }, [])
 
   return { pending, requestError }
 }

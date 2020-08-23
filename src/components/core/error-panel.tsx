@@ -11,7 +11,7 @@ const ErrorPanel = (props: Props) => {
         {props.error.message}
       </div>
       <div className='error-panel__meta'>
-        ‼️
+        <span role='img' aria-label='warning'>‼️</span>
       </div>
     </div>
   )
