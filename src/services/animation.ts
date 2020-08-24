@@ -5,7 +5,6 @@ import { Segment } from '../interfaces/graph'
 import { DEFAULT_MULTIPLICATION_FACTOR } from '../constants'
 
 const FALLBACK_REFRESH_RATE_IN_MILISECONDS = 16.6
-const DEFAULT_PLAYING_EMIT_RATE_IN_MILISECONDS = 100
 
 export enum PlayState {
   Playing = 'Playing',
@@ -32,8 +31,6 @@ export default class Animation extends EventEmitter implements IAnimation {
   private _ctx: CanvasRenderingContext2D
   private _data: Array<Segment>
 
-  private _emitRate: number = DEFAULT_PLAYING_EMIT_RATE_IN_MILISECONDS
-
   constructor(
     data: Array<Segment>,
     totalDistance: number,
@@ -50,7 +47,6 @@ export default class Animation extends EventEmitter implements IAnimation {
     this._height = ctx.canvas.height
     this._totalDistance = totalDistance
     this._multiplicationFactor = options.multiplicationFactor || DEFAULT_MULTIPLICATION_FACTOR
-    this._emitRate = DEFAULT_PLAYING_EMIT_RATE_IN_MILISECONDS * this._multiplicationFactor
   }
 
   private _draw = (timestamp: number) => {
@@ -66,9 +62,7 @@ export default class Animation extends EventEmitter implements IAnimation {
       this._id && window.cancelAnimationFrame(this._id)
       this._id = null
 
-      if (this._prevTimestamp !== null && timestamp - this._prevTimestamp > this._emitRate) {
-        this.emit(PlayState.Finished, { x: this._x })
-      }
+      this._emit(PlayState.Finished, { x: this._x })
 
       this.reset()
       return
@@ -93,7 +87,7 @@ export default class Animation extends EventEmitter implements IAnimation {
     if (distance === null || duration === null ) {
       this._id && window.cancelAnimationFrame(this._id)
       this._id = null
-      this.emit(PlayState.Finished, { x: this._x })
+      this._emit(PlayState.Finished, { x: this._x })
       this.reset()
       return
     }
@@ -173,5 +167,9 @@ export default class Animation extends EventEmitter implements IAnimation {
 
   private _calculateDuration = (duration: number): number => {
     return (duration * 1000) / this._multiplicationFactor
+  }
+
+  private _emit(name: PlayState, data: { x: number }) {
+    this.emit(name, data)
   }
 }

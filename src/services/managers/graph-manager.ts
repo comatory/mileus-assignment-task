@@ -89,9 +89,9 @@ export default class GraphManager implements IGraphManager {
           multiplicationFactor,
         }
       )
+      this._attachAnimationListeners(this._animation)
     }
 
-    this._attachAnimationListeners(this._animation)
     this._animation.play()
 
     this._graphActions.playAnimation()
