@@ -6,11 +6,13 @@ import MapManager from '../map-manager'
 
 import GraphActions, { GRAPH_ACTION_TYPES } from '../../actions/graph-actions'
 import RouteActions, { ROUTE_ACTIONS_TYPES } from '../../actions/route-actions'
+import MapActions, { MAP_ACTION_TYPES } from '../../actions/map-actions'
+import MockMapStore from '../../../mocks/stores/map-store.mock'
 import MockRouteRetriever from '../../../mocks/retrievers/route-retriever.mock'
 import MockRouteStore from '../../../mocks/stores/route-store.mock'
 import mockMapFactory, { getMap } from '../../../mocks/factories/map-factory.mock'
 import { IMapFactory } from '../../../interfaces/map'
-import { Action, IRouteStore } from '../../../interfaces/stores'
+import { Action } from '../../../interfaces/stores'
 import { IRouteRetriever } from '../../../interfaces/retrievers'
 import TestUtils from '../../../utils/test-utils'
 
@@ -19,10 +21,12 @@ mapboxgl.accessToken = 'abcd'
 
 interface TestServices {
   graphActions: GraphActions,
+  mapActions: MapActions,
   mapFactory: IMapFactory,
+  mapStore: MockMapStore,
   routeActions: RouteActions,
   routeRetriever: IRouteRetriever,
-  routeStore: IRouteStore,
+  routeStore: MockRouteStore,
 }
 
 describe('MapManager', () => {
@@ -34,7 +38,9 @@ describe('MapManager', () => {
 
     services = {
       graphActions: new GraphActions({ dispatcher }),
+      mapActions: new MapActions({ dispatcher }),
       mapFactory: mockMapFactory(),
+      mapStore: new MockMapStore(),
       routeActions: new RouteActions({ dispatcher }),
       routeRetriever: new MockRouteRetriever(),
       routeStore: new MockRouteStore(),
@@ -42,6 +48,8 @@ describe('MapManager', () => {
   })
 
   const createMapManager = () => {
+    // @ts-ignore: Similar issue with usage with context, for real app I'd implement compatible
+    //             interfaces for mocks & implementations
     const manager = new MapManager(services)
     manager.initialize('abcd')
 
@@ -53,10 +61,15 @@ describe('MapManager', () => {
     node.setAttribute('id', 'test')
     document.body.appendChild(node)
 
+    // @ts-ignore: Similar issue with usage with context, for real app I'd implement compatible
+    //             interfaces for mocks & implementations
     const manager = new MapManager(services)
     manager.initialize('abcd')
 
     manager.createMap(node)
+    const map = getMap()
+
+    services.mapStore.setMapInTest(map)
 
     return manager
   }
@@ -77,6 +90,24 @@ describe('MapManager', () => {
 
     const map = getMap()
     expect(map).to.be.instanceOf(Map)
+  })
+
+  it('should dispatch action to set map', (callback) => {
+    const node = document.createElement('div')
+    node.setAttribute('id', 'test-map')
+    document.body.appendChild(node)
+
+    const manager = createMapManager()
+
+    dispatcher.register((action) => {
+      if (action.type === MAP_ACTION_TYPES.MAP_ACTION_SET_MAP) {
+        const map = getMap()
+        expect(action.data.map).to.equal(map)
+        callback()
+      }
+    })
+
+    manager.createMap(node)
   })
 
   describe('adding markers', () => {
@@ -286,9 +317,13 @@ describe('MapManager', () => {
 
         const manager = createMapManager()
         manager.createMap(node)
-        manager.addOriginMarker(lngLat)
 
         const map = getMap()
+        services.mapStore.setMapInTest(map)
+
+        manager.addOriginMarker(lngLat)
+
+
         map.on('movestart', () => {
           callback()
         })
@@ -304,9 +339,12 @@ describe('MapManager', () => {
 
         const manager = createMapManager()
         manager.createMap(node)
-        manager.addDestinationMarker(lngLat)
 
         const map = getMap()
+        services.mapStore.setMapInTest(map)
+
+        manager.addDestinationMarker(lngLat)
+
         map.on('movestart', () => {
           callback()
         })

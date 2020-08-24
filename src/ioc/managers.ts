@@ -12,7 +12,9 @@ import animation from './animation'
 ioc.singleton('mapManager', () => {
   return new MapManager({
     graphActions: actions.graphActions,
+    mapActions: actions.mapActions,
     mapFactory: vendor.mapFactory,
+    mapStore: stores.mapStore,
     routeActions: actions.routeActions,
     routeRetriever: retrievers.routeRetriever,
     routeStore: stores.routeStore,

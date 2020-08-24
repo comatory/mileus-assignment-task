@@ -7,6 +7,7 @@ import {
   ConfigActions,
   RouteActions,
   GraphActions,
+  MapActions,
 } from '../services/actions'
 
 ioc.singleton('configActions', () => {
@@ -27,8 +28,15 @@ ioc.singleton('graphActions', () => {
   })
 })
 
+ioc.singleton('mapActions', () => {
+  return new MapActions({
+    dispatcher: vendor.dispatcher,
+  })
+})
+
 export default {
   configActions: ioc.use('configActions'),
   routeActions: ioc.use('routeActions'),
   graphActions: ioc.use('graphActions'),
+  mapActions: ioc.use('mapActions'),
 }

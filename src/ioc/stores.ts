@@ -7,6 +7,7 @@ import {
   ConfigStore,
   RouteStore,
   GraphStore,
+  MapStore,
 } from '../services/stores'
 
 ioc.singleton('configStore', () => {
@@ -27,9 +28,16 @@ ioc.singleton('graphStore', () => {
   })
 })
 
+ioc.singleton('mapStore', () => {
+  return new MapStore({
+    dispatcher: vendor.dispatcher,
+  })
+})
+
 export default {
   configStore: ioc.use('configStore'),
   graphStore: ioc.use('graphStore'),
   routeStore: ioc.use('routeStore'),
+  mapStore: ioc.use('mapStore'),
 }
 

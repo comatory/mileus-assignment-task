@@ -4,8 +4,8 @@ import GraphActions from '../actions/graph-actions'
 import GraphStore from '../stores/graph-store'
 import GraphUtils from '../../utils/graph-utils'
 import RouteUtils from '../../utils/route-utils'
+import RouteStore from '../stores/route-store'
 import { IGraphManager } from '../../interfaces/managers'
-import { IRouteStore } from '../../interfaces/stores'
 import { IAnimation, IAnimationFactory } from '../../interfaces/animation'
 import { PlayState } from '../animation/animation'
 import GraphAnimation from '../animation/graph-animation'
@@ -16,7 +16,7 @@ export default class GraphManager implements IGraphManager {
   private _animationFactory: IAnimationFactory
   private _graphActions: GraphActions
   private _graphStore: GraphStore
-  private _routeStore: IRouteStore
+  private _routeStore: RouteStore
   private _canvas: HTMLCanvasElement | null = null
   private _animation: IAnimation | null = null
 
@@ -24,7 +24,7 @@ export default class GraphManager implements IGraphManager {
     animationFactory: IAnimationFactory,
     graphActions: GraphActions,
     graphStore: GraphStore,
-    routeStore: IRouteStore,
+    routeStore: RouteStore,
   }) {
     this._animationFactory = services.animationFactory
     this._graphActions = services.graphActions

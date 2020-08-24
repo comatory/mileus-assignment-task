@@ -9,12 +9,14 @@ import mapboxgl, {
 import RouteActions from '../actions/route-actions'
 import RouteUtils from '../../utils/route-utils'
 import { IRouteRetriever } from '../../interfaces/retrievers'
-import { IRouteStore } from '../../interfaces/stores'
 import { Route } from '../../interfaces/route'
 import { IMapFactory } from '../../interfaces/map'
 import { IMapManager } from '../../interfaces/managers'
+import MapActions from '../../services/actions/map-actions'
 import GraphActions from '../actions/graph-actions'
 import GraphUtils from '../../utils/graph-utils'
+import RouteStore from '../../services/stores/route-store'
+import MapStore from '../../services/stores/map-store'
 import { ACTIVE_ROUTE } from '../../constants'
 
 interface Markers {
@@ -23,26 +25,31 @@ interface Markers {
 }
 
 export default class MapManager implements IMapManager {
-  private _map: Map | null = null
   private _markers: Markers = {
     origin: null,
     destination: null,
   }
   private _graphActions: GraphActions
   private _mapFactory: IMapFactory
+  private _mapActions: MapActions
+  private _mapStore: MapStore
   private _routeActions: RouteActions
   private _routeRetriever: IRouteRetriever
-  private _routeStore: IRouteStore
+  private _routeStore: RouteStore
 
   constructor(services: {
     graphActions: GraphActions,
     mapFactory: IMapFactory,
+    mapActions: MapActions,
+    mapStore: MapStore,
     routeActions: RouteActions,
     routeRetriever: IRouteRetriever,
-    routeStore: IRouteStore,
+    routeStore: RouteStore,
   }) {
     this._graphActions = services.graphActions
     this._mapFactory = services.mapFactory
+    this._mapActions = services.mapActions
+    this._mapStore = services.mapStore
     this._routeActions = services.routeActions
     this._routeRetriever = services.routeRetriever
     this._routeStore = services.routeStore
@@ -53,14 +60,14 @@ export default class MapManager implements IMapManager {
   }
 
   public createMap(node: HTMLElement) {
-    this._map = this._mapFactory({
+    const map = this._mapFactory({
       container: node.id,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [ 14.422235843328906, 50.08298059442754 ],
       zoom: 18,
     })
 
-    const map = this._map
+    this._mapActions.setMap(map)
 
     this._attachListeners(map)
 
@@ -74,12 +81,15 @@ export default class MapManager implements IMapManager {
   }
 
   public removeMap() {
-    if (!this._map) {
+    const map = this._getMap()
+    if (!map) {
       console.warn('MapManager#removeMap -> Attempting to remove non-existing map!')
       return
     }
 
-    this._map.remove()
+    this._mapActions.clearMap()
+
+    map.remove()
   }
 
   _attachListeners(map: Map) {
@@ -87,12 +97,13 @@ export default class MapManager implements IMapManager {
   }
 
   public addOriginMarker(lngLat: LngLat, moveMap: boolean = false) {
-    if (!this._map) {
+    const map = this._getMap()
+    if (!map) {
       console.warn('MapManager#addOriginMarker -> Missing Map instance')
       return
     }
 
-    this._addMarker(this._map, 'origin', lngLat, {
+    this._addMarker(map, 'origin', lngLat, {
       moveMap
     })
 
@@ -101,12 +112,13 @@ export default class MapManager implements IMapManager {
   }
 
   public addDestinationMarker(lngLat: LngLat, moveMap: boolean = false) {
-    if (!this._map) {
+    const map = this._getMap()
+    if (!map) {
       console.warn('MapManager#addDestinationMarker -> Missing Map instance')
       return
     }
 
-    this._addMarker(this._map, 'destination', lngLat, {
+    this._addMarker(map, 'destination', lngLat, {
       moveMap,
     })
 
@@ -125,7 +137,9 @@ export default class MapManager implements IMapManager {
       //       (and I also have limited time) I decided to deal with single routes
       //       and single leg of journey)
       const route = routes[ACTIVE_ROUTE]
-      this._drawRoute(route, this._map)
+
+      const map = this._getMap()
+      this._drawRoute(route, map)
 
       const graphData = GraphUtils.createGraph(route)
       this._graphActions.setData(graphData)
@@ -158,8 +172,12 @@ export default class MapManager implements IMapManager {
     this._moveToLngLat(lngLat)
   }
 
+  private _getMap(): Map | null {
+    return this._mapStore.getMap()
+  }
+
   private _moveToLngLat(lngLat: LngLat) {
-    const map = this._map
+    const map = this._getMap()
     if (!map) {
       return
     }
@@ -211,8 +229,9 @@ export default class MapManager implements IMapManager {
     originMarker.remove()
     this._markers['origin'] = null
 
-    if (this._map) {
-      this._clearRoute(this._map)
+    const map = this._getMap()
+    if (map) {
+      this._clearRoute(map)
     }
   }
 
@@ -231,8 +250,9 @@ export default class MapManager implements IMapManager {
     destinationMarker.remove()
     this._markers['destination'] = null
 
-    if (this._map) {
-      this._clearRoute(this._map)
+    const map = this._getMap()
+    if (map) {
+      this._clearRoute(map)
     }
   }
 
