@@ -1,6 +1,7 @@
 import { LngLat } from 'mapbox-gl'
+import { lineString, along, feature, point } from '@turf/turf'
 
-import { Route, Feature, Annotation } from '../interfaces/route'
+import { Route, Feature, Annotation, GeometryCoordinate } from '../interfaces/route'
 import { ACTIVE_LEG } from '../constants'
 
 const DEFAULT_FEATURE_TYPE = 'Feature'
@@ -98,5 +99,30 @@ export default class RouteUtils {
   //       API response is not accurate enough for calculation
   static getSumOfAllDistances(annotation: Annotation): number {
     return annotation.distance.reduce((acc: number, distance: number) => acc += distance, 0)
+  }
+
+  static createFeature(coordinates: GeometryCoordinate) {
+    return {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Point',
+        coordinates,
+      }
+    }
+  }
+
+  static getPointOnGeoLine(
+    origin: GeometryCoordinate,
+    destination: GeometryCoordinate | null,
+    distance: number) {
+    if (!destination) {
+      return RouteUtils.createFeature(origin)
+    }
+
+    const line = lineString([ origin, destination ])
+
+    // @ts-ignore: Turf does not type option dictionary correctly
+    return along(line, distance, { units: "meters" })
   }
 }

@@ -90,11 +90,14 @@ export default class Animation extends EventEmitter implements IAnimation {
       (timestamp - this._prevTimestamp)
     this._prevTimestamp = timestamp
 
+    const nextCoordinates = this._data[this._index + 1] ? this._data[this._index + 1]['coordinates'] : null
+
     this._performPaintCallbacks({
       distance,
       duration,
       paintDelta,
       coordinates,
+      nextCoordinates,
     })
 
     this._id = window.requestAnimationFrame(this._draw)

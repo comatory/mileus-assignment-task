@@ -24,4 +24,5 @@ export interface AnimationPayload {
   duration: number,
   paintDelta: number,
   coordinates: GeometryCoordinate,
+  nextCoordinates: GeometryCoordinate | null,
 }
