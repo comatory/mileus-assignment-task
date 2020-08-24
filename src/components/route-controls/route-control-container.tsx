@@ -43,11 +43,12 @@ const RouteControlContainer = () => {
 
   const handleClearOriginInputButton = () => {
     mapManager.removeOriginMarker()
-
+    graphManager.reset()
   }
 
   const handleClearDestinationInputButton = () => {
     mapManager.removeDestinationMarker()
+    graphManager.reset()
   }
 
   const handleSubmit = (originString: string, destinationString: string) => {

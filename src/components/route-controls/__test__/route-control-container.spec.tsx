@@ -188,11 +188,36 @@ describe('RouteControlContainer', () => {
       onOriginClearButtonClick()
     })
 
+    it('should reset graph when onOriginClearButtonClick ' +
+       'callback is called', (callback) => {
+      const wrapper = renderComponent()
+
+      mockGraphManager.on('test:reset', () => {
+        callback()
+      })
+
+      const onOriginClearButtonClick =
+        wrapper.find('RouteInputContainer').prop('onOriginClearButtonClick') as Props['onOriginClearButtonClick']
+      onOriginClearButtonClick()
+    })
+
     it('should remove destination marker when onDestinationClearButtonClick ' +
        'callback is called', (callback) => {
       const wrapper = renderComponent()
 
       mockMapManager.on('test:removeDestinationMarker', () => {
+        callback()
+      })
+
+      const onDestinationClearButtonClick = wrapper.find('RouteInputContainer').prop('onDestinationClearButtonClick') as Props['onOriginClearButtonClick']
+      onDestinationClearButtonClick()
+    })
+
+    it('should reset graph when onDestinationClearButtonClick ' +
+       'callback is called', (callback) => {
+      const wrapper = renderComponent()
+
+      mockGraphManager.on('test:reset', () => {
         callback()
       })
 
