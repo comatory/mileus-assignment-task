@@ -6,13 +6,20 @@ export interface IAnimation extends EventEmitter {
   pause: () => void,
   stop: () => void,
   reset: () => void,
+  registerPaintCallback: (callback: (data: AnimationPayload) => void) => void,
+  registerResetCallback: (callback: (data: { timestamp: number }) => void) => void,
+  unregisterAllCallbacks: () => void,
 }
 
 export type IAnimationFactory = (
   data: Array<Segment>,
-  totalDistance: number,
-  ctx: CanvasRenderingContext2D,
   options: Partial<{
     multiplicationFactor: number,
   }>,
 ) => IAnimation
+
+export interface AnimationPayload {
+  distance: number,
+  duration: number,
+  paintDelta: number,
+}

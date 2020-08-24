@@ -2,20 +2,18 @@
 //             and DefinitelyTyped packages does not exist
 import Ioc, { ioc } from '@adonisjs/fold'
 
-import Animation from '../services/animation'
+import Animation from '../services/animation/animation'
 import { IAnimation } from '../interfaces/animation'
 import { Segment } from '../interfaces/graph'
 
 ioc.bind('animationFactory', (_app: Ioc) => {
   return (
     data: Array<Segment>,
-    totalDistance: number,
-    ctx: CanvasRenderingContext2D,
     options: Partial<{
       multiplicationFactor: number,
     }> = {},
   ): IAnimation => {
-    return new Animation(data, totalDistance, ctx, options)
+    return new Animation(data, options)
   }
 })
 

@@ -7,7 +7,8 @@ import RouteUtils from '../../utils/route-utils'
 import { IGraphManager } from '../../interfaces/managers'
 import { IRouteStore } from '../../interfaces/stores'
 import { IAnimation, IAnimationFactory } from '../../interfaces/animation'
-import { PlayState } from '../animation'
+import { PlayState } from '../animation/animation'
+import GraphAnimation from '../animation/graph-animation'
 
 export const PAINT_RATE = 40
 
@@ -83,12 +84,14 @@ export default class GraphManager implements IGraphManager {
 
     if (!this._animation) {
       this._animation = this._animationFactory(
-        data,
-        totalDistance,
-        ctx, {
+        data, {
           multiplicationFactor,
         }
       )
+      const graphAnimation = new GraphAnimation(ctx, totalDistance)
+      this._animation.registerPaintCallback(graphAnimation.update)
+      this._animation.registerResetCallback(graphAnimation.reset)
+
       this._attachAnimationListeners(this._animation)
     }
 
@@ -121,6 +124,8 @@ export default class GraphManager implements IGraphManager {
     }
 
     this._removeAnimationListeners(this._animation)
+
+    this._animation.unregisterAllCallbacks()
 
     this._animation.reset()
     this._animation = null
