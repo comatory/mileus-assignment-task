@@ -2,6 +2,7 @@ import { EventEmitter } from 'events'
 
 import { IAnimation, AnimationPayload } from '../../interfaces/animation'
 import { Segment } from '../../interfaces/graph'
+import { GeometryCoordinate } from '../../interfaces/route'
 import { DEFAULT_MULTIPLICATION_FACTOR } from '../../constants'
 
 const FALLBACK_REFRESH_RATE_IN_MILISECONDS = 16.6
@@ -74,8 +75,9 @@ export default class Animation extends EventEmitter implements IAnimation {
 
     const duration = this._data[this._index] ? this._calculateDuration(this._data[this._index]['duration']) : null
     const distance = this._data[this._index] ? this._data[this._index]['distance'] : null
+    const coordinates = this._data[this._index] ? this._data[this._index]['coordinates'] : null
 
-    if (distance === null || duration === null ) {
+    if (distance === null || duration === null || coordinates === null) {
       this._id && window.cancelAnimationFrame(this._id)
       this._id = null
       this._emit(PlayState.Finished, { timestamp })
@@ -92,6 +94,7 @@ export default class Animation extends EventEmitter implements IAnimation {
       distance,
       duration,
       paintDelta,
+      coordinates,
     })
 
     this._id = window.requestAnimationFrame(this._draw)
@@ -160,6 +163,7 @@ export default class Animation extends EventEmitter implements IAnimation {
   }
 
   public unregisterAllCallbacks() {
+    this._performResetCallbacks({ timestamp: performance.now() * this._multiplicationFactor })
     this._paintCallbacks = []
     this._resetCallbacks = []
   }

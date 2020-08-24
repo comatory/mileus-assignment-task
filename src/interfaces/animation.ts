@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events'
 import { Segment } from './graph'
+import { GeometryCoordinate } from './route'
 
 export interface IAnimation extends EventEmitter {
   play: () => void,
@@ -22,4 +23,5 @@ export interface AnimationPayload {
   distance: number,
   duration: number,
   paintDelta: number,
+  coordinates: GeometryCoordinate,
 }

@@ -1,21 +1,12 @@
-import { Route, RouteResponse, Annotation } from '../interfaces/route'
+import { Route, Annotation, GeometryCoordinate } from '../interfaces/route'
 import { Graph, Segment } from '../interfaces/graph'
 import { ACTIVE_LEG } from '../constants'
 
 export default class GraphUtils {
-  // NOTE: This util is unused but would be used for extracting muliple routes & legs
-  static _parseGraphData(rawData: RouteResponse) {
-    return rawData.routes
-      .map((route) => route.legs)
-      .map((legs) => legs.map((leg) => leg.annotation))
-      .map(GraphUtils._parseAnnotations)
-  }
-
-  static _parseAnnotations = (annotations: Array<Annotation>) => {
-    return annotations.map(GraphUtils.parseAnnotation)
-  }
-
-  static parseAnnotation = (annotation: Annotation): Array<Segment> => {
+  static parseAnnotation = (
+    annotation: Annotation,
+    coordinates: Array<GeometryCoordinate>
+  ): Array<Segment> => {
     const { distance, duration, speed } = annotation
 
     const now = (new Date()).getTime()
@@ -30,7 +21,8 @@ export default class GraphUtils {
           duration: duration[index],
           speed: speed[index],
           speedInKm: GraphUtils.convertToKmH(speed[index]),
-          timestamp: index === 0 ? now : GraphUtils.addTimestamps(previousTimestamp, duration[index])
+          timestamp: index === 0 ? now : GraphUtils.addTimestamps(previousTimestamp, duration[index]),
+          coordinates: coordinates[index],
         }
       ]
     }, [])
@@ -43,7 +35,10 @@ export default class GraphUtils {
     return {
       distance: route.distance,
       duration: route.duration,
-      segments: GraphUtils.parseAnnotation(annotation),
+      segments: GraphUtils.parseAnnotation(
+        annotation,
+        route.geometry.coordinates
+      ),
     }
   }
 

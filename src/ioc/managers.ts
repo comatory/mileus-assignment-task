@@ -26,6 +26,7 @@ ioc.singleton('graphManager', () => {
     animationFactory: animation.animationFactory,
     graphActions: actions.graphActions,
     graphStore: stores.graphStore,
+    mapStore: stores.mapStore,
     routeStore: stores.routeStore,
   })
 })

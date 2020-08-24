@@ -151,10 +151,14 @@ export default class RouteStore extends ReduceStore<State, RouteAction> {
   }
 
   public getActiveLeg(): Leg | null {
-    const route = this.getRoutes()[ACTIVE_ROUTE]
+    const route = this.getActiveRoute()
     const leg = route ? route.legs[ACTIVE_LEG] : null
 
     return leg
+  }
+
+  public getActiveRoute(): Route | null {
+    return this.getRoutes()[ACTIVE_ROUTE] || null
   }
 }
 

@@ -16,7 +16,6 @@ export default class GraphAnimation {
 
   public update = (data: AnimationPayload): void => {
     const { distance, duration, paintDelta } = data
-    console.log(distance, duration)
 
     const ratio = (distance / this._totalDistance)
     const distanceInPx = ratio * this._width
