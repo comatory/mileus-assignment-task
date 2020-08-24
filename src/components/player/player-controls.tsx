@@ -32,12 +32,13 @@ const multiplicationOptions = (factors: typeof MULTIPLICATION_FACTORS) => {
 
 const PlayerControls = (props: Props) => {
   const [ multiplication, setMultiplication ] = useState(DEFAULT_MULTIPLICATION_FACTOR)
+  const { onSelectMultiplication } = props
 
   const handleMultiplicationSelectChange = useCallback((e: React.SyntheticEvent<HTMLSelectElement>) => {
     const { value } = e.currentTarget
     setMultiplication(Number(value))
-    props.onSelectMultiplication(Number(value))
-  }, [ multiplication ])
+    onSelectMultiplication(Number(value))
+  }, [ onSelectMultiplication ])
 
   return (
     <div className='player-controls'>
@@ -65,6 +66,7 @@ const PlayerControls = (props: Props) => {
       />
       <select
         name="multiplication"
+        value={multiplication}
         className='player-controls__multiplication-select'
         onChange={handleMultiplicationSelectChange}
         disabled={props.multiplicationDisabled}

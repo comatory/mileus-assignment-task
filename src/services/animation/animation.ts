@@ -2,7 +2,6 @@ import { EventEmitter } from 'events'
 
 import { IAnimation, AnimationPayload } from '../../interfaces/animation'
 import { Segment } from '../../interfaces/graph'
-import { GeometryCoordinate } from '../../interfaces/route'
 import { DEFAULT_MULTIPLICATION_FACTOR } from '../../constants'
 
 const FALLBACK_REFRESH_RATE_IN_MILISECONDS = 16.6
