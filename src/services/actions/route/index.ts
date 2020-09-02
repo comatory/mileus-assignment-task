@@ -1,1 +1,1 @@
-export * from './route-action-creators'
+export * from './action-creators'

@@ -45,7 +45,7 @@ export interface ClearDestinationAction extends Action {
   type: typeof ROUTE_ACTION_CLEAR_DESTINATION,
 }
 
-export interface SetRouteRequestActions extends Action {
+export interface SetRouteRequestAction extends Action {
   type: typeof ROUTE_ACTION_REQUEST,
 }
 
@@ -76,7 +76,7 @@ export type RouteActionCreators = (
   SetDestinationAction |
   ClearOriginAction |
   ClearDestinationAction |
-  SetRouteRequestActions |
+  SetRouteRequestAction |
   SetRouteRequestFinishedAction |
   SetRouteRequestErrorAction |
   ClearRouteRequestErrorAction |

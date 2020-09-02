@@ -16,7 +16,9 @@ const MapContainer = () => {
     }
     dispatch(mapActions.createMap(mapContent.current))
 
-    return () => dispatch(mapActions.removeMap())
+    return () => {
+      dispatch(mapActions.removeMap())
+    }
   }, [])
     
 

@@ -4,7 +4,7 @@ import { Dispatcher } from 'flux'
 import { LngLat } from 'mapbox-gl'
 
 import RouteStore, { RouteAction } from '../../stores/route-store'
-import RouteActions from '../../actions/route/route-action-creators'
+import RouteActions from '../../actions/route/action-creators'
 import TestUtils from '../../../utils/test-utils'
 
 describe('RouteStore', () => {

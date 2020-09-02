@@ -34,7 +34,9 @@ const Graph = (props: Props) => {
   useEffect(() => {
     dispatch(graphActions.registerPlayerGraphCanvas(ref))
 
-    return () => dispatch(graphActions.unregisterPlayerGraphCanvas())
+    return () => {
+      dispatch(graphActions.unregisterPlayerGraphCanvas())
+    }
   }, [ props.data ])
 
   return (

@@ -1,2 +1,2 @@
-export * from './map-action-creators'
+export * from './action-creators'
 export * from './map-actions'

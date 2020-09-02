@@ -3,12 +3,13 @@ import { IAnimation } from './animation'
 import { IRouteRetriever } from './retrievers'
 import { IMapManager, IGraphManager } from './managers'
 import { Segment } from '../interfaces/graph'
+import { IGraphActions, IRouteActions, IMapActions, IConfigActions } from './actions'
 
 export interface Services {
-  configActions: any,
-  routeActions: any,
-  graphActions: any,
-  mapActions: any,
+  configActions: IConfigActions,
+  routeActions: IRouteActions,
+  graphActions: IGraphActions,
+  mapActions: IMapActions,
 
   animationFactory: (
     data: Array<Segment>,

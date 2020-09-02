@@ -11,7 +11,7 @@ import { AnyAction } from 'redux'
 import {
   setMap,
   clearMap,
-} from './map-action-creators'
+} from './action-creators'
 import {
   setOrigin,
   setDestination,
@@ -99,17 +99,17 @@ export const removeMap = () => {
   }
 }
 
-export const addOriginMarker = (lngLat: LngLat, moveMap: boolean = false) => {
+export const addOriginMarker = (lngLat: LngLat, moveMap?: boolean) => {
   return (
     dispatch: ThunkDispatch<RootState, Services, AnyAction>,
     getState: () => RootState,
     services: Services,
   ) => {
-    addOriginMarkerData(dispatch, getState, services, lngLat, moveMap)
+    addOriginMarkerData(dispatch, getState, services, lngLat, moveMap || false)
   }
 }
 
-export const addOriginMarkerData = (
+const addOriginMarkerData = (
   dispatch: ThunkDispatch<RootState, Services, AnyAction>,
   getState: () => RootState,
   services: Services,
@@ -130,13 +130,13 @@ export const addOriginMarkerData = (
   dispatch(setOrigin(lngLat))
 }
 
-export const addDestinationMarker = (lngLat: LngLat, moveMap: boolean = false) => {
+export const addDestinationMarker = (lngLat: LngLat, moveMap?: boolean) => {
   return (
     dispatch: ThunkDispatch<RootState, Services, AnyAction>,
     getState: () => RootState,
     services: Services,
   ) => {
-    addDestinationMarkerData(dispatch, getState, services, lngLat, moveMap)
+    addDestinationMarkerData(dispatch, getState, services, lngLat, moveMap || false)
   }
 }
 
@@ -317,7 +317,7 @@ const removeOriginMarkerData = (
 const removeDestinationMarkerData = (
   dispatch: ThunkDispatch<RootState, Services, AnyAction>,
   getState: () => RootState,
-  services: Services
+  _services: Services
 ) => {
   const destinationMarker = markers['destination']
 

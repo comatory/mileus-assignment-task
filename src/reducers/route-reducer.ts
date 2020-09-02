@@ -6,7 +6,7 @@ import {
   SetRoutesAction,
   RouteActionCreators,
   ROUTE_ACTIONS_TYPES,
-} from '../services/actions/route/route-action-creators'
+} from '../services/actions/route/action-creators'
 import { Route } from '../interfaces/route'
 
 export interface State {

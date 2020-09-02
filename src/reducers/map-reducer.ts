@@ -4,7 +4,7 @@ import {
   SetMapAction,
   MapActionCreators,
   MAP_ACTION_TYPES,
-} from '../services/actions/map/map-action-creators'
+} from '../services/actions/map/action-creators'
 
 export interface State {
   map: Map | null,

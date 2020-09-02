@@ -1,27 +1,91 @@
 import { Ioc } from '@adonisjs/fold'
 
-import * as configActions from '../services/actions/config'
-import * as routeActions from '../services/actions/route'
-import * as graphActions from '../services/actions/graph'
-import * as mapActions from '../services/actions/map'
+import { setProperty } from '../services/actions/config'
+import {
+  setOrigin,
+  setDestination,
+  clearOrigin,
+  clearDestination,
+  startRouteRequest,
+  stopRouteRequest,
+  setRouteRequestError,
+  clearRouteRequestError,
+  setRoutes,
+  clearRoutes,
+} from '../services/actions/route'
+import {
+  registerPlayerGraphCanvas,
+  unregisterPlayerGraphCanvas,
+  play,
+  stop,
+  pause,
+  reset,
+  setMultiplication,
+  clearData,
+} from '../services/actions/graph'
+import {
+  createMap,
+  removeMap,
+  addOriginMarker,
+  addDestinationMarker,
+  initialize,
+  findRoute,
+  moveToOrigin,
+  moveToDestination,
+  removeOriginMarker,
+  removeDestinationMarker,
+  removeMarkers,
+} from '../services/actions/map'
 
 import { Services } from '../interfaces/services'
 
 export default (ioc: Ioc<Services>) => {
   ioc.singleton('configActions', () => {
-    return configActions
+    return { setProperty }
   })
 
   ioc.singleton('routeActions', () => {
-    return routeActions
+    return {
+      setOrigin,
+      setDestination,
+      clearOrigin,
+      clearDestination,
+      startRouteRequest,
+      stopRouteRequest,
+      setRouteRequestError,
+      clearRouteRequestError,
+      setRoutes,
+      clearRoutes,
+    }
   })
 
   ioc.singleton('graphActions', () => {
-    return graphActions
+    return {
+      registerPlayerGraphCanvas,
+      unregisterPlayerGraphCanvas,
+      play,
+      stop,
+      pause,
+      reset,
+      setMultiplication,
+      clearData,
+    }
   })
 
   ioc.singleton('mapActions', () => {
-    return mapActions
+    return {
+      initialize,
+      createMap,
+      removeMap,
+      addOriginMarker,
+      addDestinationMarker,
+      findRoute,
+      moveToOrigin,
+      moveToDestination,
+      removeOriginMarker,
+      removeDestinationMarker,
+      removeMarkers,
+    }
   })
 
   return {

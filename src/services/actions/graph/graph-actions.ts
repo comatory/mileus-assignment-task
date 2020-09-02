@@ -17,7 +17,7 @@ import {
   playAnimation,
   pauseAnimation,
   finishAnimation,
-} from './graph-action-creators'
+} from './action-creators'
 
 let animation: IAnimation | null = null
 

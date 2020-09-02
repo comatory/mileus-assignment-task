@@ -1,4 +1,4 @@
-import { CONFIG_ACTIONS_TYPES, ConfigActionCreators } from '../services/actions/config'
+import { CONFIG_ACTIONS_TYPES, ConfigActionCreators } from '../services/actions/config/action-creators'
 
 export interface State {
   mapboxToken: string | null,

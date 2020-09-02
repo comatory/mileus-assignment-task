@@ -1,3 +1,3 @@
-export * from './graph-action-creators';
+export * from './action-creators';
 export * from './graph-actions';
 

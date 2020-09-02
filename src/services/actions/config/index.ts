@@ -1,1 +1,1 @@
-export * from './config-action-creators'
+export * from './action-creators'
