@@ -1,14 +1,5 @@
-import ActionCreator from './action-creator'
-import ConfigActions from './config-actions'
-import RouteActions from './route-actions'
-import GraphActions from './graph-actions'
-import MapActions from './map-actions'
-
-export {
-  ActionCreator,
-  ConfigActions,
-  RouteActions,
-  GraphActions,
-  MapActions,
-}
+export * from './config'
+export * from './route'
+export * from './graph'
+export * from './map'
 

@@ -8,6 +8,7 @@ import {
   Tooltip
 } from 'recharts';
 import classNames from 'classnames'
+import { useDispatch } from 'react-redux'
 
 import { Graph as GraphData } from '../../interfaces/graph'
 import Context from '../context'
@@ -26,13 +27,14 @@ interface Props {
 }
 
 const Graph = (props: Props) => {
-  const { graphManager } = useContext(Context)
+  const dispatch = useDispatch()
+  const { graphActions } = useContext(Context)
   const ref = useRef(null)
 
   useEffect(() => {
-    graphManager.registerPlayerGraphCanvas(ref)
+    dispatch(graphActions.registerPlayerGraphCanvas(ref))
 
-    return () => graphManager.unregisterPlayerGraphCanvas()
+    return () => dispatch(graphActions.unregisterPlayerGraphCanvas())
   }, [ props.data ])
 
   return (

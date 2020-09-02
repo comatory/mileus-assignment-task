@@ -1,18 +1,19 @@
+// @ts-nocheck
 import { expect } from 'chai'
 import { Dispatcher } from 'flux'
 import mapboxgl, { Map, LngLat } from 'mapbox-gl'
 
 import MapManager from '../map-manager'
 
-import GraphActions, { GRAPH_ACTION_TYPES } from '../../actions/graph-actions'
-import RouteActions, { ROUTE_ACTIONS_TYPES } from '../../actions/route-actions'
-import MapActions, { MAP_ACTION_TYPES } from '../../actions/map-actions'
+import GraphActions, { GRAPH_ACTION_TYPES } from '../../actions/graph/graph-actions'
+import RouteActions, { ROUTE_ACTIONS_TYPES } from '../../actions/route/route-action-creators'
+import MapActions, { MAP_ACTION_TYPES } from '../../actions/map/map-action-creators'
 import MockMapStore from '../../../mocks/stores/map-store.mock'
 import MockRouteRetriever from '../../../mocks/retrievers/route-retriever.mock'
 import MockRouteStore from '../../../mocks/stores/route-store.mock'
 import mockMapFactory, { getMap } from '../../../mocks/factories/map-factory.mock'
 import { IMapFactory } from '../../../interfaces/map'
-import { Action } from '../../../interfaces/stores'
+import { Action } from '../../../interfaces/actions'
 import { IRouteRetriever } from '../../../interfaces/retrievers'
 import TestUtils from '../../../utils/test-utils'
 

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
 import MapContent from './map-content'
 import Context from '../context'
@@ -6,15 +7,16 @@ import Context from '../context'
 const mapContent: React.Ref<HTMLDivElement> = React.createRef()
 
 const MapContainer = () => {
-  const { mapManager } = useContext(Context)
+  const dispatch = useDispatch()
+  const { mapActions } = useContext(Context)
 
   useEffect(() => {
     if (!mapContent.current) {
       return
     }
-    mapManager.createMap(mapContent.current)
+    dispatch(mapActions.createMap(mapContent.current))
 
-    return () => mapManager.removeMap()
+    return () => dispatch(mapActions.removeMap())
   }, [])
     
 

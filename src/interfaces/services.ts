@@ -1,34 +1,27 @@
-import {
-  ConfigActions,
-  RouteActions,
-  GraphActions,
-  MapActions,
-} from '../services/actions'
-import {
-  GraphStore,
-  ConfigStore,
-  RouteStore,
-  MapStore,
-} from '../services/stores'
+import { Map, MapboxOptions } from 'mapbox-gl'
 import { IAnimation } from './animation'
 import { IRouteRetriever } from './retrievers'
 import { IMapManager, IGraphManager } from './managers'
+import { Segment } from '../interfaces/graph'
 
 export interface Services {
-  configActions: ConfigActions,
-  routeActions: RouteActions,
-  graphActions: GraphActions,
-  mapActions: MapActions,
+  configActions: any,
+  routeActions: any,
+  graphActions: any,
+  mapActions: any,
 
-  animationFactory: () => IAnimation,
+  animationFactory: (
+    data: Array<Segment>,
+    options: Partial<{
+        multiplicationFactor: number,
+    }>
+  ) => IAnimation,
 
   graphManager: IGraphManager,
   mapManager: IMapManager,
 
   routeRetriever: IRouteRetriever,
 
-  configStore: ConfigStore,
-  graphStore: GraphStore,
-  routeStore: RouteStore,
-  mapStore: MapStore,
+  fetch: Fetch,
+  mapFactory: (options: MapboxOptions) => Map,
 }

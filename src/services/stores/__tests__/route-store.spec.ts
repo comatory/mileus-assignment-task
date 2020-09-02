@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { expect } from 'chai'
 import { Dispatcher } from 'flux'
 import { LngLat } from 'mapbox-gl'
 
 import RouteStore, { RouteAction } from '../../stores/route-store'
-import RouteActions from '../../actions/route-actions'
+import RouteActions from '../../actions/route/route-action-creators'
 import TestUtils from '../../../utils/test-utils'
 
 describe('RouteStore', () => {

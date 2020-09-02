@@ -4,11 +4,15 @@ import './styles/index.css';
 import App from './components/app';
 import ioc from './ioc/'
 import * as serviceWorker from './serviceWorker';
+import store from './store'
+import { Provider } from 'react-redux'
 
 const render = () => {
   ReactDOM.render(
     <React.StrictMode>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </React.StrictMode>,
     document.getElementById('root')
   );
@@ -19,8 +23,8 @@ const boot = () => {
   const mapboxToken = process.env.REACT_APP_MAPBOX_TOKEN
 
   if (mapboxToken) {
-    ioc.mapManager.initialize(mapboxToken)
-    ioc.configActions.setProperty('mapboxToken', mapboxToken)
+    ioc.mapActions.initialize(mapboxToken)
+    store.dispatch(ioc.configActions.setProperty('mapboxToken', mapboxToken))
   }
 
   // NOTE: Attach to window object for debugging purposes

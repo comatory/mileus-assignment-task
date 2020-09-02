@@ -1,7 +1,8 @@
 import React, { Suspense, useState, lazy } from 'react'
+import { useSelector } from 'react-redux'
 import classNames from 'classnames'
 
-import { useGraph } from '../../hooks/storage/graph'
+import { RootState } from '../../interfaces/state'
 import Button from '../core/button'
 
 const Graph = lazy(() => import('./graph'))
@@ -15,7 +16,7 @@ const Loading = () => {
 }
 
 const GraphContainer = () => {
-  const { data } = useGraph()
+  const data = useSelector((state: RootState) => state.graph.data)
   const [ hidden, setHidden ] = useState(false)
 
   const handleHideButtonClick = () => {

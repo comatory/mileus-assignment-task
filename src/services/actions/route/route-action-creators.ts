@@ -1,8 +1,7 @@
 import { LngLat } from 'mapbox-gl'
 
-import ActionCreator from './action-creator'
-import { Action } from '../../interfaces/stores'
-import { Route } from '../../interfaces/route'
+import { Action } from '../../../interfaces/actions'
+import { Route } from '../../../interfaces/route'
 
 export const ROUTE_ACTION_SET_ORIGIN = 'ROUTE_ACTION_SET_ORIGIN'
 export const ROUTE_ACTION_SET_DESTINATION = 'ROUTE_ACTION_SET_DESTINATION'
@@ -72,76 +71,87 @@ export interface ClearRoutesAction extends Action {
   type: typeof ROUTE_ACTION_ROUTES_CLEAR,
 }
 
+export type RouteActionCreators = (
+  SetOriginAction |
+  SetDestinationAction |
+  ClearOriginAction |
+  ClearDestinationAction |
+  SetRouteRequestActions |
+  SetRouteRequestFinishedAction |
+  SetRouteRequestErrorAction |
+  ClearRouteRequestErrorAction |
+  SetRoutesAction |
+  ClearRoutesAction
+)
 
-export default class RouteActions extends ActionCreator {
-  setOrigin(origin: LngLat) {
-    this.dispatch({
-      type: ROUTE_ACTION_SET_ORIGIN,
-      data: { origin },
-    })
+
+export const setOrigin = (origin: LngLat) => {
+  return {
+    type: ROUTE_ACTION_SET_ORIGIN,
+    data: { origin },
   }
+}
 
-  setDestination(destination: LngLat) {
-    this.dispatch({
-      type: ROUTE_ACTION_SET_DESTINATION,
-      data: { destination },
-    })
+export const setDestination = (destination: LngLat) => {
+  return {
+    type: ROUTE_ACTION_SET_DESTINATION,
+    data: { destination },
   }
+}
 
-  clearOrigin() {
-    this.dispatch({
-      type: ROUTE_ACTION_CLEAR_ORIGIN,
-      data: {},
-    })
+export const clearOrigin = () => {
+  return {
+    type: ROUTE_ACTION_CLEAR_ORIGIN,
+    data: {},
   }
+}
 
-  clearDestination() {
-    this.dispatch({
-      type: ROUTE_ACTION_CLEAR_DESTINATION,
-      data: {},
-    })
+export const clearDestination = () => {
+  return {
+    type: ROUTE_ACTION_CLEAR_DESTINATION,
+    data: {},
   }
+}
 
-  startRouteRequest() {
-    this.dispatch({
-      type: ROUTE_ACTION_REQUEST,
-      data: {},
-    })
+export const startRouteRequest = () => {
+  return {
+    type: ROUTE_ACTION_REQUEST,
+    data: {},
   }
+}
 
-  stopRouteRequest() {
-    this.dispatch({
-      type: ROUTE_ACTION_REQUEST_FINISHED,
-      data: {},
-    })
+export const stopRouteRequest = () => {
+  return {
+    type: ROUTE_ACTION_REQUEST_FINISHED,
+    data: {},
   }
+}
 
-  setRouteRequestError(error: Error) {
-    this.dispatch({
-      type: ROUTE_ACTION_REQUEST_ERROR,
-      data: { error },
-    })
+export const setRouteRequestError = (error: Error) => {
+  return {
+    type: ROUTE_ACTION_REQUEST_ERROR,
+    data: { error },
   }
+}
 
-  clearRouteRequestError() {
-    this.dispatch({
-      type: ROUTE_ACTION_REQUEST_ERROR_CLEAR,
-      data: {},
-    })
+export const clearRouteRequestError = () => {
+  return {
+    type: ROUTE_ACTION_REQUEST_ERROR_CLEAR,
+    data: {},
   }
+}
 
-  setRoutes(routes: Array<Route>) {
-    this.dispatch({
-      type: ROUTE_ACTION_ROUTES_SET,
-      data: { routes },
-    })
+export const setRoutes = (routes: Array<Route>) => {
+  return {
+    type: ROUTE_ACTION_ROUTES_SET,
+    data: { routes },
   }
+}
 
-  clearRoutes() {
-    this.dispatch({
-      type: ROUTE_ACTION_ROUTES_CLEAR,
-      data: {},
-    })
+export const clearRoutes = () => {
+  return {
+    type: ROUTE_ACTION_ROUTES_CLEAR,
+    data: {},
   }
 }
 

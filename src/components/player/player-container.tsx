@@ -1,31 +1,32 @@
 import React, { useContext, useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import classNames from 'classnames'
 
+import { RootState } from '../../interfaces/state'
 import Context from '../context'
-import { useGraph } from '../../hooks/storage/graph'
 import PlayerControls from './player-controls'
 import PlayerMetadata from './player-metadata'
-import { useGraphAnimation } from '../../hooks/storage/graph'
 
 const PlayerContainer = () => {
-  const { graphManager, graphActions } = useContext(Context)
-  const { isAnimationPlaying } = useGraphAnimation()
-  const { data } = useGraph()
+  const dispatch = useDispatch()
+  const { graphActions } = useContext(Context)
+  const isAnimationPlaying = useSelector((state: RootState) => state.graph.isAnimationPlaying)
+  const data = useSelector((state: RootState) => state.graph.data)
 
   const handlePlayButtonClick = useCallback(() => {
     if (!data) {
       return
     }
 
-    graphManager.play()
-  }, [ graphManager, data ])
+    dispatch(graphActions.play())
+  }, [ graphActions, data ])
 
   const handleStopButtonClick = useCallback(() => {
     if (!data) {
       return
     }
 
-    graphManager.stop()
+    dispatch(graphActions.stop())
   }, [ data ])
 
   const handlePauseButtonClick = useCallback(() => {
@@ -33,11 +34,11 @@ const PlayerContainer = () => {
       return
     }
 
-    graphManager.pause()
+    dispatch(graphActions.pause())
   }, [ data ])
 
   const handleMultiplicationSelectChange = useCallback((value: number) => {
-    graphActions.setMultiplication(value)
+    dispatch(graphActions.setMultiplication(value))
   }, [ data ])
 
   return (

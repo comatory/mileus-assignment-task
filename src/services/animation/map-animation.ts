@@ -50,6 +50,7 @@ export default class MapAnimation {
     map.addSource('point', {
       type: 'geojson',
       data: {
+        // @ts-ignore
         type: 'Point',
         coordinates,
       },

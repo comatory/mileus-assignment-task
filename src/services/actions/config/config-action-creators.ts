@@ -1,5 +1,4 @@
-import ActionCreator from './action-creator'
-import { Action } from '../../interfaces/stores'
+import { Action } from '../../../interfaces/actions'
 
 export const CONFIG_ACTION_SET_PROPERTY = 'CONFIG_ACTION_SET_PROPERTY'
 
@@ -12,12 +11,12 @@ export interface SetConfigPropertyAction extends Action {
   data: { [key: string]: any },
 }
 
-export default class ConfigActions extends ActionCreator {
-  setProperty(property: string, value: string | number) {
-    this.dispatch({
-      type: CONFIG_ACTION_SET_PROPERTY,
-      data: { property, value },
-    })
+export type ConfigActionCreators = SetConfigPropertyAction
+
+export const setProperty = (property: string, value: string | number) => {
+  return {
+    type: CONFIG_ACTION_SET_PROPERTY,
+    data: { property, value },
   }
 }
 

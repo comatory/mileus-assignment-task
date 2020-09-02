@@ -1,6 +1,5 @@
-import ActionCreator from './action-creator'
 import { Map } from 'mapbox-gl'
-import { Action } from '../../interfaces/stores'
+import { Action } from '../../../interfaces/actions'
 
 export const MAP_ACTION_SET_MAP = 'MAP_ACTION_SET_MAP'
 export const MAP_ACTION_CLEAR_MAP = 'MAP_ACTION_CLEAR_MAP'
@@ -19,19 +18,21 @@ export interface ClearMapAction extends Action {
   type: typeof MAP_ACTION_CLEAR_MAP,
 }
 
-export default class ConfigActions extends ActionCreator {
-  setMap(map: Map) {
-    this.dispatch({
-      type: MAP_ACTION_SET_MAP,
-      data: { map },
-    })
-  }
+export type MapActionCreators = (
+  SetMapAction |
+  ClearMapAction
+)
 
-  clearMap() {
-    this.dispatch({
-      type: MAP_ACTION_CLEAR_MAP,
-      data: {},
-    })
+export const setMap = (map: Map) => {
+  return {
+    type: MAP_ACTION_SET_MAP,
+    data: { map },
   }
 }
 
+export const clearMap = () => {
+  return {
+    type: MAP_ACTION_CLEAR_MAP,
+    data: {},
+  }
+}

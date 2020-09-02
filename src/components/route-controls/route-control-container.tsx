@@ -1,26 +1,37 @@
 import React, { useContext } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Context from '../context'
-import { useRoutes, useRouteRequest }  from '../../hooks/storage/route'
 import RouteInputContainer from './route-input-container'
 import RouteUtils from '../../utils/route-utils'
 import ErrorPanel from '../core/error-panel'
+import { RootState } from '../../interfaces/state'
 
 const RouteControlContainer = () => {
-  const { graphManager, mapManager } = useContext(Context)
-  const { origin, destination } = useRoutes()
-  const { pending, requestError } = useRouteRequest()
+  const dispatch = useDispatch()
+  const { graphActions, mapActions } = useContext(Context)
+  const { origin, destination } = useSelector((state: RootState) => {
+    const { origin, destination } = state.route
+
+    return { origin, destination }
+  })
+  const { pending, requestError } = useSelector((state: RootState) => {
+    return {
+      pending: state.route.routeRequest,
+      requestError: state.route.routeRequestError,
+    }
+  })
 
   const handleOriginInputSubmit = (value: string) => {
     const lngLat = RouteUtils.convertStringToLngLat(value)
 
-    mapManager.addOriginMarker(lngLat, true)
+    dispatch(mapActions.addOriginMarker(lngLat, true))
   }
 
   const handleDestinationInputSubmit = (value: string) => {
     const lngLat = RouteUtils.convertStringToLngLat(value)
 
-    mapManager.addDestinationMarker(lngLat, true)
+    dispatch(mapActions.addDestinationMarker(lngLat, true))
   }
 
   const handleOriginInputBlur = (value: string, validity: boolean) => {
@@ -29,7 +40,7 @@ const RouteControlContainer = () => {
     }
     const lngLat = RouteUtils.convertStringToLngLat(value)
 
-    mapManager.addOriginMarker(lngLat, true)
+    dispatch(mapActions.addOriginMarker(lngLat, true))
   }
 
   const handleDestinationInputBlur = (value: string, validity: boolean) => {
@@ -38,17 +49,17 @@ const RouteControlContainer = () => {
     }
     const lngLat = RouteUtils.convertStringToLngLat(value)
 
-    mapManager.addDestinationMarker(lngLat, true)
+    dispatch(mapActions.addDestinationMarker(lngLat, true))
   }
 
   const handleClearOriginInputButton = () => {
-    mapManager.removeOriginMarker()
-    graphManager.reset()
+    dispatch(mapActions.removeOriginMarker())
+    dispatch(graphActions.reset())
   }
 
   const handleClearDestinationInputButton = () => {
-    mapManager.removeDestinationMarker()
-    graphManager.reset()
+    dispatch(mapActions.removeDestinationMarker())
+    dispatch(graphActions.reset())
   }
 
   const handleSubmit = (originString: string, destinationString: string) => {
@@ -60,28 +71,28 @@ const RouteControlContainer = () => {
     const nextDestination = destinationUpdated ? destinationFromString : destination
 
     if (originUpdated && nextOrigin) {
-      mapManager.addOriginMarker(nextOrigin)
+      dispatch(mapActions.addOriginMarker(nextOrigin))
     }
 
     if (destinationUpdated && nextDestination) {
-      mapManager.addDestinationMarker(nextDestination)
+      dispatch(mapActions.addDestinationMarker(nextDestination))
     }
 
     if (nextOrigin && nextDestination) {
-      mapManager.findRoute(nextOrigin, nextDestination)
+      dispatch(mapActions.findRoute(nextOrigin, nextDestination))
     }
   }
 
   const handleReset = () => {
-    mapManager.removeMarkers()
-    graphManager.reset()
+    dispatch(mapActions.removeMarkers())
+    dispatch(graphActions.reset())
   }
 
   const handleOriginFocusButtonClick = () => {
-    mapManager.moveToOrigin()
+    dispatch(mapActions.moveToOrigin())
   }
   const handleDestinationFocusButtonClick = () => {
-    mapManager.moveToDestination()
+    dispatch(mapActions.moveToDestination())
   }
 
   return (
