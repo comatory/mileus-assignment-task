@@ -1,17 +1,17 @@
-// @ts-ignore: Unfortunately lib does not have type definitions
-//             and DefinitelyTyped packages does not exist
-import { ioc } from '@adonisjs/fold'
+import { Ioc } from '@adonisjs/fold'
 
 import { RouteRetriever } from '../services/retrievers'
-import apis from './apis'
+import { Services } from '../interfaces/services'
 
-ioc.singleton('routeRetriever', () => {
-  return new RouteRetriever({
-    apiClient: apis.apiClient,
+export default (ioc: Ioc<Services>) => {
+  ioc.singleton('routeRetriever', () => {
+    return new RouteRetriever({
+      apiClient: ioc.use('apiClient'),
+    })
   })
-})
 
-export default {
-  routeRetriever: ioc.use('routeRetriever'),
+  return {
+    routeRetriever: ioc.use('routeRetriever'),
+  }
 }
 

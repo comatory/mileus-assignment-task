@@ -1,37 +1,35 @@
-// @ts-ignore: Unfortunately lib does not have type definitions
-//             and DefinitelyTyped packages does not exist
-import { ioc } from '@adonisjs/fold'
+import { Ioc } from '@adonisjs/fold'
 
 import { GraphManager, MapManager } from '../services/managers'
-import actions from './actions'
-import retrievers from './retrievers'
-import stores from './stores'
-import vendor from './vendor'
-import animation from './animation'
 
-ioc.singleton('mapManager', () => {
-  return new MapManager({
-    graphActions: actions.graphActions,
-    mapActions: actions.mapActions,
-    mapFactory: vendor.mapFactory,
-    mapStore: stores.mapStore,
-    routeActions: actions.routeActions,
-    routeRetriever: retrievers.routeRetriever,
-    routeStore: stores.routeStore,
+import { Services } from '../interfaces/services'
+
+export default (ioc: Ioc<Services>) => {
+  ioc.singleton('mapManager', () => {
+    return new MapManager({
+      graphActions: ioc.use('graphActions'),
+      mapActions: ioc.use('mapActions'),
+      mapFactory: ioc.use('mapFactory'),
+      mapStore: ioc.use('mapStore'),
+      routeActions: ioc.use('routeActions'),
+      routeRetriever: ioc.use('routeRetriever'),
+      routeStore: ioc.use('routeStore'),
+    })
   })
-})
 
-ioc.singleton('graphManager', () => {
-  return new GraphManager({
-    animationFactory: animation.animationFactory,
-    graphActions: actions.graphActions,
-    graphStore: stores.graphStore,
-    mapStore: stores.mapStore,
-    routeStore: stores.routeStore,
+  ioc.singleton('graphManager', () => {
+    return new GraphManager({
+      animationFactory: ioc.use('animationFactory'),
+      graphActions: ioc.use('graphActions'),
+      graphStore: ioc.use('graphStore'),
+      mapStore: ioc.use('mapStore'),
+      routeStore: ioc.use('routeStore'),
+    })
   })
-})
 
-export default {
-  graphManager: ioc.use('graphManager'),
-  mapManager: ioc.use('mapManager'),
+  return {
+    graphManager: ioc.use('graphManager'),
+    mapManager: ioc.use('mapManager'),
+  }
 }
+

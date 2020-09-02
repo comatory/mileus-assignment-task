@@ -1,17 +1,23 @@
-import vendor from './vendor'
-import actions from './actions'
-import stores from './stores'
-import managers from './managers'
-import apis from './apis'
-import retrievers from './retrievers'
-import animation from './animation'
+import { Ioc } from '@adonisjs/fold'
+
+import vendorFactory from './vendor'
+import actionsFactory from './actions'
+import storesFactory from './stores'
+import managersFactory from './managers'
+import apisFactory from './apis'
+import retrieversFactory from './retrievers'
+import animationFactory from './animation'
+
+import { Services } from '../interfaces/services'
+
+const ioc: Ioc<Services> = new Ioc()
 
 export default {
-  ...vendor,
-  ...actions,
-  ...stores,
-  ...managers,
-  ...apis,
-  ...retrievers,
-  ...animation,
+  ...animationFactory(ioc),
+  ...vendorFactory(ioc),
+  ...apisFactory(ioc),
+  ...retrieversFactory(ioc),
+  ...actionsFactory(ioc),
+  ...storesFactory(ioc),
+  ...managersFactory(ioc),
 }

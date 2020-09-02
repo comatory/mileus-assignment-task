@@ -9,6 +9,9 @@ const MapContainer = () => {
   const { mapManager } = useContext(Context)
 
   useEffect(() => {
+    if (!mapContent.current) {
+      return
+    }
     mapManager.createMap(mapContent.current)
 
     return () => mapManager.removeMap()

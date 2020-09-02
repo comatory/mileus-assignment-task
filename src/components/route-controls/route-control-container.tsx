@@ -59,15 +59,17 @@ const RouteControlContainer = () => {
     const nextOrigin = originUpdated ? originFromString : origin
     const nextDestination = destinationUpdated ? destinationFromString : destination
 
-    if (originUpdated) {
+    if (originUpdated && nextOrigin) {
       mapManager.addOriginMarker(nextOrigin)
     }
 
-    if (destinationUpdated) {
+    if (destinationUpdated && nextDestination) {
       mapManager.addDestinationMarker(nextDestination)
     }
 
-    mapManager.findRoute(nextOrigin, nextDestination)
+    if (nextOrigin && nextDestination) {
+      mapManager.findRoute(nextOrigin, nextDestination)
+    }
   }
 
   const handleReset = () => {

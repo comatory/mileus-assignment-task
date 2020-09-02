@@ -1,8 +1,5 @@
-// @ts-ignore: Unfortunately lib does not have type definitions
-//             and DefinitelyTyped packages does not exist
-import { ioc } from '@adonisjs/fold'
+import { Ioc } from '@adonisjs/fold'
 
-import vendor from './vendor'
 import {
   ConfigActions,
   RouteActions,
@@ -10,33 +7,38 @@ import {
   MapActions,
 } from '../services/actions'
 
-ioc.singleton('configActions', () => {
-  return new ConfigActions({
-    dispatcher: vendor.dispatcher,
-  })
-})
+import { Services } from '../interfaces/services'
 
-ioc.singleton('routeActions', () => {
-  return new RouteActions({
-    dispatcher: vendor.dispatcher,
+export default (ioc: Ioc<Services>) => {
+  ioc.singleton('configActions', () => {
+    return new ConfigActions({
+      dispatcher: ioc.use('dispatcher'),
+    })
   })
-})
 
-ioc.singleton('graphActions', () => {
-  return new GraphActions({
-    dispatcher: vendor.dispatcher,
+  ioc.singleton('routeActions', () => {
+    return new RouteActions({
+      dispatcher: ioc.use('dispatcher'),
+    })
   })
-})
 
-ioc.singleton('mapActions', () => {
-  return new MapActions({
-    dispatcher: vendor.dispatcher,
+  ioc.singleton('graphActions', () => {
+    return new GraphActions({
+      dispatcher: ioc.use('dispatcher'),
+    })
   })
-})
 
-export default {
-  configActions: ioc.use('configActions'),
-  routeActions: ioc.use('routeActions'),
-  graphActions: ioc.use('graphActions'),
-  mapActions: ioc.use('mapActions'),
+  ioc.singleton('mapActions', () => {
+    return new MapActions({
+      dispatcher: ioc.use('dispatcher'),
+    })
+  })
+
+  return {
+    configActions: ioc.use('configActions'),
+    routeActions: ioc.use('routeActions'),
+    graphActions: ioc.use('graphActions'),
+    mapActions: ioc.use('mapActions'),
+  }
 }
+

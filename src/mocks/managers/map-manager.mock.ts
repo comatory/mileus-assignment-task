@@ -16,12 +16,12 @@ export default class MockMapManager extends EventEmitter implements IMapManager 
     this.emit('test:removeMap')
   }
 
-  addOriginMarker(lngLat: LngLat, moveMap: boolean) {
-    this.emit('test:addOriginMarker', { lngLat, moveMap })
+  addOriginMarker(lngLat: LngLat, moveMap?: boolean) {
+    this.emit('test:addOriginMarker', { lngLat, moveMap: moveMap || false })
   }
 
-  addDestinationMarker(lngLat: LngLat, moveMap: boolean) {
-    this.emit('test:addDestinationMarker', { lngLat, moveMap })
+  addDestinationMarker(lngLat: LngLat, moveMap?: boolean) {
+    this.emit('test:addDestinationMarker', { lngLat, moveMap: moveMap || false })
   }
 
   findRoute(origin: LngLat, destination: LngLat) {
