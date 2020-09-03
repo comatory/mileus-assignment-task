@@ -17,17 +17,17 @@ export interface State {
   routes: Array<Route>,
 }
 
-const defaults: State = {
-  origin: null,
-  destination: null,
-  routeRequest: false,
-  routeRequestError: null,
-  routes: [],
+export const getInitialState = (): State => {
+  return {
+    origin: null,
+    destination: null,
+    routeRequest: false,
+    routeRequestError: null,
+    routes: [],
+  }
 }
 
-export const initialState: State = defaults
-
-const routeReducer = (state: State = initialState, action: RouteActionCreators): State => {
+const routeReducer = (state: State = getInitialState(), action: RouteActionCreators): State => {
   switch (action.type) {
     case ROUTE_ACTIONS_TYPES.ROUTE_ACTION_SET_ORIGIN:
       const setOriginAction = action as SetOriginAction

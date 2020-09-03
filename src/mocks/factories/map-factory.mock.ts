@@ -1,9 +1,11 @@
-import { MapboxOptions, Map } from 'mapbox-gl'
+import mapbox, { MapboxOptions, Map } from 'mapbox-gl'
 
 
 let map: Map
 
-export default () => {
+const mockMapFactory = () => {
+  mapbox.accessToken = 'test'
+
   return (options: MapboxOptions) => {
     if (map) {
       return map
@@ -12,5 +14,7 @@ export default () => {
     return map
   }
 }
+
+export default mockMapFactory
 
 export const getMap = () => map

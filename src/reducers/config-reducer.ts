@@ -4,13 +4,13 @@ export interface State {
   mapboxToken: string | null,
 }
 
-const defaults: State = {
-  mapboxToken: null
+export const getInitialState = (): State => {
+  return {
+    mapboxToken: null
+  }
 }
 
-export const initialState: State = defaults
-
-const configReducer = (state: State = initialState, action: ConfigActionCreators): State => {
+const configReducer = (state: State = getInitialState(), action: ConfigActionCreators): State => {
     switch (action.type) {
       case CONFIG_ACTIONS_TYPES.CONFIG_ACTION_SET_PROPERTY:
         const { property, value } = action.data

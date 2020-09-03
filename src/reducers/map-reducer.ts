@@ -10,13 +10,13 @@ export interface State {
   map: Map | null,
 }
 
-const defaults: State = {
-  map: null
+export const getInitialState = (): State => {
+  return {
+    map: null
+  }
 }
 
-export const initialState: State = defaults
-
-const mapReducer = (state: State = initialState, action: MapActionCreators): State => {
+const mapReducer = (state: State = getInitialState(), action: MapActionCreators): State => {
   switch(action.type) {
     case MAP_ACTION_TYPES.MAP_ACTION_SET_MAP:
       const setMapAction = action as SetMapAction

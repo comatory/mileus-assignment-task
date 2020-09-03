@@ -15,16 +15,16 @@ export interface State {
   multiplication: number,
 }
 
-const defaults: State = {
-  data: null,
-  canvas: null,
-  isAnimationPlaying: false,
-  multiplication: DEFAULT_MULTIPLICATION_FACTOR,
+export const getInitialState = (): State => {
+  return {
+    data: null,
+    canvas: null,
+    isAnimationPlaying: false,
+    multiplication: DEFAULT_MULTIPLICATION_FACTOR,
+  }
 }
 
-export const initialState: State = defaults
-
-const graphReducer = (state: State = initialState, action: GraphActionCreators): State => {
+const graphReducer = (state: State = getInitialState(), action: GraphActionCreators): State => {
   switch (action.type) {
     case GRAPH_ACTION_TYPES.GRAPH_ACTION_SET_DATA:
       const setGraphDataAction = action as SetGraphDataAction

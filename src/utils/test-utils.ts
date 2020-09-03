@@ -9,10 +9,10 @@ import {
   Route,
 } from '../interfaces/route'
 import { RootState } from '../interfaces/state'
-import { initialState as configInitialState } from '../reducers/config-reducer'
-import { initialState as graphInitialState } from '../reducers/graph-reducer'
-import { initialState as mapInitialState } from '../reducers/map-reducer'
-import { initialState as routeInitialState } from '../reducers/route-reducer'
+import { getInitialState as getConfigInitialState } from '../reducers/config-reducer'
+import { getInitialState as getGraphInitialState } from '../reducers/graph-reducer'
+import { getInitialState as getMapInitialState } from '../reducers/map-reducer'
+import { getInitialState as getRouteInitialState } from '../reducers/route-reducer'
 import ioc from '../ioc'
 import { Services } from '../interfaces/services'
 
@@ -119,10 +119,10 @@ export default class TestUtils {
 
   static createRootState(state: Partial<RootState> = {}): RootState {
     return {
-      route: routeInitialState,
-      map: mapInitialState,
-      config: configInitialState,
-      graph: graphInitialState,
+      route: getRouteInitialState(),
+      map: getMapInitialState(),
+      config: getConfigInitialState(),
+      graph: getGraphInitialState(),
       ...state,
     }
   }

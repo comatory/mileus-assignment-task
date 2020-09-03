@@ -426,6 +426,10 @@ const drawRoute = (route: Route | null, map: Map | null) => {
 }
 
 const clearRoute = (map: Map) => {
+  if (!map.isStyleLoaded()) {
+    return
+  }
+
   if (map.getLayer('route')) {
     map.removeLayer('route')
   }
