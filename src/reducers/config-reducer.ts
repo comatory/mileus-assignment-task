@@ -8,7 +8,7 @@ const defaults: State = {
   mapboxToken: null
 }
 
-const initialState: State = defaults
+export const initialState: State = defaults
 
 const configReducer = (state: State = initialState, action: ConfigActionCreators): State => {
     switch (action.type) {

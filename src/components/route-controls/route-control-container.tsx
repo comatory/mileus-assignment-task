@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import * as React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import Context from '../context'
@@ -9,16 +9,20 @@ import { RootState } from '../../interfaces/state'
 
 const RouteControlContainer = () => {
   const dispatch = useDispatch()
-  const { graphActions, mapActions } = useContext(Context)
-  const { origin, destination } = useSelector((state: RootState) => {
-    const { origin, destination } = state.route
+  const { graphActions, mapActions } = React.useContext(Context)
+  const {
+    origin,
+    destination,
+    pending,
+    requestError,
+  } = useSelector((state: RootState) => {
+    const { origin, destination, routeRequest, routeRequestError } = state.route
 
-    return { origin, destination }
-  })
-  const { pending, requestError } = useSelector((state: RootState) => {
     return {
-      pending: state.route.routeRequest,
-      requestError: state.route.routeRequestError,
+      origin,
+      destination,
+      pending: routeRequest,
+      requestError: routeRequestError,
     }
   })
 

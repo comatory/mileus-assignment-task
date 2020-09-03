@@ -22,7 +22,7 @@ const defaults: State = {
   multiplication: DEFAULT_MULTIPLICATION_FACTOR,
 }
 
-const initialState: State = defaults
+export const initialState: State = defaults
 
 const graphReducer = (state: State = initialState, action: GraphActionCreators): State => {
   switch (action.type) {

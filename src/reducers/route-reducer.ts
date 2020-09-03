@@ -25,7 +25,7 @@ const defaults: State = {
   routes: [],
 }
 
-const initialState: State = defaults
+export const initialState: State = defaults
 
 const routeReducer = (state: State = initialState, action: RouteActionCreators): State => {
   switch (action.type) {

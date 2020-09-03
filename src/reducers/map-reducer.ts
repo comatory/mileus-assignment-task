@@ -14,7 +14,7 @@ const defaults: State = {
   map: null
 }
 
-const initialState: State = defaults
+export const initialState: State = defaults
 
 const mapReducer = (state: State = initialState, action: MapActionCreators): State => {
   switch(action.type) {

@@ -1,9 +1,20 @@
+import * as sinon from 'sinon'
+import * as reactRedux from 'react-redux'
+import * as React from 'react'
+
 import {
   Geometry,
   GeometryCoordinate,
   Leg,
   Route,
 } from '../interfaces/route'
+import { RootState } from '../interfaces/state'
+import { initialState as configInitialState } from '../reducers/config-reducer'
+import { initialState as graphInitialState } from '../reducers/graph-reducer'
+import { initialState as mapInitialState } from '../reducers/map-reducer'
+import { initialState as routeInitialState } from '../reducers/route-reducer'
+import ioc from '../ioc'
+import { Services } from '../interfaces/services'
 
 export default class TestUtils {
   static getRandomFloatNumber(acc: number = 10): number {
@@ -84,6 +95,35 @@ export default class TestUtils {
       summary: TestUtils.getRandomString(),
       weight: TestUtils.getRandomFloatNumber(),
       ...properties,
+    }
+  }
+
+  static mockDispatch(spy: sinon.SinonSpy) {
+    return sinon.stub(reactRedux, 'useDispatch').returns(spy)
+  }
+
+  static mockSelector(state: any = {}) {
+    return sinon.stub(reactRedux, 'useSelector').returns(state)
+  }
+
+  static mockContext(context: Partial<Services> = {}) {
+    return sinon.stub(React, 'useContext').returns({
+      ...ioc,
+      ...context,
+    })
+  }
+
+  static resetMock(mock: sinon.SinonStub<any>) {
+    mock.restore()
+  }
+
+  static createRootState(state: Partial<RootState> = {}): RootState {
+    return {
+      route: routeInitialState,
+      map: mapInitialState,
+      config: configInitialState,
+      graph: graphInitialState,
+      ...state,
     }
   }
 }
